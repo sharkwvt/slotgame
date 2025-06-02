@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://blrk582w4vukg"]
+
+[ext_resource type="Texture2D" uid="uid://d2tyb26b8k4ka" path="res://image/water.png" id="1_hqhql"]
+[ext_resource type="Script" uid="uid://sgsmi6gjjcqw" path="res://common/mouse_click_effect.gd" id="2_nkn0g"]
+
+[sub_resource type="Curve" id="Curve_y2tw5"]
+_data = [Vector2(0.0596026, 1), 0.0, -0.459719, 0, 0, Vector2(1, 0), -3.08337, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jsi08"]
+curve = SubResource("Curve_y2tw5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_74k8t"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 180.0
+initial_velocity_max = 220.0
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_jsi08")
+
+[node name="MouseClickEffect" type="GPUParticles2D"]
+emitting = false
+amount = 4
+texture = ExtResource("1_hqhql")
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.5
+trail_lifetime = 0.7
+process_material = SubResource("ParticleProcessMaterial_74k8t")
+script = ExtResource("2_nkn0g")

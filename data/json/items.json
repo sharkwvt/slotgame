@@ -1,0 +1,324 @@
+{
+  "items": [
+	{
+	  "title": "假幣",
+	  "cost": 2,
+	  "description": "拉霸後觸發，10%機率，額外添加1次拉霸，當次幸運+4",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 0
+	},
+	{
+	  "title": "馬蹄鐵",
+	  "cost": 3,
+	  "description": "隨機觸發道具機率加倍",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 1
+	},
+	{
+	  "title": "手套",
+	  "cost": 3,
+	  "description": "最後一轉幸運+7，可重新觸發",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 2
+	},
+	{
+	  "title": "招財貓",
+	  "cost": 1,
+	  "description": "當次拉霸觸發3次獎金，獲得利息",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 3
+	},
+	{
+	  "title": "紅石",
+	  "cost": 1,
+	  "description": "使用後當次拉霸幸運+4",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 4
+	},
+	{
+	  "title": "塔羅牌",
+	  "cost": 1,
+	  "description": "有道具觸發，符號倍率+1，沒道具觸發重置",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 5
+	},
+	{
+	  "title": "錢包",
+	  "cost": 3,
+	  "description": "利息增加15%，每輪遞減3%，0%丟棄",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 6
+	},
+	{
+	  "title": "五芒星",
+	  "cost": 3,
+	  "description": "符號倍率+1，當次拉霸觸發5次獎金，符號倍率再+1",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 7
+	},
+	{
+	  "title": "貓糧",
+	  "cost": 4,
+	  "description": "每輪次數+2",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 8
+	},
+	{
+	  "title": "千紙鶴",
+	  "cost": 2,
+	  "description": "每5張幸運券，符號倍率+1",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 9
+	},
+	{
+	  "title": "核按鈕",
+	  "cost": 3,
+	  "description": "紅色按鈕觸發道具，額外觸發1次，道具欄位-1",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 10
+	},
+	{
+	  "title": "擴音器",
+	  "cost": 7,
+	  "description": "電話亭能力觸發2次，道具欄位-1",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 11
+	},
+	{
+	  "title": "玩具火車",
+	  "cost": 2,
+	  "description": "連續2次拉霸沒獎勵，下一次幸運+5",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 12
+	},
+	{
+	  "title": "股票",
+	  "cost": 2,
+	  "description": "利息+5%",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 13
+	},
+	{
+	  "title": "電池",
+	  "cost": 1,
+	  "description": "重置紅色按鈕可用次數",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 14
+	},
+	{
+	  "title": "兌換券",
+	  "cost": 2,
+	  "description": "兌換券+4",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 15
+	},
+	{
+	  "title": "加倍道具A",
+	  "cost": 3,
+	  "description": "黃色符號觸發次數+1，檸檬鈴鐺金幣7",
+	  "active_item": 1.0,
+	  "usable_count": 1.0,
+	  "id": 16
+	},
+	{
+	  "title": "加倍道具B",
+	  "cost": 3,
+	  "description": "非黃色符號觸發次數+1，櫻桃幸運草鑽石",
+	  "active_item": 1.0,
+	  "usable_count": 1.0,
+	  "id": 17
+	},
+	{
+	  "title": "公文包",
+	  "cost": 2,
+	  "description": "獲得當前債務30%",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 18
+	},
+	{
+	  "title": "盆栽",
+	  "cost": 2,
+	  "description": "每次清算，每擁有3張兌換券，額外獲得1張，最多10張",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 19
+	},
+	{
+	  "title": "幻菇",
+	  "cost": 2,
+	  "description": "當次拉霸觸發3次獎金，該輪符號價值x2",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 20
+	},
+	{
+	  "title": "筆記版",
+	  "cost": 1,
+	  "description": "當次拉霸觸發3次獎金，該輪圖案價值+1倍",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 21
+	},
+	{
+	  "title": "紅辣椒",
+	  "cost": 1,
+	  "description": "拉霸後觸發，20%機率，，當次幸運+5",
+	  "active_item": 0,
+	  "usable_count": 12.0,
+	  "id": 22
+	},
+	{
+	  "title": "青辣椒",
+	  "cost": 2,
+	  "description": "拉霸後觸發，15%機率，，當次幸運+7",
+	  "active_item": 0,
+	  "usable_count": 9.0,
+	  "id": 23
+	},
+	{
+	  "title": "聖經",
+	  "cost": 1,
+	  "description": "出現666組合，轉化為普通符號，道具銷毀",
+	  "active_item": 0,
+	  "usable_count": 1.0,
+	  "id": 24
+	},
+	{
+	  "title": "檸檬畫像",
+	  "cost": 4,
+	  "description": "本輪檸檬出現機率+2",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 25
+	},
+	{
+	  "title": "櫻桃畫像",
+	  "cost": 4,
+	  "description": "本輪櫻桃出現機率+2",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 26
+	},
+	{
+	  "title": "幸運草畫像",
+	  "cost": 4,
+	  "description": "本輪幸運草出現機率+2",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 27
+	},
+	{
+	  "title": "鈴鐺畫像",
+	  "cost": 4,
+	  "description": "本輪鈴鐺出現機率+2",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 28
+	},
+	{
+	  "title": "鑽石畫像",
+	  "cost": 3,
+	  "description": "本輪鑽石出現機率+2",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 29
+	},
+	{
+	  "title": "金幣畫像",
+	  "cost": 3,
+	  "description": "本輪金幣出現機率+2",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 30
+	},
+	{
+	  "title": "7畫像",
+	  "cost": 3,
+	  "description": "本輪7出現機率+2",
+	  "active_item": 1.0,
+	  "usable_count": 3.0,
+	  "id": 31
+	},
+	{
+	  "title": "黃金檸檬",
+	  "cost": 2,
+	  "description": "出現黃金標記機率+20%，符號價值永久+2",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 32
+	},
+	{
+	  "title": "黃金櫻桃",
+	  "cost": 2,
+	  "description": "出現黃金標記機率+20%，符號價值永久+2",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 33
+	},
+	{
+	  "title": "黃金幸運草",
+	  "cost": 2,
+	  "description": "出現黃金標記機率+20%，符號價值永久+3",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 34
+	},
+	{
+	  "title": "黃金鈴鐺",
+	  "cost": 2,
+	  "description": "出現黃金標記機率+20%，符號價值永久+3",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 35
+	},
+	{
+	  "title": "黃金鑽石",
+	  "cost": 3,
+	  "description": "出現黃金標記機率+20%，符號價值永久+5",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 36
+	},
+	{
+	  "title": "黃金金幣",
+	  "cost": 3,
+	  "description": "出現黃金標記機率+20%，符號價值永久+5",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 37
+	},
+	{
+	  "title": "黃金7",
+	  "cost": 3,
+	  "description": "出現黃金標記機率+20%，符號價值永久+7",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 38
+	},
+	{
+	  "title": "不倒翁",
+	  "cost": 4,
+	  "description": "符號出現幸運草標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券",
+	  "active_item": 0,
+	  "usable_count": 0,
+	  "id": 39
+	}
+  ]
+}
