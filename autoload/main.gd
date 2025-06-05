@@ -2,6 +2,8 @@ extends Node
 
 var screen_size = Vector2i(1920, 1080)
 
+var debug = true
+
 var items_json_path = "res://data/json/items.json"
 var talk_json_path = "res://data/json/talk.json"
 var game_save_path = "user://moragame.sav"

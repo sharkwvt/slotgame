@@ -7,6 +7,7 @@ var steam_id: int = 0
 var steam_name: String = "You"
 
 var img_path = "res://image/steam/%s"
+var spine_path = "res://spine/dlc/%s.tres"
 
 const ACHV_Win = "ACHIEVEMENT_1"
 const ACHV_InToilet = "ACHIEVEMENT_2"
@@ -211,12 +212,32 @@ func show_DLC_tip(id: int = steam_appid):
 	if !is_steam_enabled():
 		Main.show_tip("需購買DLC")
 		return
-		
+	
+	if not Main.debug:
+		for dlc: Dictionary in dlc_data:
+			if dlc["id"] == id:
+				if dlc["available"] == false:
+					id = 0
+	
 	var img_name = ""
 	var title = ""
+	var spine: SpineSpriteEx
 	match id:
 		DLC.醫院:
 			img_name = "dlc_banner_b.png"
+			#title = (Main.categorys_data[1] as CategoryData).category_title
+		DLC.學校:
+			img_name = "dlc_banner_a.png"
+			#title = (Main.categorys_data[2] as CategoryData).category_title
+		DLC.大樓:
+			img_name = "dlc_banner_c.png"
+			#title = (Main.categorys_data[3] as CategoryData).category_title
+		DLC.動畫1:
+			img_name = "dlc_banner_a.png"
+			spine = SpineSpriteEx.new()
+			spine.skeleton_data_res = load(spine_path % "sex_girl_b2")
+			spine.play_first_anim()
+			title = "動畫包"
 		_:
 			Main.show_tip("尚未開放")
 			return
@@ -229,6 +250,9 @@ func show_DLC_tip(id: int = steam_appid):
 	var img_view = TextureRect.new()
 	mask.add_child(img_view)
 	img_view.texture = load(img_path % img_name)
+	if spine:
+		img_view.self_modulate = Color(0, 0, 0, 0)
+		img_view.add_child(spine)
 	var title_lbl = Label.new()
 	mask.add_child(title_lbl)
 	title_lbl.text = title
@@ -244,6 +268,8 @@ func show_DLC_tip(id: int = steam_appid):
 	btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	btn.flat = true
 	btn.text = "立即購買"
+	btn.add_theme_color_override("font_color", Color.WHITE)
+	btn.add_theme_color_override("font_hover_color", Color.WHITE)
 	btn.add_theme_font_size_override("font_size", 50)
 	img_view.position = Vector2.ZERO # 不知為何這樣才能取到size
 	btn.position = Vector2.ZERO
@@ -251,6 +277,11 @@ func show_DLC_tip(id: int = steam_appid):
 		(mask.size.x - img_view.size.x)/2.0,
 		(mask.size.y - img_view.size.y)/2.0,
 	)
+	if spine:
+		spine.position = Vector2(
+			img_view.size.x / 2.0,
+			img_view.size.y / 2.0,
+		)
 	title_lbl.position = Vector2(
 		img_view.position.x + 150,
 		img_view.position.y + 80

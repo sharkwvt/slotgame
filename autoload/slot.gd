@@ -127,7 +127,7 @@ var trigger_count = 0
 func _ready() -> void:
 	refresh_state()
 	create_grid()
-		
+
 
 #region grid and spin
 func create_grid():

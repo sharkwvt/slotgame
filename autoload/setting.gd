@@ -90,7 +90,7 @@ func set_screen_mode(mode: SCREEN_MODE):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
 		#await get_tree().process_frame # 等待下一幀
-		await get_tree().create_timer(0.1).timeout
+		#await get_tree().create_timer(0.1).timeout
 	
 	match mode:
 		SCREEN_MODE.視窗720p:
@@ -104,7 +104,6 @@ func set_screen_mode(mode: SCREEN_MODE):
 		SCREEN_MODE.全螢幕:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
-	
 	if is_window:
 		center_window()
 	
@@ -112,7 +111,9 @@ func set_screen_mode(mode: SCREEN_MODE):
 	
 # 視窗置中
 func center_window():
-	var screen_size = DisplayServer.screen_get_size(0)
-	var window_size = DisplayServer.window_get_size()
+	var DS = DisplayServer
+	var screen_index = DS.window_get_current_screen()
+	var screen_size = DS.screen_get_size(screen_index)
+	var window_size = DS.window_get_size()
 	var new_position = (screen_size - window_size) / 2
-	DisplayServer.window_set_position(new_position)
+	DS.window_set_position(DS.screen_get_position(screen_index) + new_position)
