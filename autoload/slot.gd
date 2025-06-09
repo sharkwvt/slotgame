@@ -4,7 +4,7 @@ const COLUMNS = 5
 const ROWS = 3
 
 const SYMBOLS = ["🍋", "🍒", "🍀", "🔔", "💎", "💰", "7️⃣"]
-const ORG_P = [2.5, 2.5, 2.0, 2.0, 1.5, 1.5, 1.0]
+const ORG_DATUM = [2.5, 2.5, 2.0, 2.0, 1.5, 1.5, 1.0]
 const ORG_SYMBOLS_ODDS = [2, 2, 3, 3, 5, 5, 7]
 const ORG_SYMBOLS_MUL = 1
 const ITEMS_SIZE = 7
@@ -108,7 +108,7 @@ var grid = []
 var spin_times = 7
 var probability = []
 var luck: int
-var symbols_p: Array
+var symbols_datum: Array
 var symbols_odds: Array
 var pattern_odds: Array
 var symbols_multiplier: float
@@ -528,7 +528,7 @@ func remove_buff(from: Item):
 
 func refresh_state():
 	luck = 1
-	symbols_p = ORG_P.duplicate(true)
+	symbols_datum = ORG_DATUM.duplicate(true)
 	symbols_odds = ORG_SYMBOLS_ODDS.duplicate(true)
 	pattern_odds = ORG_PATTERN_ODDS.duplicate(true)
 	symbols_multiplier = ORG_SYMBOLS_MUL
@@ -553,27 +553,26 @@ func refresh_state():
 					for i in pattern_odds.size():
 						pattern_odds[i] *= buff.value
 				Effect.probability:
-					symbols_p[buff.value[0]] += buff.value[1]
+					symbols_datum[buff.value[0]] += buff.value[1]
 	refresh_probability()
 
 
 func refresh_probability():
 	probability.clear()
-	var new_p = symbols_p.duplicate()
 	
 	# 基準道具計算
 	if Event.事件1 in events:
 		# 7基準+1
-		new_p[6] += 1
+		symbols_datum[6] += 1
 		if Item.道具12 in items:
-			new_p[6] += 1
+			symbols_datum[6] += 1
 	
 	# 計算機率
-	var all_p: float = 0
-	for p in new_p:
-		all_p += p
+	var all_datum: float = 0
+	for datum in symbols_datum:
+		all_datum += datum
 	for i in SYMBOLS.size():
-		probability.append(new_p[i] / all_p)
+		probability.append(symbols_datum[i] / all_datum)
 	
 	# 機率道具要在基準計算取得機率後
 	var half_symbols = []
@@ -584,18 +583,19 @@ func refresh_probability():
 			half_symbols.append_array([2, 3])
 
 	if half_symbols.size() > 0:
-		var halving_p: float = 0.0
+		var halving_datum: float = 0.0
 		for i in half_symbols:
 			var value = probability[i] / 2.0
 			probability[i] -= value
-			halving_p += value
-		var new_p_total = 0
+			halving_datum += value
+		var total_datum = 0
 		for i in SYMBOLS.size():
 			if i not in half_symbols:
-				new_p_total += new_p[i]
+				total_datum += symbols_datum[i]
 		for i in SYMBOLS.size():
 			if i not in half_symbols:
-				probability[i] += halving_p * (new_p[i] / new_p_total)
+				probability[i] += halving_datum * (symbols_datum[i] / total_datum)
+
 
 func show_probability():
 	var s = "機率\n"

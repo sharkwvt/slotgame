@@ -5,6 +5,7 @@ var screen_size = Vector2i(1920, 1080)
 var debug = true
 
 var items_json_path = "res://data/json/items.json"
+var events_json_path = "res://data/json/events.json"
 var talk_json_path = "res://data/json/talk.json"
 var game_save_path = "user://moragame.sav"
 var csv_path = "res://categorys/%s/csv"
@@ -21,6 +22,7 @@ var mouse_click_effect = preload("res://common/mouse_click_effect.tscn")
 var mouse_trail_effect: GPUParticles2D
 
 var item_datas = []
+var event_datas = []
 var character_datas = []
 
 var instance_talk_view: Control
@@ -121,7 +123,9 @@ func to_scene(scene: SCENE, anim_type = 0):
 func reload_data():
 	Logger.log("platform: " + Main.this_platform)
 	load_items_data()
+	load_events_data()
 	load_game_save()
+
 
 func load_items_data():
 	item_datas.clear()
@@ -134,6 +138,18 @@ func load_items_data():
 				if key in data:
 					data.set(key, dic[key])
 			item_datas.append(data)
+
+func load_events_data():
+	event_datas.clear()
+	var json_data = get_json_data(events_json_path)
+	if !json_data.is_empty():
+		var events: Array = json_data["events"]
+		for dic: Dictionary in events:
+			var data = EventData.new()
+			for key in dic.keys():
+				if key in data:
+					data.set(key, dic[key])
+			event_datas.append(data)
 
 
 func save_game():
