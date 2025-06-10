@@ -31,15 +31,17 @@ func create_grid_view():
 	for col in range(COLUMNS):
 		var view_column = []
 		for row in range(ROWS):
-			var unit = Label.new()
-			unit.add_theme_font_size_override("font_size", 50)
+			#var unit = Label.new()
+			#unit.add_theme_font_size_override("font_size", 50)
 			var offset_x = (size.x - SYMBOL_SIZE.x*COLUMNS)/2.0
 			var offset_y = (size.y - SYMBOL_SIZE.y*ROWS)/2.0
-			unit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			unit.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			#unit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			#unit.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			var unit = ColorRect.new()
+			unit.color = Color.GRAY
 			unit.size = SYMBOL_SIZE
 			unit.position = Vector2(offset_x + col * SYMBOL_SIZE.x, offset_y + row * SYMBOL_SIZE.y)
-			unit.pivot_offset = unit.size/2.0
+			#unit.pivot_offset = unit.size/2.0
 			add_child(unit)
 			view_column.append(unit)
 		grid_views.append(view_column)
@@ -48,7 +50,8 @@ func create_grid_view():
 func start_spin():
 	if playing_anim:
 		return
-	Slot.start_spin()
+	if !Slot.start_spin():
+		return
 	refresh_view()
 	if Slot.rewards.size() > 0:
 		show_reward_anim()
@@ -65,10 +68,30 @@ func new_wave():
 
 
 func refresh_view():
-	for i in Slot.grid.size():
-		for j in Slot.grid[i].size():
-			var unit: Label = grid_views[i][j]
-			unit.text = SYMBOLS[Slot.grid[i][j]]
+	for col in Slot.grid.size():
+		for row in Slot.grid[col].size():
+			# 清空
+			var unit: Control = grid_views[col][row]
+			for c in unit.get_children():
+				c.queue_free()
+			# 圖示
+			var lbl = Label.new()
+			lbl.add_theme_font_size_override("font_size", 50)
+			lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			lbl.size = SYMBOL_SIZE
+			lbl.pivot_offset = lbl.size/2.0
+			lbl.text = SYMBOLS[Slot.grid[col][row]]
+			unit.add_child(lbl)
+	# 黃標
+	for gm: Vector2 in Slot.golden_modifiers:
+		var unit: Control = grid_views[gm.x][gm.y]
+		var gm_icon = ColorRect.new()
+		gm_icon.color = Color.YELLOW
+		gm_icon.size = Vector2(10, 10)
+		gm_icon.position = Vector2(10, 10)
+		unit.add_child(gm_icon)
+
 	total_lbl.text = str(total)
 	times_lbl.text = str(Slot.spin_times)
 
@@ -79,11 +102,14 @@ func show_reward_anim():
 	var temp_tween: Tween
 	for data: Slot.RewardData in Slot.rewards:
 		for pos in data.grid:
-			var target: Label = grid_views[pos.x][pos.y]
+			var target: ColorRect = grid_views[pos.x][pos.y]
 			var tween = target.create_tween()
-			tween.tween_property(target, "rotation_degrees", 45, duration)
-			tween.tween_property(target, "rotation_degrees", -45, duration)
-			tween.tween_property(target, "rotation_degrees", 0, duration)
+			#tween.tween_property(target, "rotation_degrees", 45, duration)
+			#tween.tween_property(target, "rotation_degrees", -45, duration)
+			#tween.tween_property(target, "rotation_degrees", 0, duration)
+			var org_color = target.color
+			tween.tween_property(target, "color", Color.RED, duration)
+			tween.tween_property(target, "color", org_color, duration)
 			tween.tween_callback(tween.kill)
 			temp_tween = tween
 		await temp_tween.finished

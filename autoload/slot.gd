@@ -86,7 +86,8 @@ enum Item {
 	道具36, # 出現黃金標記機率+20%，符號價值永久+3
 	道具37, # 出現黃金標記機率+20%，符號價值永久+5
 	道具38, # 出現黃金標記機率+20%，符號價值永久+5
-	道具39 # 出現黃金標記機率+20%，符號價值永久+7
+	道具39, # 出現黃金標記機率+20%，符號價值永久+7
+	道具40 # 符號出現幸運草標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券 TODO
 }
 
 enum Effect {
@@ -116,6 +117,7 @@ var pattern_multiplier: float
 
 var rewards = []
 var rewards_waves = []
+var golden_modifiers = []
 var events = []
 var items = []
 var items_usable = {}
@@ -163,9 +165,9 @@ func assign_spin(count: int):
 					spin_times += buff.value
 
 
-func start_spin():
+func start_spin() -> bool:
 	if spin_times <= 0:
-		return
+		return false
 	spin_times -= 1
 	trigger_count = 0
 	
@@ -175,6 +177,7 @@ func start_spin():
 	rewards.clear()
 	var temp_grid = []
 	var temp_rewards = []
+	var temp_gm = []
 	var temp_r = 0
 	# 幸運 = 轉多次取最大
 	for i in range(luck):
@@ -184,20 +187,28 @@ func start_spin():
 		if new_r > temp_r:
 			temp_grid = grid.duplicate(true)
 			temp_rewards = rewards.duplicate(true)
+			temp_gm = golden_modifiers.duplicate(true)
 			temp_r = new_r
 	if temp_r != 0:
 		grid = temp_grid.duplicate(true) 
 		rewards = temp_rewards.duplicate(true)
+		golden_modifiers = temp_gm.duplicate(true)
 	
 	rewards_waves.append(calculating_rewards())
 	
 	# 轉後效果
 	effect_after_spin()
+	
+	return true
 
 func spin():
-	for col in grid:
-		for i in col.size():
-			col[i] = get_unit()
+	golden_modifiers.clear()
+	for i in grid.size():
+		for j in grid[i].size():
+			grid[i][j] = get_unit()
+			if (Item.道具33 + grid[i][j]) in items:
+				if randf() <= 0.2:
+					golden_modifiers.append(Vector2(i, j))
 
 func get_unit() -> int:
 	var temp = []
@@ -487,6 +498,13 @@ func effect_after_spin():
 					add_buff(Item.道具6)
 			else:
 				remove_buff(Item.道具6)
+		
+		# 計算黃標
+		for gm: Vector2 in golden_modifiers:
+			for reward: RewardData in rewards:
+				if gm in reward.grid:
+					add_buff(Item.道具33 + reward.symbol)
+	
 	refresh_state()
 
 
@@ -509,10 +527,10 @@ func add_buff(from: Item):
 		get_buff(from).value += 1
 		return
 	# 黃標
-	var g_items = [Item.道具33, Item.道具34, Item.道具35, Item.道具36, Item.道具37, Item.道具38, Item.道具39]
-	if from in g_items and get_buff(from):
-		get_buff(from).value[1] += 1
-		return
+	for i in SYMBOLS.size():
+		if from == (Item.道具33 + i) and get_buff(from):
+			get_buff(from).value[1] += 1
+			return
 	
 	buffs.append(data.get_buff())
 
