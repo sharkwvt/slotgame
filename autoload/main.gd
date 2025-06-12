@@ -55,8 +55,8 @@ var statistics: Dictionary = {
 func _ready() -> void:
 	instance_scenes.resize(SCENE.size())
 	reload_data()
-	Input.set_custom_mouse_cursor(load("res://image/mouse.png"),Input.CURSOR_ARROW)
-	Input.set_custom_mouse_cursor(load("res://image/mouse2.png"),Input.CURSOR_POINTING_HAND)
+	#Input.set_custom_mouse_cursor(load("res://image/mouse.png"),Input.CURSOR_ARROW)
+	#Input.set_custom_mouse_cursor(load("res://image/mouse2.png"),Input.CURSOR_POINTING_HAND)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

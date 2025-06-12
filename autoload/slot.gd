@@ -72,7 +72,7 @@ enum Item {
 	道具22, # 當次拉霸觸發3次獎金，該輪圖案價值+1倍
 	道具23, # 拉霸後觸發，20%機率，當次幸運+5
 	道具24, # 拉霸後觸發，15%機率，當次幸運+7
-	道具25, # 出現666組合，轉化為普通符號，道具銷毀
+	道具25, # 出現666組合，轉化為普通符號，道具銷毀 TODO
 	道具26, # 本輪檸檬出現機率+2
 	道具27, # 本輪櫻桃出現機率+2
 	道具28, # 本輪幸運草出現機率+2
@@ -97,6 +97,7 @@ enum Effect {
 	pattern_odds,
 	spin_times,
 	item_size,
+	datum,
 	probability
 }
 
@@ -570,6 +571,8 @@ func refresh_state():
 				Effect.pattern_odds:
 					for i in pattern_odds.size():
 						pattern_odds[i] *= buff.value
+				Effect.datum:
+					symbols_datum[buff.value[0]] += buff.value[1]
 				Effect.probability:
 					symbols_datum[buff.value[0]] += buff.value[1]
 	refresh_probability()
@@ -578,12 +581,12 @@ func refresh_state():
 func refresh_probability():
 	probability.clear()
 	
-	# 基準道具計算
-	if Event.事件1 in events:
-		# 7基準+1
-		symbols_datum[6] += 1
-		if Item.道具12 in items:
-			symbols_datum[6] += 1
+	var value_mul = 2 if Item.道具12 in items else 1
+	# 基準計算
+	for event in events:
+		match event:
+			Event.事件1: # 7基準+1
+				symbols_datum[6] += 1 * value_mul
 	
 	# 計算機率
 	var all_datum: float = 0
@@ -594,25 +597,33 @@ func refresh_probability():
 	
 	# 機率道具要在基準計算取得機率後
 	var half_symbols = []
-	if Event.事件2 in events:
-		# 🍀,🔔機率減半
-		half_symbols.append_array([2, 3])
-		if Item.道具12 in items:
-			half_symbols.append_array([2, 3])
+	for event in events:
+		match event:
+			Event.事件2: # 🍀,🔔機率減半
+				half_symbols.append_array([2, 3])
+				if Item.道具12 in items:
+					half_symbols.append_array([2, 3])
 
 	if half_symbols.size() > 0:
-		var halving_datum: float = 0.0
-		for i in half_symbols:
-			var value = probability[i] / 2.0
-			probability[i] -= value
-			halving_datum += value
+		# 計算機率差
+		var halving_p: float = 0.0
+		for i in SYMBOLS.size():
+			if i in half_symbols:
+				var count = half_symbols.count(i)
+				var mul = 1 - 0.5 * count
+				if mul < 0:
+					mul = 0
+				var value = probability[i] * mul
+				halving_p += probability[i] - value
+				probability[i] = value
+		# 將機率差以基準值回補
 		var total_datum = 0
 		for i in SYMBOLS.size():
 			if i not in half_symbols:
 				total_datum += symbols_datum[i]
 		for i in SYMBOLS.size():
 			if i not in half_symbols:
-				probability[i] += halving_datum * (symbols_datum[i] / total_datum)
+				probability[i] += halving_p * (symbols_datum[i] / total_datum)
 
 
 func show_probability():

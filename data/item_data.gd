@@ -70,25 +70,25 @@ func get_buff() -> Slot.Buff:
 			buff.type = Effect.luck
 			buff.value = 7
 		Item.道具26:
-			buff.type = Effect.probability
+			buff.type = Effect.datum
 			buff.value = [0, 2]
 		Item.道具27:
-			buff.type = Effect.probability
+			buff.type = Effect.datum
 			buff.value = [1, 2]
 		Item.道具28:
-			buff.type = Effect.probability
+			buff.type = Effect.datum
 			buff.value = [2, 2]
 		Item.道具29:
-			buff.type = Effect.probability
+			buff.type = Effect.datum
 			buff.value = [3, 2]
 		Item.道具30:
-			buff.type = Effect.probability
+			buff.type = Effect.datum
 			buff.value = [4, 2]
 		Item.道具31:
-			buff.type = Effect.probability
+			buff.type = Effect.datum
 			buff.value = [5, 2]
 		Item.道具32:
-			buff.type = Effect.probability
+			buff.type = Effect.datum
 			buff.value = [6, 2]
 		Item.道具33:
 			buff.type = Effect.symbols_odds

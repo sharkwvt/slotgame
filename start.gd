@@ -3,6 +3,7 @@ extends Scene
 @export var msg_lbl: Label
 @export var total_lbl: Label
 @export var times_lbl: Label
+@export var sym_panel: Control
 
 const COLUMNS = Slot.COLUMNS
 const ROWS = Slot.ROWS
@@ -25,6 +26,7 @@ func _ready():
 	$"數值".pressed.connect(Slot.show_probability)
 	$"使用道具".pressed.connect(Slot.use_items)
 	$"新一輪".pressed.connect(new_wave)
+	$"商店".pressed.connect(Shop.show_shop)
 
 
 func create_grid_view():
@@ -33,8 +35,8 @@ func create_grid_view():
 		for row in range(ROWS):
 			#var unit = Label.new()
 			#unit.add_theme_font_size_override("font_size", 50)
-			var offset_x = (size.x - SYMBOL_SIZE.x*COLUMNS)/2.0
-			var offset_y = (size.y - SYMBOL_SIZE.y*ROWS)/2.0
+			var offset_x = (sym_panel.size.x - SYMBOL_SIZE.x*COLUMNS)/2.0
+			var offset_y = (sym_panel.size.y - SYMBOL_SIZE.y*ROWS)/2.0
 			#unit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			#unit.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			var unit = ColorRect.new()
@@ -42,7 +44,7 @@ func create_grid_view():
 			unit.size = SYMBOL_SIZE
 			unit.position = Vector2(offset_x + col * SYMBOL_SIZE.x, offset_y + row * SYMBOL_SIZE.y)
 			#unit.pivot_offset = unit.size/2.0
-			add_child(unit)
+			sym_panel.add_child(unit)
 			view_column.append(unit)
 		grid_views.append(view_column)
 
@@ -109,6 +111,8 @@ func show_reward_anim():
 			#tween.tween_property(target, "rotation_degrees", 0, duration)
 			var org_color = target.color
 			tween.tween_property(target, "color", Color.RED, duration)
+			if pos in Slot.golden_modifiers:
+				tween.tween_property(target, "color", Color.YELLOW, duration)
 			tween.tween_property(target, "color", org_color, duration)
 			tween.tween_callback(tween.kill)
 			temp_tween = tween

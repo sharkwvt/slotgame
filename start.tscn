@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ej6nm74amvd7" path="res://start.gd" id="1_ots34"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="2_qn1rc"]
 
-[node name="Start" type="Control" node_paths=PackedStringArray("msg_lbl", "total_lbl", "times_lbl")]
+[node name="Start" type="Control" node_paths=PackedStringArray("msg_lbl", "total_lbl", "times_lbl", "sym_panel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,6 +14,7 @@ script = ExtResource("1_ots34")
 msg_lbl = NodePath("Label")
 total_lbl = NodePath("Total")
 times_lbl = NodePath("Times")
+sym_panel = NodePath("Symbols")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
@@ -43,6 +44,16 @@ offset_bottom = 23.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
+
+[node name="Symbols" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="道具按鈕" type="Button" parent="."]
 layout_mode = 1
@@ -104,6 +115,20 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
 text = "新一輪"
+script = ExtResource("2_qn1rc")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="商店" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -39.0
+offset_right = 108.0
+offset_bottom = 39.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "商店"
 script = ExtResource("2_qn1rc")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 

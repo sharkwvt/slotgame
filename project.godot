@@ -28,6 +28,7 @@ Main="*res://autoload/main.gd"
 Setting="*res://autoload/setting.gd"
 Steamworks="*res://autoload/steamworks.gd"
 TransitionEffect="*res://autoload/transition_effect.gd"
+Shop="*res://autoload/shop.gd"
 
 [display]
 
