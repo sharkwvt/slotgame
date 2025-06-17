@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ej6nm74amvd7" path="res://start.gd" id="1_ots34"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="2_qn1rc"]
 
-[node name="Start" type="Control" node_paths=PackedStringArray("msg_lbl", "total_lbl", "times_lbl", "sym_panel")]
+[node name="Start" type="Control" node_paths=PackedStringArray("msg_lbl", "total_lbl", "cash_lbl", "times_lbl", "sym_panel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,12 +11,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ots34")
-msg_lbl = NodePath("Label")
+msg_lbl = NodePath("Tip")
 total_lbl = NodePath("Total")
+cash_lbl = NodePath("Cash")
 times_lbl = NodePath("Times")
 sym_panel = NodePath("Symbols")
 
-[node name="Label" type="Label" parent="."]
+[node name="Tip" type="Label" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
@@ -32,6 +33,19 @@ offset_left = -40.0
 offset_bottom = 69.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 50
+text = "0"
+
+[node name="Cash" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 84.12
+offset_bottom = 153.12
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 50
+text = "0"
 
 [node name="Times" type="Label" parent="."]
 layout_mode = 1

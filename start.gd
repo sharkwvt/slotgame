@@ -2,6 +2,7 @@ extends Scene
 
 @export var msg_lbl: Label
 @export var total_lbl: Label
+@export var cash_lbl: Label
 @export var times_lbl: Label
 @export var sym_panel: Control
 
@@ -13,7 +14,6 @@ const SYMBOL_SIZE = Vector2(100, 100)
 var grid_views = []
 var playing_anim = false
 
-var total = 0
 
 func _ready():
 	Main.current_scene = self
@@ -26,7 +26,7 @@ func _ready():
 	$"數值".pressed.connect(Slot.show_probability)
 	$"使用道具".pressed.connect(Slot.use_items)
 	$"新一輪".pressed.connect(new_wave)
-	$"商店".pressed.connect(Shop.show_shop)
+	$"商店".pressed.connect(Shop.switch_shop)
 
 
 func create_grid_view():
@@ -59,7 +59,7 @@ func start_spin():
 		show_reward_anim()
 		var r = Slot.calculating_rewards()
 		show_msg("中了: " + str(r))
-		total += r
+		Slot.money += r
 	else:
 		show_msg("沒中")
 
@@ -94,8 +94,9 @@ func refresh_view():
 		gm_icon.position = Vector2(10, 10)
 		unit.add_child(gm_icon)
 
-	total_lbl.text = str(total)
-	times_lbl.text = str(Slot.spin_times)
+	total_lbl.text = str("錢：", Slot.money)
+	cash_lbl.text = str("票：", Slot.cash)
+	times_lbl.text = str("剩餘轉數：",Slot.spin_times)
 
 
 func show_reward_anim():
@@ -118,6 +119,8 @@ func show_reward_anim():
 			temp_tween = tween
 		await temp_tween.finished
 	playing_anim = false
+	
+	refresh_view()
 
 func show_msg(msg: String):
 	msg_lbl.text = msg

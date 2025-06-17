@@ -111,4 +111,6 @@ func get_buff() -> Slot.Buff:
 		Item.道具39:
 			buff.type = Effect.symbols_odds
 			buff.value = [6, 2]
+		Item.道具40:
+			buff.value = 0.02
 	return buff

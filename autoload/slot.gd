@@ -1,5 +1,9 @@
 extends Node
 
+var money = 0
+var cash = 5
+
+
 const COLUMNS = 5
 const ROWS = 3
 
@@ -51,23 +55,23 @@ enum Item {
 	道具1, # 拉霸後觸發，10%機率，額外添加1次拉霸，額外拉霸幸運+4
 	道具2, # 道具觸發機率加倍
 	道具3, # 最後一轉幸運+7
-	道具4, # 當次拉霸觸發3次獎金，獲得利息
+	道具4, # 當次拉霸觸發3次獎金，獲得利息 TODO
 	道具5, # 使用後當次拉霸幸運+4
 	道具6, # 拉霸後有被動道具觸發，符號倍率+1，沒道具觸發重置
-	道具7, # 利息增加15%，每輪遞減3%，0%丟棄
+	道具7, # 利息增加15%，每輪遞減3%，0%丟棄 TODO
 	道具8, # 符號倍率+1，當次拉霸觸發5次獎金，符號倍率再+1
 	道具9, # 每輪次數+2
-	道具10, # 每5張幸運券，符號倍率+1 TODO
+	道具10, # 每5張幸運券，符號倍率+1
 	道具11, # 主動觸發道具，額外觸發1次，道具欄位-1
 	道具12, # 電話亭能力觸發2次，道具欄位-1
 	道具13, # 連續2次拉霸沒獎勵，下一次幸運+5
-	道具14, # 利息+5%
+	道具14, # 利息+5% TODO
 	道具15, # 重置主動道具可用次數
 	道具16, # 兌換券+4
 	道具17, # 黃色符號觸發次數+1，檸檬鈴鐺金幣7
 	道具18, # 非黃色符號觸發次數+1，櫻桃幸運草鑽石
-	道具19, # 獲得當前債務30%
-	道具20, # 每次清算，每擁有3張兌換券，額外獲得1張，最多10張
+	道具19, # 獲得當前債務30% TODO
+	道具20, # 每次清算，每擁有3張兌換券，額外獲得1張，最多10張 TODO
 	道具21, # 當次拉霸觸發3次獎金，該輪符號價值x2
 	道具22, # 當次拉霸觸發3次獎金，該輪圖案價值+1倍
 	道具23, # 拉霸後觸發，20%機率，當次幸運+5
@@ -87,7 +91,7 @@ enum Item {
 	道具37, # 出現黃金標記機率+20%，符號價值永久+5
 	道具38, # 出現黃金標記機率+20%，符號價值永久+5
 	道具39, # 出現黃金標記機率+20%，符號價值永久+7
-	道具40 # 符號出現幸運草標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券 TODO
+	道具40 # 符號出現幸運草標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券
 }
 
 enum Effect {
@@ -126,7 +130,6 @@ var max_item_size = 7
 var buffs = []
 var trigger_count = 0
 
-
 func _ready() -> void:
 	refresh_state()
 	create_grid()
@@ -164,6 +167,7 @@ func assign_spin(count: int):
 			match buff.type:
 				Effect.spin_times:
 					spin_times += buff.value
+	cash += 1
 
 
 func start_spin() -> bool:
@@ -208,7 +212,10 @@ func spin():
 		for j in grid[i].size():
 			grid[i][j] = get_unit()
 			if (Item.道具33 + grid[i][j]) in items:
-				if randf() <= 0.2:
+				var p = 0.2
+				if Item.道具40 in items:
+					p += get_buff(Item.道具40).value
+				if randf() <= p:
 					golden_modifiers.append(Vector2(i, j))
 
 func get_unit() -> int:
@@ -402,7 +409,7 @@ func add_item(item: Item):
 				items_usable[key] = data.usable_count
 			return
 		Item.道具16:
-			# TODO 兌換券
+			cash += 4
 			return
 		Item.道具19:
 			# TODO 債務
@@ -411,7 +418,7 @@ func add_item(item: Item):
 	if data.usable_count > 0:
 		items_usable[item] = data.usable_count
 	# 即效型道具
-	if item in [Item.道具7, Item.道具8, Item.道具9, Item.道具11, Item.道具12, Item.道具14]:
+	if item in [Item.道具7, Item.道具8, Item.道具9, Item.道具11, Item.道具12, Item.道具14, Item.道具40]:
 		add_buff(item)
 	refresh_state()
 
@@ -505,6 +512,8 @@ func effect_after_spin():
 			for reward: RewardData in rewards:
 				if gm in reward.grid:
 					add_buff(Item.道具33 + reward.symbol)
+					if get_buff(Item.道具40):
+						add_buff(Item.道具40)
 	
 	refresh_state()
 
@@ -526,6 +535,10 @@ func add_buff(from: Item):
 		return
 	if from == Item.道具22 and get_buff(from):
 		get_buff(from).value += 1
+		return
+	if from == Item.道具40 and get_buff(from):
+		if get_buff(from).value < 0.25:
+			get_buff(from).value += 0.01
 		return
 	# 黃標
 	for i in SYMBOLS.size():
@@ -575,6 +588,8 @@ func refresh_state():
 					symbols_datum[buff.value[0]] += buff.value[1]
 				Effect.probability:
 					symbols_datum[buff.value[0]] += buff.value[1]
+	if Item.道具10 in items:
+		symbols_multiplier += int(cash/5.0)
 	refresh_probability()
 
 

@@ -1,38 +1,41 @@
-extends Control
+extends Node
 
 var shop_title: Label
 var items_container: GridContainer
 var refresh_button: Button
 
 var current_items = []
+var shop_view
 
-func setup_ui():
-	refresh_button.text = "🔄 刷新商品"
-	refresh_button.add_theme_font_size_override("font_size", 30)
+func _ready() -> void:
+	refresh_items()
+
 
 func refresh_items():
-	# 清除現有道具UI
-	for child in items_container.get_children():
-		child.queue_free()
-	
 	# 隨機選擇4個道具
 	current_items.clear()
-	var available_items = Main.item_datas.duplicate()
+	var available_items = Main.item_datas.filter(
+		func(item: ItemData):
+			return item.id not in Slot.items
+	)
 	
 	for i in range(4):
 		if available_items.size() > 0:
 			var random_index = randi() % available_items.size()
 			current_items.append(available_items[random_index])
 			available_items.remove_at(random_index)
-	
-	# 創建道具UI
-	create_item_ui()
 
-func create_item_ui():
+
+func refresh_item_ui():
+	# 清除現有道具UI
+	for child in items_container.get_children():
+		child.queue_free()
+	
 	for i in range(current_items.size()):
 		var item = current_items[i]
 		var item_panel = create_item_panel(item, i)
 		items_container.add_child(item_panel)
+
 
 func create_item_panel(item_data: ItemData, index: int) -> Panel:
 	# 創建主面板
@@ -81,7 +84,7 @@ func create_item_panel(item_data: ItemData, index: int) -> Panel:
 	# 道具名稱
 	var name_label = Label.new()
 	name_label.text = item_data.title
-	name_label.add_theme_font_size_override("font_size", 50)
+	name_label.add_theme_font_size_override("font_size", 30)
 	name_label.add_theme_color_override("font_color", Color.YELLOW)
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	content_vbox.add_child(name_label)
@@ -117,6 +120,7 @@ func create_item_panel(item_data: ItemData, index: int) -> Panel:
 	buy_button.text = "購買"
 	buy_button.add_theme_font_size_override("font_size", 30)
 	buy_button.pressed.connect(_on_item_purchased.bind(item_data, index))
+	buy_button.size.y = 40
 	hbox.add_child(buy_button)
 	
 	return panel
@@ -127,43 +131,32 @@ func get_item_emoji(item_name: String) -> String:
 
 
 func switch_shop():
-	visible = !visible
+	if !shop_view:
+		create_shop()
+	else:
+		shop_view.visible = !shop_view.visible
 
 
 func _on_refresh_button_pressed():
 	print("刷新商品...")
 	refresh_items()
+	refresh_item_ui()
 
-func _on_item_purchased(item_data: ItemData, _index: int):
-	print("購買道具: ", item_data.title, " 價格: ", item_data.cost)
-	# 這裡可以添加購買邏輯，例如：
-	# - 檢查玩家金幣是否足夠
-	# - 扣除金幣
-	# - 將道具添加到玩家背包
-	# - 顯示購買成功提示
-	
-	# 簡單的購買提示
-	show_purchase_message(item_data.title)
+func _on_item_purchased(item_data: ItemData, index: int):
+	if item_data.cost <= Slot.cash:
+		print("購買道具: ", item_data.title, " 價格: ", item_data.cost)
+		Slot.cash -= item_data.cost
+		Slot.add_item(item_data.id)
+		current_items.remove_at(index)
+		refresh_item_ui()
+		Main.current_scene.refresh_view()
+	else:
+		Main.show_tip("不夠")
 
-func show_purchase_message(item_name: String):
-	# 創建簡單的購買提示
-	var popup = AcceptDialog.new()
-	popup.dialog_text = "成功購買: " + item_name
-	popup.title = "購買成功"
-	add_child(popup)
-	popup.popup_centered()
-	
-	# 自動關閉提示框
-	await get_tree().create_timer(1.5).timeout
-	if popup:
-		popup.queue_free()
 
-func show_shop():
-	var window = Window.new()
-	window.title = "商店"
-	window.size = Vector2(1500, 800)
-	window.close_requested.connect(window.queue_free)
-	window.set_position(Vector2(100, 100))
+func create_shop():
+	var window = ColorRect.new()
+	shop_view = window
 	
 	var main_vbox = VBoxContainer.new()
 	main_vbox.name = "VBoxContainer"
@@ -171,31 +164,29 @@ func show_shop():
 	main_vbox.add_theme_constant_override("separation", 20)
 	window.add_child(main_vbox)
 	
-	# 滾動容器
-	var scroll = ScrollContainer.new()
-	scroll.name = "ScrollContainer"
-	scroll.custom_minimum_size = Vector2(1400, 700)
-	#scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
-	main_vbox.add_child(scroll)
-	
 	# 道具網格
 	var grid = GridContainer.new()
 	grid.name = "ItemsGrid"
 	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", 15)
 	grid.add_theme_constant_override("v_separation", 15)
-	scroll.add_child(grid)
+	main_vbox.add_child(grid)
 	items_container = grid
 	
 	# 刷新按鈕
 	refresh_button = Button.new()
 	refresh_button.name = "RefreshButton"
+	refresh_button.text = "🔄 刷新商品"
 	refresh_button.custom_minimum_size = Vector2(0, 40)
+	refresh_button.add_theme_font_size_override("font_size", 30)
+	refresh_button.pressed.connect(_on_refresh_button_pressed)
 	main_vbox.add_child(refresh_button)
 
-	get_tree().get_root().add_child(window)
-	window.popup_centered()
+	refresh_item_ui()
 	
-	setup_ui()
-	refresh_items()
-	refresh_button.pressed.connect(_on_refresh_button_pressed)
+	get_tree().get_root().add_child(window)
+	
+	# 調整大小
+	await get_tree().process_frame
+	window.size = main_vbox.size
+	window.position = ((Main.screen_size as Vector2) - window.size) / 2.0
