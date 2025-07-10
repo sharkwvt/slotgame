@@ -143,15 +143,18 @@ func _on_refresh_button_pressed():
 	refresh_item_ui()
 
 func _on_item_purchased(item_data: ItemData, index: int):
-	if item_data.cost <= Slot.cash:
-		print("購買道具: ", item_data.title, " 價格: ", item_data.cost)
-		Slot.cash -= item_data.cost
-		Slot.add_item(item_data.id)
-		current_items.remove_at(index)
-		refresh_item_ui()
-		Main.current_scene.refresh_view()
-	else:
-		Main.show_tip("不夠")
+	if Slot.items.size() >= Slot.max_item_size:
+		Main.show_tip("欄位不夠")
+		return
+	if item_data.cost > Slot.cash:
+		Main.show_tip("錢不夠")
+		return
+	print("購買道具: ", item_data.title, " 價格: ", item_data.cost)
+	Slot.cash -= item_data.cost
+	Slot.add_item(item_data.id)
+	current_items.remove_at(index)
+	refresh_item_ui()
+	Main.current_scene.refresh_view()
 
 
 func create_shop():
