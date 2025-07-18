@@ -102,7 +102,8 @@ enum Effect {
 	spin_times,
 	item_size,
 	datum,
-	probability
+	probability,
+	other
 }
 
 class Buff:

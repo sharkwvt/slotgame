@@ -14,6 +14,7 @@ func get_buff() -> Slot.Buff:
 	buff.from = id
 	var Item = Slot.Item
 	var Effect = Slot.Effect
+	buff.type = Effect.other
 	match id:
 		Item.道具1:
 			buff.type = Effect.luck
