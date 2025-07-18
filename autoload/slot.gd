@@ -170,9 +170,7 @@ func assign_spin(count: int):
 	cash += 1
 
 
-func start_spin() -> bool:
-	if spin_times <= 0:
-		return false
+func start_spin():
 	spin_times -= 1
 	trigger_count = 0
 	
@@ -203,8 +201,6 @@ func start_spin() -> bool:
 	
 	# 轉後效果
 	effect_after_spin()
-	
-	return true
 
 func spin():
 	golden_modifiers.clear()
