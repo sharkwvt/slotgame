@@ -9,6 +9,8 @@ const ROWS = Slot.ROWS
 const SYMBOLS = Slot.SYMBOLS
 const SYMBOL_SIZE = Vector2(100, 100)
 
+const GridInfo = Slot.GridInfo
+
 var grid_views = []
 
 var anim_state: Anim_State
@@ -54,7 +56,7 @@ func create_grid_view():
 			view_column.append(unit)
 		grid_views.append(view_column)
 
-func set_symbol_view(node:Node, grid_info: Slot.GridInfo):
+func set_symbol_view(node:Node, grid_info: GridInfo):
 	# 清空
 	for child in node.get_children():
 		child.queue_free()
@@ -83,7 +85,7 @@ func refresh_view():
 			for c in unit.get_children():
 				c.queue_free()
 			
-			var grid_info: Slot.GridInfo = Slot.grid[col][row]
+			var grid_info: GridInfo = Slot.grid[col][row]
 			set_symbol_view(unit, grid_info)
 
 
@@ -108,7 +110,7 @@ func play_spin_anim(rotate_times: float):
 			anim_panel.add_child(unit)
 			view_column.append(unit)
 			# 圖示
-			var grid_info: Slot.GridInfo = Slot.grid[col][row-1] if row > 0 else Slot.get_grid_info()
+			var grid_info: GridInfo = Slot.grid[col][row-1] if row > 0 else Slot.get_grid_info()
 			set_symbol_view(unit, grid_info)
 		anim_grid_views.append(view_column)
 	anim_max_y = anim_grid_views[0][-1].position.y + SYMBOL_SIZE.y
