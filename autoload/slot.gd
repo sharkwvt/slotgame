@@ -111,6 +111,10 @@ class Buff:
 	var type: Effect
 	var value
 
+class GridInfo:
+	var symbol: int
+	var is_golden_modifiers: bool
+
 var grid = []
 var spin_times = 7
 var probability = []
@@ -123,7 +127,6 @@ var pattern_multiplier: float
 
 var rewards = []
 var rewards_waves = []
-var golden_modifiers = []
 var events = []
 var items = []
 var items_usable = {}
@@ -141,7 +144,7 @@ func create_grid():
 	for col in range(COLUMNS):
 		var column = []
 		for row in range(ROWS):
-			column.append(get_unit())
+			column.append(get_grid_info())
 		grid.append(column)
 
 
@@ -181,7 +184,6 @@ func start_spin():
 	rewards.clear()
 	var temp_grid = []
 	var temp_rewards = []
-	var temp_gm = []
 	var temp_r = 0
 	# 幸運 = 轉多次取最大
 	for i in range(luck):
@@ -191,12 +193,10 @@ func start_spin():
 		if new_r > temp_r:
 			temp_grid = grid.duplicate(true)
 			temp_rewards = rewards.duplicate(true)
-			temp_gm = golden_modifiers.duplicate(true)
 			temp_r = new_r
 	if temp_r != 0:
 		grid = temp_grid.duplicate(true) 
 		rewards = temp_rewards.duplicate(true)
-		golden_modifiers = temp_gm.duplicate(true)
 	
 	rewards_waves.append(calculating_rewards())
 	
@@ -204,23 +204,27 @@ func start_spin():
 	effect_after_spin()
 
 func spin():
-	golden_modifiers.clear()
 	for i in grid.size():
 		for j in grid[i].size():
-			grid[i][j] = get_unit()
-			if (Item.道具33 + grid[i][j]) in items:
-				var p = 0.2
-				if Item.道具40 in items:
-					p += get_buff(Item.道具40).value
-				if randf() <= p:
-					golden_modifiers.append(Vector2(i, j))
+			grid[i][j] = get_grid_info()
 
-func get_unit() -> int:
+func get_grid_info() -> GridInfo:
+	var grid_info = GridInfo.new()
 	var temp = []
 	for i in SYMBOLS.size():
 		for j in probability[i]*100:
 			temp.append(i)
-	return temp.pick_random()
+	grid_info.symbol = temp.pick_random()
+	
+	if (Item.道具33 + grid_info.symbol) in items:
+		var p = 0.2
+		if Item.道具40 in items:
+			p += get_buff(Item.道具40).value
+		if randf() <= p:
+			grid_info.is_golden_modifiers = true
+	
+	return grid_info
+	
 
 
 func check_rewards():
@@ -252,7 +256,7 @@ func check_reward(type: Pattern):
 				var temp_grid = []
 				for col in range(1, COLUMNS):
 					temp_grid.append(Vector2(col - 1, row))
-					if grid[col][row] == grid[col - 1][row]:
+					if grid[col][row].symbol == grid[col - 1][row].symbol:
 						count += 1
 					else:
 						if count >= 3:
@@ -265,7 +269,7 @@ func check_reward(type: Pattern):
 								5:
 									data.type = Pattern.橫5
 							data.grid = temp_grid
-							data.symbol = grid[col - 1][row]
+							data.symbol = grid[col - 1][row].symbol
 							rewards.append(data)
 						count = 1
 						temp_grid = []
@@ -280,7 +284,7 @@ func check_reward(type: Pattern):
 						5:
 							data.type = Pattern.橫5
 					data.grid = temp_grid
-					data.symbol = grid[COLUMNS - 1][row]
+					data.symbol = grid[COLUMNS - 1][row].symbol
 					rewards.append(data)
 		Pattern.縱向:
 			# 檢查縱向
@@ -289,7 +293,7 @@ func check_reward(type: Pattern):
 					var pos = [Vector2(col, row), Vector2(col, row+1), Vector2(col, row+2)]
 					if has_pattern(pos):
 						var data = RewardData.new()
-						data.symbol = grid[pos[0].x][pos[0].y]
+						data.symbol = grid[pos[0].x][pos[0].y].symbol
 						data.type = Pattern.縱向
 						data.grid = [Vector2(col, row), Vector2(col, row+1), Vector2(col, row+2)]
 						rewards.append(data)
@@ -300,7 +304,7 @@ func check_reward(type: Pattern):
 					var pos = [Vector2(col, row), Vector2(col+1, row+1), Vector2(col+2, row+2)]
 					if has_pattern(pos):
 						var data = RewardData.new()
-						data.symbol = grid[pos[0].x][pos[0].y]
+						data.symbol = grid[pos[0].x][pos[0].y].symbol
 						data.type = Pattern.斜角
 						data.grid = [Vector2(col, row), Vector2(col+1, row+1), Vector2(col+2, row+2)]
 						rewards.append(data)
@@ -310,7 +314,7 @@ func check_reward(type: Pattern):
 					var pos = [Vector2(col, row), Vector2(col+1, row-1), Vector2(col+2, row-2)]
 					if has_pattern(pos):
 						var data = RewardData.new()
-						data.symbol = grid[pos[0].x][pos[0].y]
+						data.symbol = grid[pos[0].x][pos[0].y].symbol
 						data.type = Pattern.斜角
 						data.grid = [Vector2(col, row), Vector2(col+1, row-1), Vector2(col+2, row-2)]
 						rewards.append(data)
@@ -318,7 +322,7 @@ func check_reward(type: Pattern):
 			# 檢查^
 			if has_pattern(pos_A):
 				var data = RewardData.new()
-				data.symbol = grid[pos_A[0].x][pos_A[0].y]
+				data.symbol = grid[pos_A[0].x][pos_A[0].y].symbol
 				data.type = Pattern.反V
 				data.grid = pos_A
 				rewards.append(data)
@@ -326,7 +330,7 @@ func check_reward(type: Pattern):
 			# 檢查V
 			if has_pattern(pos_V):
 				var data = RewardData.new()
-				data.symbol = grid[pos_V[0].x][pos_V[0].y]
+				data.symbol = grid[pos_V[0].x][pos_V[0].y].symbol
 				data.type = Pattern.V
 				data.grid = pos_V
 				rewards.append(data)
@@ -338,7 +342,7 @@ func check_reward(type: Pattern):
 			pos_t += pos_A
 			if has_pattern(pos_t):
 				var data = RewardData.new()
-				data.symbol = grid[pos_t[0].x][pos_t[0].y]
+				data.symbol = grid[pos_t[0].x][pos_t[0].y].symbol
 				data.type = Pattern.正三角
 				data.grid = pos_t
 				rewards.append(data)
@@ -350,7 +354,7 @@ func check_reward(type: Pattern):
 			pos_int += pos_V
 			if has_pattern(pos_int):
 				var data = RewardData.new()
-				data.symbol = grid[pos_int[0].x][pos_int[0].y]
+				data.symbol = grid[pos_int[0].x][pos_int[0].y].symbol
 				data.type = Pattern.倒三角
 				data.grid = pos_int
 				rewards.append(data)
@@ -365,16 +369,16 @@ func check_reward(type: Pattern):
 					pos_all.append(Vector2(i, j))
 			if has_pattern(pos_all):
 				var data = RewardData.new()
-				data.symbol = grid[pos_all[0].x][pos_all[0].y]
+				data.symbol = grid[pos_all[0].x][pos_all[0].y].symbol
 				data.type = Pattern.滿版
 				data.grid = pos_all
 				rewards.append(data)
 
 func has_pattern(pos: Array) -> bool:
 	var has = true
-	var symbol = grid[pos[0].x][pos[0].y]
+	var symbol = grid[pos[0].x][pos[0].y].symbol
 	for i in pos.size():
-		if symbol != grid[pos[i].x][pos[i].y]:
+		if symbol != grid[pos[i].x][pos[i].y].symbol:
 			has = false
 			break
 	return has
@@ -505,9 +509,10 @@ func effect_after_spin():
 				remove_buff(Item.道具6)
 		
 		# 計算黃標
-		for gm: Vector2 in golden_modifiers:
-			for reward: RewardData in rewards:
-				if gm in reward.grid:
+		for reward: RewardData in rewards:
+			for pos: Vector2 in reward.grid:
+				var grid_info: GridInfo = grid[pos.x][pos.y]
+				if grid_info.is_golden_modifiers:
 					add_buff(Item.道具33 + reward.symbol)
 					if get_buff(Item.道具40):
 						add_buff(Item.道具40)
