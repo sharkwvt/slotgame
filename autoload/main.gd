@@ -4,6 +4,8 @@ var screen_size = Vector2i(1920, 1080)
 
 var debug = true
 
+var scenes_path = "res://scenes"
+var characters_json_path = "res://data/json/characters.json"
 var items_json_path = "res://data/json/items.json"
 var events_json_path = "res://data/json/events.json"
 var talk_json_path = "res://data/json/talk.json"
@@ -21,6 +23,7 @@ var btn_sfx = preload("res://sound/maou_se_system47.mp3")
 var mouse_click_effect = preload("res://common/mouse_click_effect.tscn")
 var mouse_trail_effect: GPUParticles2D
 
+var packed_scenes = []
 var item_datas = []
 var event_datas = []
 var character_datas = []
@@ -28,14 +31,15 @@ var character_datas = []
 var instance_talk_view: Control
 
 var current_scene: Control
+var current_character_data: CharacterData
 
 var instance_scenes = [] # 實例化場景
 enum SCENE {
 	start,
-	category,
 	menu,
 	game,
-	review
+	review,
+	demo
 }
 
 
@@ -53,6 +57,7 @@ var statistics: Dictionary = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	packed_scenes.resize(SCENE.size())
 	instance_scenes.resize(SCENE.size())
 	reload_data()
 	#Input.set_custom_mouse_cursor(load("res://image/mouse.png"),Input.CURSOR_ARROW)
@@ -102,15 +107,7 @@ func to_scene(scene: SCENE, anim_type = 0):
 		instance_scenes[scene].visible = true
 	else:
 		# 創建場景
-		#match scene:
-			#SCENE.category:
-				#instance_scenes[scene] = category_scene.instantiate()
-			#SCENE.menu:
-				#instance_scenes[scene] = menu_scene.instantiate()
-			#SCENE.game:
-				#instance_scenes[scene] = game_scene.instantiate()
-			#SCENE.review:
-				#instance_scenes[scene] = review_scene.instantiate()
+		instance_scenes[scene] = packed_scenes[scene].instantiate()
 		get_tree().root.add_child(instance_scenes[scene])
 		
 	TransitionEffect.start_transition(current_scene, anim_type)
@@ -122,12 +119,37 @@ func to_scene(scene: SCENE, anim_type = 0):
 #region Save and load
 func reload_data():
 	Logger.log("platform: " + Main.this_platform)
-	load_items_data()
-	load_events_data()
+	load_scenes()
+	load_character_data()
+	load_item_data()
+	load_event_data()
 	load_game_save()
 
+func load_scenes():
+	var dir = DirAccess.open(scenes_path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				var scene = scenes_path.path_join(file_name).path_join(file_name + ".tscn")
+				packed_scenes[SCENE[file_name]] = load(scene)
+				print("Found scene: " + file_name)
+			file_name = dir.get_next()
 
-func load_items_data():
+func load_character_data():
+	character_datas.clear()
+	var json_data = get_json_data(characters_json_path)
+	if !json_data.is_empty():
+		var characters: Array = json_data["characters"]
+		for dic: Dictionary in characters:
+			var data = CharacterData.new()
+			for key in dic.keys():
+				if key in data:
+					data.set(key, dic[key])
+			character_datas.append(data)
+
+func load_item_data():
 	item_datas.clear()
 	var json_data = get_json_data(items_json_path)
 	if !json_data.is_empty():
@@ -139,7 +161,7 @@ func load_items_data():
 					data.set(key, dic[key])
 			item_datas.append(data)
 
-func load_events_data():
+func load_event_data():
 	event_datas.clear()
 	var json_data = get_json_data(events_json_path)
 	if !json_data.is_empty():

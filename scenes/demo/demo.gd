@@ -9,7 +9,6 @@ extends Scene
 var Anim_State = SlotView.Anim_State
 
 func _ready():
-	Main.current_scene = self
 	reset()
 	#Slot.add_item(Slot.Item.道具1)
 	#for i in 1000:

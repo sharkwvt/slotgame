@@ -3,16 +3,13 @@ class_name CharacterData
 
 var id = 0
 var dlc_id = 0
-var display_name: String
 var file_name: String
-var category: String
 var level: int
 var progress = 0
-var has_bonus = false
 var has_dlc: bool
 
 func get_path() -> String:
-	return "res://categorys/" + category + "/characters/sex_girl_" + file_name
+	return "res://characters/sex_girl_" + file_name
 
 func get_avatar() -> String:
 	return "res://image/avatar/sex_girl_" + file_name + ".png"
@@ -27,7 +24,7 @@ func get_cg_path(index) -> String:
 
 func get_full_cg_path(index) -> String:
 	var img_name = "sex_girl_" + file_name + "_lv" + str(index+1) + ".png"
-	var path = "res://categorys/" + category + "/characters/full/sex_girl_" + file_name
+	var path = "res://characters/full/sex_girl_" + file_name
 	return path.path_join(img_name)
 
 func get_spine_path() -> String:

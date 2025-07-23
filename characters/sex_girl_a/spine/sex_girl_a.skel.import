@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://c1j3pgmvhkhlm"
+path="res://.godot/imported/sex_girl_a.skel-4836e949d5bbb17a74cb57519910afa3.spskel"
+
+[deps]
+
+source_file="res://characters/sex_girl_a/spine/sex_girl_a.skel"
+dest_files=["res://.godot/imported/sex_girl_a.skel-4836e949d5bbb17a74cb57519910afa3.spskel"]
+
+[params]
+

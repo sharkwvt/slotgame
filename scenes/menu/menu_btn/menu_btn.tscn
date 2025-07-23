@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://cr7actjb5e1ct"]
+
+[ext_resource type="Script" uid="uid://bo7m36et7qhen" path="res://scenes/menu/menu_btn/menu_btn.gd" id="1_0pmos"]
+[ext_resource type="Texture2D" uid="uid://b8pjy0w401ujc" path="res://characters/full/sex_girl_a/sex_girl_a_lv1.png" id="1_4l58f"]
+[ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="2_rmywi"]
+
+[node name="MenuButton" type="Control" node_paths=PackedStringArray("character_img", "btn")]
+custom_minimum_size = Vector2(500, 1000)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 1000.0
+script = ExtResource("1_0pmos")
+character_img = NodePath("CharacterImg")
+btn = NodePath("ButtonEx")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterImg" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 500.0
+offset_bottom = 800.0
+texture = ExtResource("1_4l58f")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonEx" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+script = ExtResource("2_rmywi")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"

@@ -1,0 +1,101 @@
+[gd_scene load_steps=4 format=3 uid="uid://cp6dwhhslc06j"]
+
+[ext_resource type="Script" uid="uid://ej6nm74amvd7" path="res://scenes/start/start.gd" id="1_ots34"]
+[ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="2_qn1rc"]
+[ext_resource type="Script" uid="uid://b7a8k4lq1idu8" path="res://extends/label_ex.gd" id="3_p1g58"]
+
+[node name="Start" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ots34")
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -39.0
+offset_right = 104.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "開始遊戲"
+script = ExtResource("2_qn1rc")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="GalleryButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 60.0
+offset_right = 104.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "回想"
+script = ExtResource("2_qn1rc")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="SettingButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 160.0
+offset_right = 104.0
+offset_bottom = 238.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "設定"
+script = ExtResource("2_qn1rc")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="ExitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 260.0
+offset_right = 104.0
+offset_bottom = 338.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "離開"
+script = ExtResource("2_qn1rc")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="LabelEx" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 100.0
+offset_right = 100.0
+offset_bottom = 240.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 100
+text = "標題"
+script = ExtResource("3_p1g58")
+metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
