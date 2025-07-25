@@ -31,8 +31,7 @@ func refresh():
 		var offset_x = preview_size.x + 10
 		preview.position = Vector2(
 			i * offset_x + (size.x - offset_x * character_data.level) / 2.0,
-			(size.y - character_img.size.y - preview_size.y) / 2.0 + character_img.size.y
+			character_img.size.y + 10
 		)
 		character_img.add_child(preview)
-	print((size.y - character_img.size.y) / 2.0)
 	

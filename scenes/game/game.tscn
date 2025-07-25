@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm3lxxqs82b5f"]
+
+[ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_sul5r")
+metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
+
+[node name="OddsInfoView" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
