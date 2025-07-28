@@ -20,6 +20,9 @@ func setup():
 		menus_root.add_child(view)
 		btns.append(view)
 	
+	# 左邊按鈕翻轉
+	left_btn.set_pivot_center()
+	left_btn.scale.x = -1
 	left_btn.pressed.connect(scroll_left)
 	right_btn.pressed.connect(scroll_right)
 
@@ -62,4 +65,4 @@ func scroll_right():
 
 func start_game(data: CharacterData):
 	Main.current_character_data = data
-	Main.to_scene(Main.SCENE.demo)
+	Main.to_scene(Main.SCENE.game)

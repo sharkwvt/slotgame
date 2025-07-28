@@ -8,6 +8,9 @@ var cost: int
 var active_item: bool
 var usable_count: int
 
+func get_img() -> Texture:
+	return load("res://image/app_icon.png")
+
 func get_buff() -> Slot.Buff:
 	Logger.log("觸發 " + title)
 	var buff = Slot.Buff.new()
