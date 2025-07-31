@@ -1,0 +1,109 @@
+[gd_scene load_steps=4 format=3 uid="uid://dy2wd0kclmgiq"]
+
+[ext_resource type="Script" uid="uid://p5ghr8l4j50m" path="res://scenes/slot/slot_scene.gd" id="1_bej84"]
+[ext_resource type="Script" uid="uid://ij7vfug3b0xf" path="res://slot_view.gd" id="2_n2dqc"]
+[ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="3_8ml81"]
+
+[node name="SlotScene" type="Control" node_paths=PackedStringArray("cumulative_amount_lbl", "slot_view")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bej84")
+cumulative_amount_lbl = NodePath("CumulativeLabel")
+slot_view = NodePath("Symbols/Mask/SlotView")
+metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
+
+[node name="Symbols" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Mask" type="ColorRect" parent="Symbols"]
+clip_children = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -150.0
+offset_right = 250.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SlotView" type="Control" parent="Symbols/Mask"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_n2dqc")
+
+[node name="使用道具" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -154.0
+offset_top = -78.0
+offset_right = 154.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "使用主動道具"
+script = ExtResource("3_8ml81")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="數值" type="Button" parent="."]
+layout_mode = 1
+offset_right = 108.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 50
+text = "數值"
+script = ExtResource("3_8ml81")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="拉霸" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 540.0
+offset_top = -39.0
+offset_right = 648.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "拉霸"
+script = ExtResource("3_8ml81")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="CumulativeLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -125.0
+offset_right = 125.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 50
+text = "累積金額：00"

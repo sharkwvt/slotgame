@@ -1,8 +1,7 @@
 extends Node
 
 var money = 0
-var cash = 5
-
+var voucher = 0
 
 const COLUMNS = 5
 const ROWS = 3
@@ -55,23 +54,23 @@ enum Item {
 	道具1, # 拉霸後觸發，10%機率，額外添加1次拉霸，額外拉霸幸運+4
 	道具2, # 道具觸發機率加倍
 	道具3, # 最後一轉幸運+7
-	道具4, # 當次拉霸觸發3次獎金，獲得利息 TODO
+	道具4, # 當次拉霸觸發3次獎金，獲得利息
 	道具5, # 使用後當次拉霸幸運+4
 	道具6, # 拉霸後有被動道具觸發，符號倍率+1，沒道具觸發重置
-	道具7, # 利息增加15%，每輪遞減3%，0%丟棄 TODO
+	道具7, # 利息增加15%，每輪遞減3%，0%丟棄
 	道具8, # 符號倍率+1，當次拉霸觸發5次獎金，符號倍率再+1
 	道具9, # 每輪次數+2
 	道具10, # 每5張幸運券，符號倍率+1
 	道具11, # 主動觸發道具，額外觸發1次，道具欄位-1
 	道具12, # 電話亭能力觸發2次，道具欄位-1
 	道具13, # 連續2次拉霸沒獎勵，下一次幸運+5
-	道具14, # 利息+5% TODO
+	道具14, # 利息+5%
 	道具15, # 重置主動道具可用次數
 	道具16, # 兌換券+4
 	道具17, # 黃色符號觸發次數+1，檸檬鈴鐺金幣7
 	道具18, # 非黃色符號觸發次數+1，櫻桃幸運草鑽石
-	道具19, # 獲得當前債務30% TODO
-	道具20, # 每次清算，每擁有3張兌換券，額外獲得1張，最多10張 TODO
+	道具19, # 獲得當前債務30%
+	道具20, # 每次清算，每擁有3張兌換券，額外獲得1張，最多10張
 	道具21, # 當次拉霸觸發3次獎金，該輪符號價值x2
 	道具22, # 當次拉霸觸發3次獎金，該輪圖案價值+1倍
 	道具23, # 拉霸後觸發，20%機率，當次幸運+5
@@ -103,6 +102,7 @@ enum Effect {
 	item_size,
 	datum,
 	probability,
+	interest,
 	other
 }
 
@@ -134,10 +134,16 @@ var max_item_size = 7
 var buffs = []
 var trigger_count = 0
 
-func _ready() -> void:
+func setup():
 	refresh_state()
 	create_grid()
 
+func reset():
+	money = 50
+	voucher = 5
+	items = []
+	buffs = []
+	events = []
 
 #region grid and spin
 func create_grid():
@@ -171,7 +177,7 @@ func assign_spin(count: int):
 			match buff.type:
 				Effect.spin_times:
 					spin_times += buff.value
-	cash += 1
+	voucher += 1
 
 
 func start_spin():
@@ -410,10 +416,11 @@ func add_item(item: Item):
 				items_usable[key] = data.usable_count
 			return
 		Item.道具16:
-			cash += 4
+			voucher += 4
 			return
 		Item.道具19:
-			# TODO 債務
+			var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
+			money += int(game_scene.target_money * 0.3)
 			return
 	items.append(item)
 	if data.usable_count > 0:
@@ -469,7 +476,8 @@ func effect_after_spin():
 		
 		if Item.道具4 in items:
 			if rewards.size() >= 3:
-				add_buff(Item.道具4)
+				var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
+				money += game_scene.put_in_money * game_scene.now_interest
 				trigger_count += 1
 		
 		if Item.道具8 in items:
@@ -568,6 +576,8 @@ func refresh_state():
 	symbols_multiplier = ORG_SYMBOLS_MUL
 	pattern_multiplier = ORG_PATTERN_MUL
 	max_item_size = ITEMS_SIZE
+	var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
+	game_scene.now_interest = game_scene.INTEREST
 	if buffs.size() > 0:
 		for buff: Buff in buffs:
 			match buff.type:
@@ -590,8 +600,10 @@ func refresh_state():
 					symbols_datum[buff.value[0]] += buff.value[1]
 				Effect.probability:
 					symbols_datum[buff.value[0]] += buff.value[1]
+				Effect.interest:
+					game_scene.now_interest += buff.value
 	if Item.道具10 in items:
-		symbols_multiplier += int(cash/5.0)
+		symbols_multiplier += int(voucher/5.0)
 	refresh_probability()
 
 

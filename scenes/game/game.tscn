@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b7a8k4lq1idu8" path="res://extends/label_ex.gd" id="4_lfrn8"]
 [ext_resource type="Texture2D" uid="uid://jiwyl13l3ti" path="res://image/app_icon.png" id="5_5i0tg"]
 
-[node name="Game" type="Control" node_paths=PackedStringArray("shop_btn", "slot_btn", "items_view", "odds_view", "level_info_view")]
+[node name="Game" type="Control" node_paths=PackedStringArray("shop_btn", "slot_btn", "select_spin_view", "spin_7_btn", "spin_3_btn", "items_view", "odds_view", "level_info_view", "money_lbl", "voucher_lbl")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,9 +16,14 @@ grow_vertical = 2
 script = ExtResource("1_sul5r")
 shop_btn = NodePath("ShopButton")
 slot_btn = NodePath("SlotButton")
+select_spin_view = NodePath("SlotButton/SelectSpinView")
+spin_7_btn = NodePath("SlotButton/SelectSpinView/7Btn")
+spin_3_btn = NodePath("SlotButton/SelectSpinView/3Btn")
 items_view = NodePath("ItemsView")
 odds_view = NodePath("OddsInfoView")
 level_info_view = NodePath("LevelInfo")
+money_lbl = NodePath("InfoView/Money")
+voucher_lbl = NodePath("InfoView/Voucher")
 metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
 
 [node name="ReturnButton" parent="." instance=ExtResource("2_7h61r")]
@@ -37,10 +42,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 340.0
+offset_left = 490.0
 offset_top = 50.0
-offset_right = 748.0
-offset_bottom = 198.0
+offset_right = 818.0
+offset_bottom = 200.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 80
 text = "商店按鈕"
@@ -99,3 +104,108 @@ icon_alignment = 1
 expand_icon = true
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="SelectSpinView" type="Panel" parent="SlotButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="7Btn" type="Button" parent="SlotButton/SelectSpinView"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -197.0
+offset_top = -100.0
+offset_right = 197.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "拉7次，兌換券+1"
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="3Btn" type="Button" parent="SlotButton/SelectSpinView"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -197.0
+offset_right = 197.0
+offset_bottom = 79.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "拉3次，兌換券+2"
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="InfoView" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 60.0
+offset_top = 50.0
+offset_right = 440.0
+offset_bottom = 200.0
+grow_horizontal = 2
+
+[node name="MoneyLabel" type="Label" parent="InfoView"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 50
+text = "現金："
+script = ExtResource("4_lfrn8")
+metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
+
+[node name="Money" type="Label" parent="InfoView"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_bottom = 69.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 50
+text = "0123"
+script = ExtResource("4_lfrn8")
+metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
+
+[node name="VoucherLabel" type="Label" parent="InfoView"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+offset_right = 200.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "兌換券："
+script = ExtResource("4_lfrn8")
+metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
+
+[node name="Voucher" type="Label" parent="InfoView"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -174.0
+offset_top = -69.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "0123"
+script = ExtResource("4_lfrn8")
+metadata/_custom_type_script = "uid://b7a8k4lq1idu8"

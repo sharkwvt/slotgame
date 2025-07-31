@@ -146,11 +146,11 @@ func _on_item_purchased(item_data: ItemData, index: int):
 	if Slot.items.size() >= Slot.max_item_size:
 		Main.show_tip("欄位不夠")
 		return
-	if item_data.cost > Slot.cash:
+	if item_data.cost > Slot.voucher:
 		Main.show_tip("錢不夠")
 		return
 	print("購買道具: ", item_data.title, " 價格: ", item_data.cost)
-	Slot.cash -= item_data.cost
+	Slot.voucher -= item_data.cost
 	Slot.add_item(item_data.id)
 	current_items.remove_at(index)
 	refresh_item_ui()

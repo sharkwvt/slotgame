@@ -1,34 +1,78 @@
 extends Scene
+class_name GameScene
 
 const Item = Slot.Item
 
 @export var shop_btn: ButtonEx
 @export var slot_btn: ButtonEx
+@export var select_spin_view: Panel
+@export var spin_7_btn: ButtonEx
+@export var spin_3_btn: ButtonEx
 @export var items_view: Panel
 @export var odds_view: Panel
 @export var level_info_view: Panel
+@export var money_lbl: LabelEx
+@export var voucher_lbl: LabelEx
+
+const SLOT_TIMES = 3 # 每輪可用機台次數
+const INTEREST = 0.05 # 基礎利息
 
 var now_level = 0
-var last_wave = 3
-var put_in_cash = 0
-var target_cash = 0
+var last_slot_times = 0
+var put_in_money = 0
+var target_money = 0
+var now_interest = 0
+var data: CharacterData
 
 func _ready() -> void:
 	setup()
-	refresh_view()
+	reset()
+
+func slot_end():
+	Slot.money += put_in_money * now_interest
+	if Slot.get_buff(Item.道具7):
+		var buff: Slot.Buff = Slot.get_buff(Item.道具7)
+		buff.value -= 0.03
+		if buff.value <= 0:
+			Slot.remove_buff(Item.道具7)
+	Slot.refresh_state()
+	
+	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
+		Main.show_talk_view("失敗了")
+		return_scene()
+
+func to_next_level():
+	now_level += 1
+	if now_level < Main.current_character_data.level:
+		target_money = get_target_cash()
+		last_slot_times = SLOT_TIMES
+		if Item.道具20 in Slot.items:
+			var get_voucher = int(Slot.voucher/3.0)
+			if get_voucher > 0:
+				if get_voucher > 10:
+					get_voucher = 10
+				Slot.voucher += get_voucher
+		refresh_view()
+	else:
+		# 通關
+		pass
+
+func get_target_cash() -> int:
+	var offset = now_level + 1
+	return 100 * offset * offset
 
 func setup():
-	target_cash = get_target_cash()
+	Slot.setup()
 	shop_btn.pressed.connect(_on_shop_btn_pressed)
 	slot_btn.pressed.connect(_on_slot_btn_pressed)
+	spin_7_btn.pressed.connect(_on_select_slot_pressed.bind(0))
+	spin_3_btn.pressed.connect(_on_select_slot_pressed.bind(1))
 
 func refresh_view():
 	refresh_items_view()
 	refresh_odds_view()
 	refresh_level_info_view()
-
-func get_target_cash() -> int:
-	return now_level * 100 + 100
+	refresh_info_view()
 
 func refresh_odds_view():
 	# 清空
@@ -66,7 +110,7 @@ func refresh_odds_view():
 		pattern_odds_string += str(Slot.Pattern.keys()[i], ": %s" % (Slot.pattern_odds[i]), "  ")
 	pattern_odds_string += "\n圖形倍率: %s" % Slot.pattern_multiplier
 	var pattern_odds_lbl = Label.new()
-	pattern_odds_lbl.add_theme_font_size_override("font_size", 30)
+	pattern_odds_lbl.add_theme_font_size_override("font_size", 40)
 	pattern_odds_lbl.text = pattern_odds_string
 	pattern_odds_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
 	odds_view.add_child(pattern_odds_lbl)
@@ -79,7 +123,7 @@ func refresh_level_info_view():
 	var temp_view = Control.new()
 	var offset_x = 10
 	
-	var last_wave_string = str("剩餘機台使用次數: ", "%s" % last_wave)
+	var last_wave_string = str("剩餘機台使用次數: ", "%s" % last_slot_times)
 	var last_wave_lbl = Label.new()
 	last_wave_lbl.add_theme_font_size_override("font_size", 50)
 	last_wave_lbl.text = last_wave_string
@@ -88,7 +132,7 @@ func refresh_level_info_view():
 	
 	temp_view = last_wave_lbl
 	
-	var put_in_string = str("已投入金額: ", "%s" % put_in_cash)
+	var put_in_string = str("已投入金額: ", "%s" % put_in_money)
 	var put_in_lbl = Label.new()
 	put_in_lbl.add_theme_font_size_override("font_size", 50)
 	put_in_lbl.text = put_in_string
@@ -97,7 +141,7 @@ func refresh_level_info_view():
 	
 	temp_view = put_in_lbl
 	
-	var target_cash_string = str("目標金額: ", "%s" % target_cash)
+	var target_cash_string = str("目標金額: ", "%s" % target_money)
 	var target_cash_lbl = Label.new()
 	target_cash_lbl.add_theme_font_size_override("font_size", 50)
 	target_cash_lbl.text = target_cash_string
@@ -105,6 +149,15 @@ func refresh_level_info_view():
 	level_info_view.add_child(target_cash_lbl)
 	
 	temp_view = target_cash_lbl
+	
+	var put_in_btn = ButtonEx.new()
+	put_in_btn.add_theme_font_size_override("font_size", 50)
+	put_in_btn.text = "投入"
+	put_in_btn.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
+	put_in_btn.pressed.connect(_on_put_in_btn_pressed)
+	level_info_view.add_child(put_in_btn)
+	
+	temp_view = put_in_btn
 
 func refresh_items_view():
 	# 清空
@@ -126,8 +179,27 @@ func refresh_items_view():
 		)
 		items_view.add_child(item_view)
 
+func refresh_info_view():
+	money_lbl.text = str(Slot.money)
+	voucher_lbl.text = str(Slot.voucher)
+
+
+func reset():
+	Slot.reset()
+	now_level = 0
+	put_in_money = 0
+	target_money = get_target_cash()
+	last_slot_times = SLOT_TIMES
+	now_interest = INTEREST
+	select_spin_view.visible = false
+	refresh_view()
+
 
 func show_scene():
+	if data != Main.current_character_data:
+		data = Main.current_character_data
+		reset()
+	select_spin_view.visible = false
 	refresh_view()
 
 func return_scene():
@@ -137,5 +209,29 @@ func return_scene():
 func _on_shop_btn_pressed():
 	Shop.switch_shop()
 
+func _on_put_in_btn_pressed():
+	var put_money = int(target_money / 10.0)
+	if put_money > Slot.money:
+		put_money = Slot.money
+	Slot.money -= put_money
+	put_in_money += put_money
+	refresh_view()
+	if put_in_money >= target_money:
+		to_next_level()
+
 func _on_slot_btn_pressed():
-	Main.to_scene(Main.SCENE.demo)
+	if last_slot_times > 0:
+		select_spin_view.visible = true
+	else:
+		Main.show_tip("請投入現金")
+
+func _on_select_slot_pressed(id: int):
+	match id:
+		0:
+			Slot.assign_spin(7)
+			Slot.voucher += 1
+		1:
+			Slot.assign_spin(3)
+			Slot.voucher += 2
+	last_slot_times -= 1
+	Main.to_scene(Main.SCENE.slot)

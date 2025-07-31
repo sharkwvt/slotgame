@@ -39,6 +39,7 @@ enum SCENE {
 	menu,
 	game,
 	review,
+	slot,
 	demo
 }
 

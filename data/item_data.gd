@@ -26,7 +26,6 @@ func get_buff() -> Slot.Buff:
 			buff.type = Effect.luck
 			buff.value = 7
 		Item.道具4:
-			# TODO 利息
 			pass
 		Item.道具5:
 			buff.type = Effect.luck
@@ -35,8 +34,8 @@ func get_buff() -> Slot.Buff:
 			buff.type = Effect.symbols_multiplier
 			buff.value = 1
 		Item.道具7:
-			# TODO 利息
-			pass
+			buff.type = Effect.interest
+			buff.value = 0.15
 		Item.道具8:
 			buff.type = Effect.symbols_multiplier
 			buff.value = 1
@@ -53,8 +52,8 @@ func get_buff() -> Slot.Buff:
 			buff.type = Effect.luck
 			buff.value = 5
 		Item.道具14:
-			# TODO 利息
-			pass
+			buff.type = Effect.interest
+			buff.value = 0.05
 		Item.道具17:
 			pass
 		Item.道具18:
