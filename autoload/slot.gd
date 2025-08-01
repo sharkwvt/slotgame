@@ -139,7 +139,7 @@ func setup():
 	create_grid()
 
 func reset():
-	money = 50
+	money = 30
 	voucher = 5
 	items = []
 	buffs = []

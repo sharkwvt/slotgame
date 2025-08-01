@@ -42,8 +42,8 @@ func slot_end():
 	Slot.refresh_state()
 	
 	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
-		Main.show_talk_view("失敗了")
-		return_scene()
+		Main.show_talk_view("失敗了").finished.connect(return_scene)
+		reset()
 
 func to_next_level():
 	now_level += 1
@@ -58,14 +58,15 @@ func to_next_level():
 				Slot.voucher += get_voucher
 		refresh_view()
 	else:
-		# 通關
-		pass
+		Main.show_talk_view("通關").finished.connect(return_scene)
+		reset()
 
 func get_target_cash() -> int:
 	var offset = now_level + 1
-	return 100 * offset * offset
+	return 50 * offset * offset
 
 func setup():
+	$ReturnButton.pressed.connect(return_scene)
 	Slot.setup()
 	shop_btn.pressed.connect(_on_shop_btn_pressed)
 	slot_btn.pressed.connect(_on_slot_btn_pressed)

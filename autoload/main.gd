@@ -245,12 +245,13 @@ func show_setting_view():
 	get_tree().root.add_child(setting_view.instantiate())
 
 
-func show_talk_view(text):
+func show_talk_view(text) -> Tween:
 	if instance_talk_view:
 		instance_talk_view.queue_free()
 	instance_talk_view = talk_view.instantiate()
 	get_tree().root.add_child(instance_talk_view)
 	instance_talk_view.show_talk_anim(text)
+	return instance_talk_view.tween
 
 
 func show_tip(msg: String):
@@ -336,10 +337,7 @@ func show_directions(img: Texture):
 	img_view.position = Vector2.ZERO
 	window.add_child(img_view)
 	window.size = img_view.size
-	window.position = Vector2(
-		(screen_size.x - window.size.x)/2.0,
-		(screen_size.y - window.size.y)/2.0
-	)
+	window.move_to_center()
 	
 	get_tree().get_root().add_child(window)
 	window.popup_centered()

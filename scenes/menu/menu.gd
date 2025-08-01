@@ -14,6 +14,7 @@ func _ready() -> void:
 	setup()
 
 func setup():
+	$ReturnButton.pressed.connect(return_scene)
 	scroll_view.scroll_horizontal = true
 	for data in Main.character_datas:
 		var view = menu_btn.instantiate()

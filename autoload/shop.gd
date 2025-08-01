@@ -5,7 +5,7 @@ var items_container: GridContainer
 var refresh_button: Button
 
 var current_items = []
-var shop_view
+var shop_view: Control
 
 func _ready() -> void:
 	refresh_items()
@@ -135,6 +135,8 @@ func switch_shop():
 		create_shop()
 	else:
 		shop_view.visible = !shop_view.visible
+		if shop_view.visible:
+			shop_view.move_to_front()
 
 
 func _on_refresh_button_pressed():
