@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dy2wd0kclmgiq"]
+[gd_scene load_steps=5 format=3 uid="uid://dy2wd0kclmgiq"]
 
 [ext_resource type="Script" uid="uid://p5ghr8l4j50m" path="res://scenes/slot/slot_scene.gd" id="1_bej84"]
+[ext_resource type="Texture2D" uid="uid://c5ui36sm0osn2" path="res://image/directions/Roguelike 拉霸遊戲 (4).jpg" id="2_kjp82"]
 [ext_resource type="Script" uid="uid://ij7vfug3b0xf" path="res://slot_view.gd" id="2_n2dqc"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="3_8ml81"]
 
@@ -12,6 +13,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bej84")
+directions_img = ExtResource("2_kjp82")
 cumulative_amount_lbl = NodePath("CumulativeLabel")
 slot_view = NodePath("Symbols/Mask/SlotView")
 metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
@@ -107,3 +109,19 @@ offset_bottom = 70.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 50
 text = "累積金額：00"
+
+[node name="說明" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -208.0
+offset_top = -148.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 100
+text = "說明"
+script = ExtResource("3_8ml81")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"

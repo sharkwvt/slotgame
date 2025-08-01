@@ -405,6 +405,7 @@ func use_items():
 			add_buff(item)
 			if Item.道具11 in items:
 				add_buff(item)
+	refresh_state()
 
 
 func add_item(item: Item):

@@ -1,6 +1,8 @@
 extends Scene
 class_name GameScene
 
+@export var directions_img: Texture
+
 const Item = Slot.Item
 
 @export var shop_btn: ButtonEx
@@ -27,9 +29,11 @@ var data: CharacterData
 func _ready() -> void:
 	setup()
 	reset()
+	
+	$"說明".pressed.connect(Main.show_directions.bind(directions_img))
 
 func slot_end():
-	Slot.money += put_in_money * now_interest
+	Slot.money += int(put_in_money * now_interest)
 	if Slot.get_buff(Item.道具7):
 		var buff: Slot.Buff = Slot.get_buff(Item.道具7)
 		buff.value -= 0.03

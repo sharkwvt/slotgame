@@ -1,5 +1,7 @@
 extends Scene
 
+@export var directions_img: Texture
+
 @export var menu_btn: PackedScene
 @export var menus_root: HBoxContainer
 @export var scroll_view: ScrollContainer
@@ -25,6 +27,8 @@ func setup():
 	left_btn.scale.x = -1
 	left_btn.pressed.connect(scroll_left)
 	right_btn.pressed.connect(scroll_right)
+	
+	$"說明".pressed.connect(Main.show_directions.bind(directions_img))
 
 
 func refresh():
@@ -66,3 +70,4 @@ func scroll_right():
 func start_game(data: CharacterData):
 	Main.current_character_data = data
 	Main.to_scene(Main.SCENE.game)
+	

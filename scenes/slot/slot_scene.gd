@@ -1,6 +1,8 @@
 extends Scene
 class_name SlotScene
 
+@export var directions_img: Texture
+
 @export var cumulative_amount_lbl: Label
 @export var slot_view: SlotView
 
@@ -15,6 +17,8 @@ func _ready():
 	$"使用道具".pressed.connect(Slot.use_items)
 	$"拉霸".pressed.connect(start_spin)
 	slot_view.anim_finished.connect(_on_spin_finish)
+	
+	$"說明".pressed.connect(Main.show_directions.bind(directions_img))
 
 
 func start_spin():
@@ -38,6 +42,7 @@ func reset():
 
 func show_scene():
 	cumulative_amount = 0
+	refresh_view()
 
 
 func _on_spin_finish():

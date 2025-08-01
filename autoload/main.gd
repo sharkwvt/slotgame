@@ -324,3 +324,22 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			return
 		if !TransitionEffect.main and current_scene.visible:
 			current_scene.return_scene()
+
+
+func show_directions(img: Texture):
+	var window = Window.new()
+	window.title = "道具"
+	window.close_requested.connect(window.queue_free)
+	
+	var img_view = TextureRect.new()
+	img_view.texture = img
+	img_view.position = Vector2.ZERO
+	window.add_child(img_view)
+	window.size = img_view.size
+	window.position = Vector2(
+		(screen_size.x - window.size.x)/2.0,
+		(screen_size.y - window.size.y)/2.0
+	)
+	
+	get_tree().get_root().add_child(window)
+	window.popup_centered()

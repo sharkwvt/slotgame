@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://eueobctks7ge"]
+[gd_scene load_steps=7 format=3 uid="uid://eueobctks7ge"]
 
 [ext_resource type="Script" uid="uid://ocfs787og4pp" path="res://scenes/menu/menu.gd" id="1_klgdb"]
 [ext_resource type="PackedScene" uid="uid://cr7actjb5e1ct" path="res://scenes/menu/menu_btn/menu_btn.tscn" id="2_e0arn"]
 [ext_resource type="PackedScene" uid="uid://c2hckrk53snne" path="res://common/btn/return/return_button.tscn" id="2_mcvr8"]
+[ext_resource type="Texture2D" uid="uid://bkdp4ysqwogix" path="res://image/directions/Roguelike 拉霸遊戲 (1).jpg" id="2_r8yej"]
 [ext_resource type="Texture2D" uid="uid://oshmv10dnkr" path="res://image/箭頭.png" id="4_y1o0p"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="5_r8yej"]
 
@@ -14,6 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_klgdb")
+directions_img = ExtResource("2_r8yej")
 menu_btn = ExtResource("2_e0arn")
 menus_root = NodePath("ScrollContainer/HBoxContainer")
 scroll_view = NodePath("ScrollContainer")
@@ -83,5 +85,21 @@ icon = ExtResource("4_y1o0p")
 flat = true
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("5_r8yej")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="說明" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -208.0
+offset_top = -148.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 100
+text = "說明"
 script = ExtResource("5_r8yej")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
