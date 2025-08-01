@@ -25,7 +25,7 @@ func start_spin():
 		return
 	if Slot.spin_times <= 0:
 		return
-	slot_view.play_spin_anim(3)
+	slot_view.play_spin_anim()
 	Slot.start_spin()
 	refresh_view()
 	#if Slot.rewards.size() > 0:

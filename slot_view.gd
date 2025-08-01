@@ -20,10 +20,9 @@ enum Anim_State {
 	reward_anim
 }
 var spin_speed = 1000
-var spin_anim_timer: float = 0
 var anim_grid_views = []
-var anim_max_y: float
-var anim_timer: Timer
+var new_rows: int
+var old_grid: Array
 
 signal anim_finished
 
@@ -31,10 +30,6 @@ signal anim_finished
 func _ready():
 	setup()
 	create_grid_view()
-
-func _process(delta: float) -> void:
-	if anim_state == Anim_State.spin_anim:
-		run_spin_anim(delta)
 
 
 func create_grid_view():
@@ -89,20 +84,23 @@ func refresh_view():
 			set_symbol_view(unit, grid_info)
 
 
-func play_spin_anim(rotate_times: float):
+func play_spin_anim():
 	anim_state = Anim_State.spin_anim
 	anim_panel.visible = true
-	spin_anim_timer = rotate_times
 	# 清空
 	for node in anim_panel.get_children():
 		node.queue_free()
 	anim_grid_views = []
 	# 創建
+	var rotate_times = 3
+	var anim_duration: float = 1
+	new_rows = ROWS * (rotate_times + 1)
+	var last_tween: Tween
 	for col in COLUMNS:
 		var view_column = []
-		for row in ROWS+1:
+		for row in new_rows:
 			var offset_x = (anim_panel.size.x - SYMBOL_SIZE.x*COLUMNS)/2.0
-			var offset_y = (anim_panel.size.y - SYMBOL_SIZE.y*ROWS)/2.0 - SYMBOL_SIZE.y
+			var offset_y = (anim_panel.size.y - SYMBOL_SIZE.y*ROWS)/2.0 - SYMBOL_SIZE.y * (new_rows - ROWS)
 			var unit = ColorRect.new()
 			unit.color = Color.GRAY
 			unit.size = SYMBOL_SIZE
@@ -110,52 +108,23 @@ func play_spin_anim(rotate_times: float):
 			anim_panel.add_child(unit)
 			view_column.append(unit)
 			# 圖示
-			var grid_info: GridInfo = Slot.grid[col][row-1] if row > 0 else Slot.get_grid_info()
+			var grid_info: GridInfo = Slot.get_grid_info()
+			if row >= new_rows - ROWS:
+				grid_info = old_grid[col][row - (new_rows - ROWS)]
+			elif row < ROWS:
+				grid_info = Slot.grid[col][row]
 			set_symbol_view(unit, grid_info)
+			# 動畫
+			var tween = unit.create_tween()
+			tween.tween_interval(anim_duration / COLUMNS * col)
+			tween.tween_property(unit, "position:y", unit.position.y + (SYMBOL_SIZE.y * (new_rows - ROWS)), anim_duration)
+			if col == COLUMNS-1 and row == new_rows -1:
+				last_tween = tween
 		anim_grid_views.append(view_column)
-	anim_max_y = anim_grid_views[0][-1].position.y + SYMBOL_SIZE.y
-
-func run_spin_anim(delta: float):
-	var is_end = true
-	for col in COLUMNS:
-		for row in ROWS+1:
-			var unit: Control = anim_grid_views[col][row]
-			if spin_anim_timer > 0:
-				is_end = false
-				unit.position.y += spin_speed * delta
-				if unit.position.y >= anim_max_y:
-					if col == COLUMNS-1 and row == ROWS:
-						spin_anim_timer -= 1
-						if spin_anim_timer <= 0:
-							# 開啟動畫計時器
-							anim_timer.start()
-					unit.position.y -= SYMBOL_SIZE.y * (ROWS+1)
-					set_symbol_view(unit, Slot.get_grid_info())
-			else:
-				var new_speed = spin_speed * delta * (anim_timer.time_left/anim_timer.wait_time)
-				if new_speed < 1:
-					new_speed = 1
-				if row != ROWS:
-					var target_view: Control = grid_views[col][row]
-					if unit.position.y > target_view.position.y:
-						is_end = false
-						unit.position.y += new_speed
-						if unit.position.y >= anim_max_y:
-							unit.position.y -= SYMBOL_SIZE.y * (ROWS+1)
-							set_symbol_view(unit, Slot.grid[col][row])
-					else:
-						unit.position.y += new_speed
-						if unit.position.y >= target_view.position.y:
-							unit.position = target_view.position
-						else:
-							is_end = false
-				else:
-					unit.position.y += new_speed
-	if is_end:
-		anim_timer.stop()
-		anim_panel.visible = false
-		show_reward_anim()
-
+	
+	await last_tween.finished
+	anim_panel.visible = false
+	show_reward_anim()
 
 func show_reward_anim():
 	anim_state = Anim_State.reward_anim
@@ -163,6 +132,7 @@ func show_reward_anim():
 	var duration = 0.5
 	var temp_tween: Tween
 	for data: Slot.RewardData in Slot.rewards:
+		var g_tween: Tween
 		for pos in data.grid:
 			var target: ColorRect = grid_views[pos.x][pos.y]
 			var tween = target.create_tween()
@@ -173,9 +143,12 @@ func show_reward_anim():
 			tween.tween_property(target, "color", Color.RED, duration)
 			if Slot.grid[pos.x][pos.y].is_golden_modifiers:
 				tween.tween_property(target, "color", Color.YELLOW, duration)
+				g_tween = tween
 			tween.tween_property(target, "color", org_color, duration)
 			tween.tween_callback(tween.kill)
 			temp_tween = tween
+		if g_tween:
+			temp_tween = g_tween
 		await temp_tween.finished
 	
 	anim_state = Anim_State.no_anim
@@ -189,10 +162,6 @@ func setup():
 	add_child(sym_panel)
 	anim_panel = Control.new()
 	add_child(anim_panel)
-	anim_timer = Timer.new()
-	anim_timer.wait_time = 0.8
-	anim_timer.one_shot = true
-	add_child(anim_timer)
 	
 
 func reset():

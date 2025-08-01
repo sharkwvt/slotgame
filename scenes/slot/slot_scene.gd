@@ -26,8 +26,9 @@ func start_spin():
 		return
 	if Slot.spin_times <= 0:
 		return
-	slot_view.play_spin_anim(3)
+	slot_view.old_grid = Slot.grid.duplicate(true)
 	Slot.start_spin()
+	slot_view.play_spin_anim()
 	refresh_view()
 
 
