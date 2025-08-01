@@ -409,25 +409,22 @@ func use_items():
 
 func add_item(item: Item):
 	var data: ItemData = Main.item_datas[item]
-	# 消耗型道具
 	match item:
 		Item.道具15:
 			for key in items_usable.keys():
 				items_usable[key] = data.usable_count
-			return
 		Item.道具16:
 			voucher += 4
-			return
 		Item.道具19:
 			var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
 			money += int(game_scene.target_money * 0.3)
-			return
-	items.append(item)
-	if data.usable_count > 0:
-		items_usable[item] = data.usable_count
-	# 即效型道具
-	if item in [Item.道具7, Item.道具8, Item.道具9, Item.道具11, Item.道具12, Item.道具14, Item.道具40]:
-		add_buff(item)
+		_: # 非消耗型道具
+			items.append(item)
+			if data.usable_count > 0:
+				items_usable[item] = data.usable_count
+			# 即效型道具
+			if item in [Item.道具7, Item.道具8, Item.道具9, Item.道具11, Item.道具12, Item.道具14, Item.道具40]:
+				add_buff(item)
 	refresh_state()
 
 func remove_item(item: Item):

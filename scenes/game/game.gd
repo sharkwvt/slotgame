@@ -67,6 +67,7 @@ func setup():
 	slot_btn.pressed.connect(_on_slot_btn_pressed)
 	spin_7_btn.pressed.connect(_on_select_slot_pressed.bind(0))
 	spin_3_btn.pressed.connect(_on_select_slot_pressed.bind(1))
+	data = Main.current_character_data
 
 func refresh_view():
 	refresh_items_view()
