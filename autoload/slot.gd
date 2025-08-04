@@ -666,20 +666,34 @@ func show_probability():
 		s += str(Pattern.keys()[i], ": %s" % (pattern_odds[i]), "\n")
 	s += "\n圖形倍率: %s\n" % pattern_multiplier
 	
-	var window = Window.new()
-	window.title = "道具"
-	window.size = Vector2(1500, 800)
-	window.close_requested.connect(window.queue_free)
-	window.set_position(Vector2(100, 100))
-
+	
+	var window = ColorRect.new()
+	window.size = Main.screen_size
+	window.color = Color(Color.WHITE, 0)
+	get_tree().get_root().add_child(window)
+	
+	var bg = ColorRect.new()
+	bg.color = Color(Color.BLACK, 0.5)
+	bg.size = Vector2(1500, 800)
+	bg.position = (window.size - bg.size) / 2.0
+	window.add_child(bg)
+	
 	var scroll := ScrollContainer.new()
-	scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
-	window.add_child(scroll)
+	scroll.size = bg.size
+	bg.add_child(scroll)
 	
 	var lbl = Label.new()
 	lbl.add_theme_font_size_override("font_size", 60)
 	lbl.text = s
 	scroll.add_child(lbl)
-
-	get_tree().get_root().add_child(window)
-	window.popup_centered()
+	
+	window.gui_input.connect(
+		func (event: InputEvent):
+			if event.is_pressed() and event is InputEventMouseButton:
+				var pos = (event as InputEventMouseButton).position
+				if pos.x < bg.position.x or\
+					pos.y < bg.position.y or\
+					pos.x > (bg.position + bg.size).x or\
+					pos.y > (bg.position + bg.size).y:
+					window.queue_free()
+	)

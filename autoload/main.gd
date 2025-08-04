@@ -328,16 +328,18 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func show_directions(img: Texture):
-	var window = Window.new()
-	window.title = "道具"
-	window.close_requested.connect(window.queue_free)
+	var window = ColorRect.new()
+	window.size = Main.screen_size
+	window.color = Color(Color.WHITE, 0)
+	window.gui_input.connect(
+		func (event: InputEvent):
+			if event.is_pressed():
+				window.queue_free()
+	)
+	get_tree().get_root().add_child(window)
 	
 	var img_view = TextureRect.new()
 	img_view.texture = img
 	img_view.position = Vector2.ZERO
+	img_view.position = (window.size - img_view.size) / 2.0
 	window.add_child(img_view)
-	window.size = img_view.size
-	window.move_to_center()
-	
-	get_tree().get_root().add_child(window)
-	window.popup_centered()
