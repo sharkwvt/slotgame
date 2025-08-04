@@ -3,13 +3,18 @@ extends Node
 var shop_title: Label
 var items_container: GridContainer
 var refresh_button: Button
+var shop_view: Control
 
 var current_items = []
-var shop_view: Control
+var refresh_item_times = 0
 
 func _ready() -> void:
 	refresh_items()
 
+func reset():
+	refresh_item_times = 0
+	refresh_items()
+	
 
 func refresh_items():
 	# 隨機選擇4個道具
@@ -24,9 +29,13 @@ func refresh_items():
 			var random_index = randi() % available_items.size()
 			current_items.append(available_items[random_index])
 			available_items.remove_at(random_index)
+	
+	if shop_view:
+		refresh_item_ui()
 
 
 func refresh_item_ui():
+	refresh_button.text = "🔄 刷新商品 (%s$)" % get_refresh_item_cost()
 	# 清除現有道具UI
 	for child in items_container.get_children():
 		child.queue_free()
@@ -129,6 +138,8 @@ func get_item_emoji(item_name: String) -> String:
 	match item_name:
 		_: return "📦"
 
+func get_refresh_item_cost() -> int:
+	return refresh_item_times * refresh_item_times
 
 func switch_shop():
 	if !shop_view:
@@ -141,8 +152,9 @@ func switch_shop():
 
 func _on_refresh_button_pressed():
 	print("刷新商品...")
+	Slot.money -= get_refresh_item_cost()
+	refresh_item_times += 1
 	refresh_items()
-	refresh_item_ui()
 
 func _on_item_purchased(item_data: ItemData, index: int):
 	if Slot.items.size() >= Slot.max_item_size:
@@ -161,13 +173,22 @@ func _on_item_purchased(item_data: ItemData, index: int):
 
 func create_shop():
 	var window = ColorRect.new()
+	window.size = Main.screen_size
+	window.color = Color(Color.BLACK, 0.5)
+	window.gui_input.connect(
+		func (event: InputEvent):
+			if event.is_pressed():
+				switch_shop()
+	)
 	shop_view = window
+	
+	var bg = ColorRect.new()
+	window.add_child(bg)
 	
 	var main_vbox = VBoxContainer.new()
 	main_vbox.name = "VBoxContainer"
-	main_vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	main_vbox.add_theme_constant_override("separation", 20)
-	window.add_child(main_vbox)
+	bg.add_child(main_vbox)
 	
 	# 道具網格
 	var grid = GridContainer.new()
@@ -191,7 +212,6 @@ func create_shop():
 	
 	get_tree().get_root().add_child(window)
 	
-	# 調整大小
 	await get_tree().process_frame
-	window.size = main_vbox.size
-	window.position = ((Main.screen_size as Vector2) - window.size) / 2.0
+	bg.size = main_vbox.size
+	bg.position = ((Main.screen_size as Vector2) - main_vbox.size) / 2.0

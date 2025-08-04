@@ -53,6 +53,7 @@ func _on_spin_finish():
 		cumulative_amount += r
 		Slot.money += r
 	if Slot.spin_times <= 0:
+		await Main.show_talk_view("拉霸次數用完了").finished
 		var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
 		game_scene.slot_end()
 		Main.to_scene(Main.SCENE.game)

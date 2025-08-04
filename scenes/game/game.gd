@@ -32,6 +32,7 @@ func _ready() -> void:
 	
 	$"說明".pressed.connect(Main.show_directions.bind(directions_img))
 
+
 func slot_end():
 	Slot.money += int(put_in_money * now_interest)
 	if Slot.get_buff(Item.道具7):
@@ -45,8 +46,10 @@ func slot_end():
 		Main.show_talk_view("失敗了").finished.connect(return_scene)
 		reset()
 
+
 func to_next_level():
 	now_level += 1
+	Shop.reset()
 	if now_level < Main.current_character_data.level:
 		target_money = get_target_cash()
 		last_slot_times = SLOT_TIMES
@@ -61,9 +64,11 @@ func to_next_level():
 		Main.show_talk_view("通關").finished.connect(return_scene)
 		reset()
 
+
 func get_target_cash() -> int:
 	var offset = now_level + 1
 	return 50 * offset * offset
+
 
 func setup():
 	$ReturnButton.pressed.connect(return_scene)
@@ -73,6 +78,70 @@ func setup():
 	spin_7_btn.pressed.connect(_on_select_slot_pressed.bind(0))
 	spin_3_btn.pressed.connect(_on_select_slot_pressed.bind(1))
 	data = Main.current_character_data
+
+
+func show_item_info_view(item: Item):
+	var item_data: ItemData = Main.item_datas[item]
+	
+	var offset = 30
+	var temp_view: Control
+	
+	var mouse_pos = get_viewport().get_mouse_position()
+	var window = ColorRect.new()
+	window.size = Main.screen_size
+	window.color = Color(Color.WHITE, 0)
+	window.gui_input.connect(
+		func (event: InputEvent):
+			if event.is_pressed():
+				window.queue_free()
+	)
+	add_child(window)
+	
+	var bg = ColorRect.new()
+	bg.color = Color(Color.BLACK)
+	window.add_child(bg)
+	
+	var title_lbl = Label.new()
+	title_lbl.add_theme_font_size_override("font_size", 30)
+	title_lbl.text = item_data.title
+	title_lbl.position = Vector2(offset, offset)
+	bg.add_child(title_lbl)
+	temp_view = title_lbl
+	
+	var description_lbl = Label.new()
+	description_lbl.add_theme_font_size_override("font_size", 30)
+	description_lbl.text = item_data.description
+	description_lbl.position = Vector2(
+		offset,
+		temp_view.position.y + temp_view.size.y + offset
+	)
+	bg.add_child(description_lbl)
+	temp_view = description_lbl
+	
+	var remove_btn = ButtonEx.new()
+	remove_btn.add_theme_font_size_override("font_size", 30)
+	remove_btn.text = "銷毀"
+	remove_btn.position = Vector2(
+		offset,
+		temp_view.position.y + temp_view.size.y + offset
+	)
+	remove_btn.pressed.connect(
+		func ():
+			Slot.remove_item(item)
+			window.queue_free()
+			refresh_items_view()
+	)
+	bg.add_child(remove_btn)
+	temp_view = remove_btn
+	
+	bg.size = Vector2(
+		max(title_lbl.size.x, description_lbl.size.x) + offset * 2.0,
+		temp_view.position.y + temp_view.size.y + offset
+	)
+	bg.position = mouse_pos
+	bg.position.x -= bg.size.x
+	bg.position.y -= bg.size.y
+
 
 func refresh_view():
 	refresh_items_view()
@@ -183,6 +252,11 @@ func refresh_items_view():
 			i * offset_x + (items_view.size.x - offset_x * Slot.ITEMS_SIZE)/2.0,
 			(items_view.size.y - item_size.y) / 2.0
 		)
+		item_view.gui_input.connect(
+			func (event: InputEvent):
+				if event.is_pressed():
+					show_item_info_view(item)
+		)
 		items_view.add_child(item_view)
 
 func refresh_info_view():
@@ -209,7 +283,10 @@ func show_scene():
 	refresh_view()
 
 func return_scene():
-	Main.to_scene(Main.SCENE.menu)
+	if Shop.shop_view.visible:
+		Shop.switch_shop()
+	else:
+		Main.to_scene(Main.SCENE.menu)
 
 
 func _on_shop_btn_pressed():
