@@ -154,20 +154,32 @@ func create_grid():
 		grid.append(column)
 
 
-func new_wave():
+func next_wave():
 	rewards_waves.clear()
-	assign_spin(7)
 	
+	# 每輪恢復次數道具
 	var datas = Main.item_datas
 	if Item.道具5 in items:
 		var data: ItemData = datas[Item.道具5]
-		if items_usable[Item.道具5] > data.usable_count:
+		if items_usable[Item.道具5] < data.usable_count:
 			items_usable[Item.道具5] += 1
 	
 	if Item.道具21 in items:
 		remove_buff(Item.道具21)
 	if Item.道具22 in items:
 		remove_buff(Item.道具22)
+
+func next_level():
+	# 結算恢復次數道具
+	var regain_items = [Item.道具17, Item.道具18]
+	var datas = Main.item_datas
+	for i in range(25, 32):
+		regain_items.append(i)
+	for item in regain_items:
+		if item in items:
+			var data: ItemData = datas[item]
+			if items_usable[item] < data.usable_count:
+				items_usable[item] += 1
 
 
 func assign_spin(count: int):

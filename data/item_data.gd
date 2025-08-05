@@ -4,6 +4,7 @@ class_name ItemData
 var id: int
 var title: String
 var description: String
+var remark: String
 var cost: int
 var active_item: bool
 var usable_count: int

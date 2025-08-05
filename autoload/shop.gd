@@ -152,16 +152,20 @@ func switch_shop():
 
 func _on_refresh_button_pressed():
 	print("刷新商品...")
-	Slot.money -= get_refresh_item_cost()
-	refresh_item_times += 1
-	refresh_items()
+	if Slot.money >= get_refresh_item_cost():
+		Slot.money -= get_refresh_item_cost()
+		refresh_item_times += 1
+		refresh_items()
+		Main.current_scene.refresh_view()
+	else:
+		Main.show_tip("錢不夠")
 
 func _on_item_purchased(item_data: ItemData, index: int):
 	if Slot.items.size() >= Slot.max_item_size:
 		Main.show_tip("欄位不夠")
 		return
 	if item_data.cost > Slot.voucher:
-		Main.show_tip("錢不夠")
+		Main.show_tip("兌換券不夠")
 		return
 	print("購買道具: ", item_data.title, " 價格: ", item_data.cost)
 	Slot.voucher -= item_data.cost

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu4rg5icya7ao"
-path="res://.godot/imported/Roguelike 拉霸遊戲.jpg-d187aa0dfe256254a0486a1e77256132.ctex"
+uid="uid://dxtkui75rbtm5"
+path="res://.godot/imported/Roguelike 拉霸遊戲 (5).jpg-98ddaede31c6ca44b9741778f2489fd6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/directions/Roguelike 拉霸遊戲.jpg"
-dest_files=["res://.godot/imported/Roguelike 拉霸遊戲.jpg-d187aa0dfe256254a0486a1e77256132.ctex"]
+source_file="res://image/directions/Roguelike 拉霸遊戲 (5).jpg"
+dest_files=["res://.godot/imported/Roguelike 拉霸遊戲 (5).jpg-98ddaede31c6ca44b9741778f2489fd6.ctex"]
 
 [params]
 

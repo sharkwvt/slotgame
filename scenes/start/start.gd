@@ -9,6 +9,9 @@ func _ready():
 	$SettingButton.pressed.connect(_on_btn_pressed.bind(2))
 	$ExitButton.pressed.connect(_on_btn_pressed.bind(3))
 	
+	await get_tree().process_frame
+	Main.instantiate_scenes()
+
 
 func _on_btn_pressed(id: int):
 	match id:

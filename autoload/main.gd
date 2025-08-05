@@ -40,6 +40,7 @@ enum SCENE {
 	game,
 	review,
 	slot,
+	result,
 	demo
 }
 
@@ -173,6 +174,14 @@ func load_event_data():
 				if key in data:
 					data.set(key, dic[key])
 			event_datas.append(data)
+
+
+func instantiate_scenes():
+	for scene in SCENE.size():
+		if scene not in [SCENE.start, SCENE.demo] and packed_scenes[scene]:
+			instance_scenes[scene] = packed_scenes[scene].instantiate()
+			instance_scenes[scene].visible = false
+			get_tree().root.add_child(instance_scenes[scene])
 
 
 func save_game():

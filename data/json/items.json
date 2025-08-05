@@ -36,6 +36,7 @@
 	  "title": "紅石",
 	  "cost": 1,
 	  "description": "使用後當次拉霸幸運+4",
+	  "remark":"每輪次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 4
@@ -131,7 +132,8 @@
 	{
 	  "title": "加倍道具A",
 	  "cost": 3,
-	  "description": "黃色符號觸發次數+1，檸檬鈴鐺金幣7",
+	  "description": "使用後黃色符號觸發次數+1，檸檬鈴鐺金幣7",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 1.0,
 	  "id": 16
@@ -139,7 +141,8 @@
 	{
 	  "title": "加倍道具B",
 	  "cost": 3,
-	  "description": "非黃色符號觸發次數+1，櫻桃幸運草鑽石",
+	  "description": "使用後非黃色符號觸發次數+1，櫻桃幸運草鑽石",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 1.0,
 	  "id": 17
@@ -179,7 +182,8 @@
 	{
 	  "title": "紅辣椒",
 	  "cost": 1,
-	  "description": "拉霸後觸發，20%機率，，當次幸運+5",
+	  "description": "拉霸後觸發，20%機率，當次幸運+5",
+	  "remark":"次數用完後銷毀",
 	  "active_item": 0,
 	  "usable_count": 12.0,
 	  "id": 22
@@ -187,7 +191,8 @@
 	{
 	  "title": "青辣椒",
 	  "cost": 2,
-	  "description": "拉霸後觸發，15%機率，，當次幸運+7",
+	  "description": "拉霸後觸發，15%機率，當次幸運+7",
+	  "remark":"次數用完後銷毀",
 	  "active_item": 0,
 	  "usable_count": 9.0,
 	  "id": 23
@@ -203,7 +208,8 @@
 	{
 	  "title": "檸檬畫像",
 	  "cost": 4,
-	  "description": "本輪檸檬出現機率+2",
+	  "description": "使用後本輪檸檬出現機率+2",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 25
@@ -211,7 +217,8 @@
 	{
 	  "title": "櫻桃畫像",
 	  "cost": 4,
-	  "description": "本輪櫻桃出現機率+2",
+	  "description": "使用後本輪櫻桃出現機率+2",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 26
@@ -219,7 +226,8 @@
 	{
 	  "title": "幸運草畫像",
 	  "cost": 4,
-	  "description": "本輪幸運草出現機率+2",
+	  "description": "使用後本輪幸運草出現機率+2",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 27
@@ -227,7 +235,8 @@
 	{
 	  "title": "鈴鐺畫像",
 	  "cost": 4,
-	  "description": "本輪鈴鐺出現機率+2",
+	  "description": "使用後本輪鈴鐺出現機率+2",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 28
@@ -235,7 +244,8 @@
 	{
 	  "title": "鑽石畫像",
 	  "cost": 3,
-	  "description": "本輪鑽石出現機率+2",
+	  "description": "使用後本輪鑽石出現機率+2",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 29
@@ -243,7 +253,8 @@
 	{
 	  "title": "金幣畫像",
 	  "cost": 3,
-	  "description": "本輪金幣出現機率+2",
+	  "description": "使用後本輪金幣出現機率+2",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 30
@@ -251,7 +262,8 @@
 	{
 	  "title": "7畫像",
 	  "cost": 3,
-	  "description": "本輪7出現機率+2",
+	  "description": "使用後本輪7出現機率+2",
+	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 31

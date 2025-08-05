@@ -1,0 +1,77 @@
+[gd_scene load_steps=4 format=3 uid="uid://51aana5hmbdw"]
+
+[ext_resource type="Script" uid="uid://b6off4tys4yjt" path="res://scenes/result/result.gd" id="1_710hh"]
+[ext_resource type="Texture2D" uid="uid://dxtkui75rbtm5" path="res://image/directions/Roguelike 拉霸遊戲 (5).jpg" id="2_efjyw"]
+[ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="3_0erx0"]
+
+[node name="Result" type="Control" node_paths=PackedStringArray("result_img_view", "btn")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_710hh")
+directions_img = ExtResource("2_efjyw")
+result_img_view = NodePath("ResultImg")
+btn = NodePath("ButtonEx")
+metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
+
+[node name="BG" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="ResultImg" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -340.0
+offset_right = 750.0
+offset_bottom = 340.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonEx" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -54.0
+offset_top = -130.0
+offset_right = 54.0
+offset_bottom = -52.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "繼續"
+script = ExtResource("3_0erx0")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="說明" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -208.0
+offset_top = -148.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 100
+text = "說明"
+script = ExtResource("3_0erx0")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"

@@ -43,26 +43,24 @@ func slot_end():
 	Slot.refresh_state()
 	
 	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
-		Main.show_talk_view("失敗了").finished.connect(return_scene)
+		Main.show_talk_view("失敗了").finished.connect(show_result_scene.bind(false))
 		reset()
 
 
 func to_next_level():
 	now_level += 1
 	Shop.reset()
-	if now_level < Main.current_character_data.level:
-		target_money = get_target_cash()
-		last_slot_times = SLOT_TIMES
-		if Item.道具20 in Slot.items:
-			var get_voucher = int(Slot.voucher/3.0)
-			if get_voucher > 0:
-				if get_voucher > 10:
-					get_voucher = 10
-				Slot.voucher += get_voucher
-		refresh_view()
-	else:
-		Main.show_talk_view("通關").finished.connect(return_scene)
-		reset()
+	target_money = get_target_cash()
+	last_slot_times = SLOT_TIMES
+	if Item.道具20 in Slot.items:
+		var get_voucher = int(Slot.voucher/3.0)
+		if get_voucher > 0:
+			if get_voucher > 10:
+				get_voucher = 10
+			Slot.voucher += get_voucher
+	Slot.next_level()
+	refresh_view()
+	show_result_scene(true)
 
 
 func get_target_cash() -> int:
@@ -109,6 +107,8 @@ func show_item_info_view(item: Item):
 	temp_view = title_lbl
 	
 	var description_lbl = Label.new()
+	description_lbl.size = Vector2(500, 30)
+	description_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description_lbl.add_theme_font_size_override("font_size", 30)
 	description_lbl.text = item_data.description
 	description_lbl.position = Vector2(
@@ -117,6 +117,28 @@ func show_item_info_view(item: Item):
 	)
 	bg.add_child(description_lbl)
 	temp_view = description_lbl
+	
+	if item in Slot.items_usable.keys():
+		var usable_lbl = Label.new()
+		usable_lbl.add_theme_font_size_override("font_size", 30)
+		usable_lbl.text = "剩餘次數: %s" % Slot.items_usable[item]
+		usable_lbl.position = Vector2(
+			offset,
+			temp_view.position.y + temp_view.size.y + offset
+		)
+		bg.add_child(usable_lbl)
+		temp_view = usable_lbl
+	
+	if item_data.remark:
+		var remark_lbl = Label.new()
+		remark_lbl.add_theme_font_size_override("font_size", 30)
+		remark_lbl.text = item_data.remark
+		remark_lbl.position = Vector2(
+			offset,
+			temp_view.position.y + temp_view.size.y + offset
+		)
+		bg.add_child(remark_lbl)
+		temp_view = remark_lbl
 	
 	var remove_btn = ButtonEx.new()
 	remove_btn.add_theme_font_size_override("font_size", 30)
@@ -139,8 +161,16 @@ func show_item_info_view(item: Item):
 		temp_view.position.y + temp_view.size.y + offset
 	)
 	bg.position = mouse_pos
-	bg.position.x -= bg.size.x
-	bg.position.y -= bg.size.y
+	bg.position.x -= bg.size.x + offset
+	bg.position.y -= bg.size.y / 2.0
+
+
+func show_result_scene(is_success: bool):
+	Main.to_scene(Main.SCENE.result)
+	var result_scene: ResultScene = Main.instance_scenes[Main.SCENE.result]
+	result_scene.is_success = is_success
+	result_scene.level = now_level
+	result_scene.refresh()
 
 
 func refresh_view():
@@ -266,6 +296,7 @@ func refresh_info_view():
 
 func reset():
 	Slot.reset()
+	Shop.reset()
 	now_level = 0
 	put_in_money = 0
 	target_money = get_target_cash()
@@ -316,5 +347,6 @@ func _on_select_slot_pressed(id: int):
 		1:
 			Slot.assign_spin(3)
 			Slot.voucher += 2
+	Slot.next_wave()
 	last_slot_times -= 1
 	Main.to_scene(Main.SCENE.slot)
