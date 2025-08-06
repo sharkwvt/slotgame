@@ -156,18 +156,6 @@ func create_grid():
 
 func next_wave():
 	rewards_waves.clear()
-	
-	# 每輪恢復次數道具
-	var datas = Main.item_datas
-	if Item.道具5 in items:
-		var data: ItemData = datas[Item.道具5]
-		if items_usable[Item.道具5] < data.usable_count:
-			items_usable[Item.道具5] += 1
-	
-	if Item.道具21 in items:
-		remove_buff(Item.道具21)
-	if Item.道具22 in items:
-		remove_buff(Item.道具22)
 
 func next_level():
 	# 結算恢復次數道具
@@ -180,6 +168,28 @@ func next_level():
 			var data: ItemData = datas[item]
 			if items_usable[item] < data.usable_count:
 				items_usable[item] += 1
+
+func slot_end():
+	if get_buff(Item.道具7):
+		var buff: Buff = get_buff(Item.道具7)
+		buff.value -= 0.03
+		if buff.value <= 0:
+			remove_buff(Item.道具7)
+	
+	# 每輪消除狀態
+	var ready_to_remove = [Item.道具17, Item.道具18, Item.道具21, Item.道具22]
+	for i in range(25, 32): # 畫像系列
+		ready_to_remove.append(i)
+	buffs = buffs.filter(func(buff: Buff): return buff.from not in ready_to_remove)
+	
+	# 每輪恢復次數道具
+	var datas = Main.item_datas
+	if Item.道具5 in items:
+		var data: ItemData = datas[Item.道具5]
+		if items_usable[Item.道具5] < data.usable_count:
+			items_usable[Item.道具5] += 1
+	
+	refresh_state()
 
 
 func assign_spin(count: int):
@@ -255,12 +265,11 @@ func check_rewards():
 		var offset = 0
 		for i in rewards.size():
 			var reward: RewardData = rewards[i]
-			if get_buff(Item.道具17) and reward.symbol in [0, 3, 5, 6]:
-				new_r.insert(i+offset, reward)
-				offset += 1
-			if get_buff(Item.道具18) and reward.symbol in [1, 2, 4]:
-				new_r.insert(i+offset, reward)
-				offset += 1
+			for buff: Buff in buffs:
+				if (buff.from == Item.道具17 and reward.symbol in [0, 3, 5, 6])\
+				or (buff.from == Item.道具18 and reward.symbol in [1, 2, 4]):
+					new_r.insert(i+offset, reward)
+					offset += 1
 		rewards = new_r.duplicate(true)
 
 func check_reward(type: Pattern):
@@ -467,8 +476,6 @@ func effect_after_spin():
 		remove_buff(Item.道具3)
 		remove_buff(Item.道具5)
 		remove_buff(Item.道具13)
-		remove_buff(Item.道具17)
-		remove_buff(Item.道具18)
 		remove_buff(Item.道具23)
 		remove_buff(Item.道具24)
 	if items.size() > 0:

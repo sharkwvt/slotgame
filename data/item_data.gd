@@ -7,6 +7,7 @@ var description: String
 var remark: String
 var cost: int
 var active_item: bool
+var not_occupy: bool
 var usable_count: int
 
 func get_img() -> Texture:

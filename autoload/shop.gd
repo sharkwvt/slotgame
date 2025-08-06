@@ -107,6 +107,25 @@ func create_item_panel(item_data: ItemData, index: int) -> Panel:
 	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content_vbox.add_child(desc_label)
 	
+	if item_data.usable_count > 0:
+		var usable_label = Label.new()
+		usable_label.text = "可用次數: %s" % item_data.usable_count
+		usable_label.add_theme_font_size_override("font_size", 30)
+		usable_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
+		usable_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		usable_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		content_vbox.add_child(usable_label)
+		
+	if item_data.remark:
+		var remark_label = Label.new()
+		remark_label.text = item_data.remark
+		remark_label.add_theme_font_size_override("font_size", 30)
+		remark_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
+		remark_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		remark_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		content_vbox.add_child(remark_label)
+		
+	
 	# 價格和購買按鈕的水平布局
 	var hbox = HBoxContainer.new()
 	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -161,7 +180,7 @@ func _on_refresh_button_pressed():
 		Main.show_tip("錢不夠")
 
 func _on_item_purchased(item_data: ItemData, index: int):
-	if Slot.items.size() >= Slot.max_item_size:
+	if Slot.items.size() >= Slot.max_item_size and !item_data.not_occupy:
 		Main.show_tip("欄位不夠")
 		return
 	if item_data.cost > Slot.voucher:

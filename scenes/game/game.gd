@@ -35,12 +35,6 @@ func _ready() -> void:
 
 func slot_end():
 	Slot.money += int(put_in_money * now_interest)
-	if Slot.get_buff(Item.道具7):
-		var buff: Slot.Buff = Slot.get_buff(Item.道具7)
-		buff.value -= 0.03
-		if buff.value <= 0:
-			Slot.remove_buff(Item.道具7)
-	Slot.refresh_state()
 	
 	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
 		await TransitionEffect.anim_finished
@@ -54,6 +48,9 @@ func slot_end():
 
 func to_next_level():
 	now_level += 1
+	show_result_scene(true)
+	
+	await TransitionEffect.anim_finished
 	Shop.reset()
 	target_money = get_target_cash()
 	last_slot_times = SLOT_TIMES
@@ -65,7 +62,6 @@ func to_next_level():
 			Slot.voucher += get_voucher
 	Slot.next_level()
 	refresh_view()
-	show_result_scene(true)
 
 
 func get_target_cash() -> int:

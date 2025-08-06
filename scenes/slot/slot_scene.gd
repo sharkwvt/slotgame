@@ -66,9 +66,12 @@ func _on_spin_finish():
 	
 	if Slot.spin_times <= 0:
 		await Main.show_talk_view("拉霸次數用完了").finished
-		var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
-		game_scene.slot_end()
 		Main.to_scene(Main.SCENE.game)
+
+func _on_slot_end():
+	Slot.slot_end()
+	var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
+	game_scene.slot_end()
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
