@@ -43,8 +43,13 @@ func slot_end():
 	Slot.refresh_state()
 	
 	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
-		Main.show_talk_view("失敗了").finished.connect(show_result_scene.bind(false))
-		reset()
+		await TransitionEffect.anim_finished
+		Main.show_talk_view("失敗了").finished.connect(
+			func ():
+				show_result_scene(false)
+				await TransitionEffect.anim_finished
+				reset()
+		)
 
 
 func to_next_level():
@@ -151,7 +156,7 @@ func show_item_info_view(item: Item):
 		func ():
 			Slot.remove_item(item)
 			window.queue_free()
-			refresh_items_view()
+			refresh_view()
 	)
 	bg.add_child(remove_btn)
 	temp_view = remove_btn
@@ -245,6 +250,15 @@ func refresh_level_info_view():
 	level_info_view.add_child(put_in_lbl)
 	
 	temp_view = put_in_lbl
+	
+	var interest_string = str("利息: ", "%s" % (now_interest * 100), "%")
+	var interest_lbl = Label.new()
+	interest_lbl.add_theme_font_size_override("font_size", 50)
+	interest_lbl.text = interest_string
+	interest_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
+	level_info_view.add_child(interest_lbl)
+	
+	temp_view = interest_lbl
 	
 	var target_cash_string = str("目標金額: ", "%s" % target_money)
 	var target_cash_lbl = Label.new()

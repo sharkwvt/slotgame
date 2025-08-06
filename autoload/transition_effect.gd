@@ -6,6 +6,8 @@ var texture_rect: TextureRect
 var shader_material: ShaderMaterial
 var tween: Tween
 
+signal anim_finished
+
 # anim_type: 0 淡出, 1 移出
 func start_transition(scene: Node, anim_type = 0, duration: float = 1.0):
 	main = Control.new()
@@ -85,3 +87,4 @@ func _on_tween_finished(scene: Control, org_parent: Node):
 	scene.visible = false # reparent會移到最前，需要隱藏
 	scene.reparent(org_parent)
 	main.queue_free()
+	anim_finished.emit()
