@@ -1,23 +1,46 @@
 extends Scene
 class_name GameScene
 
-@export var directions_img: Texture
-
 const Item = Slot.Item
 
+@export var start_view: Control
+@export var menu_view: Control
+@export var game_view: Control
+
+# start_view
+@export var start_btn: ButtonEx
+@export var gallery_btn: ButtonEx
+@export var setting_btn: ButtonEx
+@export var exit_btn: ButtonEx
+
+# menu_view
 @export var shop_btn: ButtonEx
 @export var slot_btn: ButtonEx
 @export var select_spin_view: Panel
 @export var spin_7_btn: ButtonEx
 @export var spin_3_btn: ButtonEx
 @export var items_view: Panel
-@export var odds_view: Panel
+@export var symbols_odds_view: Panel
+@export var pattern_odds_view: Panel
 @export var level_info_view: Panel
 @export var money_lbl: LabelEx
 @export var voucher_lbl: LabelEx
 
+# game_view
+@export var symbols_panel: Control
+@export var slot_view: SlotView
+
+enum STATE {
+	start,
+	menu,
+	game
+}
+
 const SLOT_TIMES = 3 # 每輪可用機台次數
 const INTEREST = 0.05 # 基礎利息
+
+var view_state: STATE
+var slot_size: Vector2
 
 var now_level = 0
 var last_slot_times = 0
@@ -27,21 +50,17 @@ var now_interest = 0
 var data: CharacterData
 
 func _ready() -> void:
+	switch_view(STATE.start)
 	setup()
 	reset()
-	
-	$"說明".pressed.connect(Main.show_directions.bind(directions_img))
 
 
 func slot_end():
 	Slot.money += int(put_in_money * now_interest)
 	
 	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
-		await TransitionEffect.anim_finished
 		Main.show_talk_view("失敗了").finished.connect(
 			func ():
-				show_result_scene(false)
-				await TransitionEffect.anim_finished
 				reset()
 		)
 
@@ -70,13 +89,23 @@ func get_target_cash() -> int:
 
 
 func setup():
-	$ReturnButton.pressed.connect(return_scene)
+	Main.instance_scenes[Main.SCENE.game] = self
+	Main.current_scene = self
+	slot_size = Vector2(5 * SlotView.SYMBOL_SIZE.x, 3 * SlotView.SYMBOL_SIZE.y)
 	Slot.setup()
+	# start_view
+	var start_btns = [start_btn, gallery_btn, setting_btn, exit_btn]
+	for i in start_btns.size():
+		start_btns[i].pressed.connect(_on_start_btns_pressed.bind(i))
+	# menu_view
 	shop_btn.pressed.connect(_on_shop_btn_pressed)
 	slot_btn.pressed.connect(_on_slot_btn_pressed)
 	spin_7_btn.pressed.connect(_on_select_slot_pressed.bind(0))
 	spin_3_btn.pressed.connect(_on_select_slot_pressed.bind(1))
-	data = Main.current_character_data
+	select_spin_view.size = slot_size
+	select_spin_view.position = (Main.screen_size as Vector2 - select_spin_view.size) / 2.0
+	symbols_panel.size = slot_size
+	symbols_panel.position = (Main.screen_size as Vector2 - symbols_panel.size) / 2.0
 
 
 func show_item_info_view(item: Item):
@@ -182,44 +211,34 @@ func refresh_view():
 
 func refresh_odds_view():
 	# 清空
-	for child in odds_view.get_children():
+	for child in symbols_odds_view.get_children():
 		child.queue_free()
 	
-	var temp_view = Control.new()
-	var offset_x = 10
-	
-	var probability_string = "機率: "
+	var symblos_odds_string = "符號\n"
 	for i in Slot.SYMBOLS.size():
-		probability_string += str(Slot.SYMBOLS[i], "%0.2f" % (Slot.probability[i]*100), "%  ")
-	var probability_lbl = Label.new()
-	probability_lbl.add_theme_font_size_override("font_size", 50)
-	probability_lbl.text = probability_string
-	probability_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
-	odds_view.add_child(probability_lbl)
-	
-	temp_view = probability_lbl
-	
-	var symblos_odds_string = "符號價值: "
-	for i in Slot.SYMBOLS.size():
-		symblos_odds_string += str(Slot.SYMBOLS[i], ": %s" % (Slot.symbols_odds[i]), "  ")
-	symblos_odds_string += "\n符號倍率: %s" % Slot.symbols_multiplier
+		symblos_odds_string += str(Slot.SYMBOLS[i], ": %s$  %0.2f" % [Slot.symbols_odds[i], Slot.probability[i]*100], "%\n")
+	symblos_odds_string += "符號倍率: %s" % Slot.symbols_multiplier
 	var symblos_odds_lbl = Label.new()
+	symbols_odds_view.add_child(symblos_odds_lbl)
 	symblos_odds_lbl.add_theme_font_size_override("font_size", 50)
 	symblos_odds_lbl.text = symblos_odds_string
-	symblos_odds_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
-	odds_view.add_child(symblos_odds_lbl)
+	symblos_odds_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	symblos_odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	symblos_odds_lbl.position = Vector2.ZERO
+	symblos_odds_lbl.position = (symbols_odds_view.size - symblos_odds_lbl.size) / 2.0
 	
-	temp_view = symblos_odds_lbl
-	
-	var pattern_odds_string = "圖形價值: "
+	var pattern_odds_string = "圖形\n"
 	for i in Slot.Pattern.size():
-		pattern_odds_string += str(Slot.Pattern.keys()[i], ": %s" % (Slot.pattern_odds[i]), "  ")
-	pattern_odds_string += "\n圖形倍率: %s" % Slot.pattern_multiplier
+		pattern_odds_string += str(Slot.Pattern.keys()[i], ": x%s" % (Slot.pattern_odds[i]), "\n")
+	pattern_odds_string += "圖形倍率: %s" % Slot.pattern_multiplier
 	var pattern_odds_lbl = Label.new()
+	pattern_odds_view.add_child(pattern_odds_lbl)
 	pattern_odds_lbl.add_theme_font_size_override("font_size", 40)
 	pattern_odds_lbl.text = pattern_odds_string
-	pattern_odds_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
-	odds_view.add_child(pattern_odds_lbl)
+	pattern_odds_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pattern_odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	pattern_odds_lbl.position = Vector2.ZERO
+	pattern_odds_lbl.position = (pattern_odds_view.size - pattern_odds_lbl.size) / 2.0
 
 func refresh_level_info_view():
 	# 清空
@@ -231,7 +250,7 @@ func refresh_level_info_view():
 	
 	var last_wave_string = str("剩餘機台使用次數: ", "%s" % last_slot_times)
 	var last_wave_lbl = Label.new()
-	last_wave_lbl.add_theme_font_size_override("font_size", 50)
+	last_wave_lbl.add_theme_font_size_override("font_size", 30)
 	last_wave_lbl.text = last_wave_string
 	last_wave_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
 	level_info_view.add_child(last_wave_lbl)
@@ -240,7 +259,7 @@ func refresh_level_info_view():
 	
 	var put_in_string = str("已投入金額: ", "%s" % put_in_money)
 	var put_in_lbl = Label.new()
-	put_in_lbl.add_theme_font_size_override("font_size", 50)
+	put_in_lbl.add_theme_font_size_override("font_size", 30)
 	put_in_lbl.text = put_in_string
 	put_in_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
 	level_info_view.add_child(put_in_lbl)
@@ -249,7 +268,7 @@ func refresh_level_info_view():
 	
 	var interest_string = str("利息: ", "%s" % (now_interest * 100), "%")
 	var interest_lbl = Label.new()
-	interest_lbl.add_theme_font_size_override("font_size", 50)
+	interest_lbl.add_theme_font_size_override("font_size", 30)
 	interest_lbl.text = interest_string
 	interest_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
 	level_info_view.add_child(interest_lbl)
@@ -258,7 +277,7 @@ func refresh_level_info_view():
 	
 	var target_cash_string = str("目標金額: ", "%s" % target_money)
 	var target_cash_lbl = Label.new()
-	target_cash_lbl.add_theme_font_size_override("font_size", 50)
+	target_cash_lbl.add_theme_font_size_override("font_size", 30)
 	target_cash_lbl.text = target_cash_string
 	target_cash_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
 	level_info_view.add_child(target_cash_lbl)
@@ -266,7 +285,7 @@ func refresh_level_info_view():
 	temp_view = target_cash_lbl
 	
 	var put_in_btn = ButtonEx.new()
-	put_in_btn.add_theme_font_size_override("font_size", 50)
+	put_in_btn.add_theme_font_size_override("font_size", 30)
 	put_in_btn.text = "投入"
 	put_in_btn.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
 	put_in_btn.pressed.connect(_on_put_in_btn_pressed)
@@ -304,6 +323,13 @@ func refresh_info_view():
 	voucher_lbl.text = str(Slot.voucher)
 
 
+func switch_view(state: STATE):
+	start_view.visible = state == STATE.start
+	menu_view.visible = state == STATE.menu
+	game_view.visible = state == STATE.game
+	view_state = state
+
+
 func reset():
 	Slot.reset()
 	Shop.reset()
@@ -317,17 +343,26 @@ func reset():
 
 
 func show_scene():
-	if data != Main.current_character_data:
-		data = Main.current_character_data
-		reset()
 	select_spin_view.visible = false
 	refresh_view()
 
 func return_scene():
 	if Shop.shop_view and Shop.shop_view.visible:
 		Shop.switch_shop()
-	else:
-		Main.to_scene(Main.SCENE.menu)
+	elif view_state == STATE.menu:
+		switch_view(STATE.start)
+
+
+func _on_start_btns_pressed(id: int):
+	match id:
+		0: # 開始遊戲
+			switch_view(STATE.menu)
+		1: # 回想
+			pass
+		2: # 設定
+			Main.show_setting_view()
+		3: # 關閉遊戲
+			get_tree().quit()
 
 
 func _on_shop_btn_pressed():
@@ -346,6 +381,7 @@ func _on_put_in_btn_pressed():
 func _on_slot_btn_pressed():
 	if last_slot_times > 0:
 		select_spin_view.visible = true
+		slot_btn.visible = false
 	else:
 		Main.show_tip("請投入現金")
 
@@ -359,4 +395,4 @@ func _on_select_slot_pressed(id: int):
 			Slot.voucher += 2
 	Slot.next_wave()
 	last_slot_times -= 1
-	Main.to_scene(Main.SCENE.slot)
+	switch_view(STATE.game)
