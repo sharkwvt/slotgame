@@ -324,7 +324,7 @@ func show_scene():
 	refresh_view()
 
 func return_scene():
-	if Shop.shop_view.visible:
+	if Shop.shop_view and Shop.shop_view.visible:
 		Shop.switch_shop()
 	else:
 		Main.to_scene(Main.SCENE.menu)
