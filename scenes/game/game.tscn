@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=12 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
+[ext_resource type="Texture2D" uid="uid://3je80ddnfjoo" path="res://image/Slot.png" id="2_kp23o"]
 [ext_resource type="Script" uid="uid://dtshx36t0vcu0" path="res://scenes/game/items_views.gd" id="2_lfrn8"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="3_0sr1o"]
 [ext_resource type="Script" uid="uid://b1qv01mbj1lv0" path="res://scenes/game/odds_views.gd" id="4_5i0tg"]
@@ -33,6 +34,21 @@ select_spin_view = NodePath("SelectSpinViews")
 spin_7_btn = NodePath("SelectSpinViews/7Btn")
 spin_3_btn = NodePath("SelectSpinViews/3Btn")
 metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
+
+[node name="Image" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -470.0
+offset_top = -510.0
+offset_right = 470.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_kp23o")
 
 [node name="StartViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "start_btn", "gallery_btn", "setting_btn", "exit_btn")]
 layout_mode = 1
