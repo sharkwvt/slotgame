@@ -1,11 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=11 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
+[ext_resource type="Script" uid="uid://dtshx36t0vcu0" path="res://scenes/game/items_views.gd" id="2_lfrn8"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="3_0sr1o"]
+[ext_resource type="Script" uid="uid://b1qv01mbj1lv0" path="res://scenes/game/odds_views.gd" id="4_5i0tg"]
 [ext_resource type="Script" uid="uid://b7a8k4lq1idu8" path="res://extends/label_ex.gd" id="4_lfrn8"]
 [ext_resource type="Script" uid="uid://ij7vfug3b0xf" path="res://slot_view.gd" id="5_lfrn8"]
+[ext_resource type="Script" uid="uid://bd6gsgjh5fi2f" path="res://scenes/game/start_views.gd" id="7_bdhmt"]
+[ext_resource type="Script" uid="uid://c7x5wibemt3cl" path="res://scenes/game/slot_views.gd" id="8_2a8rs"]
+[ext_resource type="Script" uid="uid://cky4i1i2ppio" path="res://scenes/game/infos_views.gd" id="8_87uf6"]
+[ext_resource type="Script" uid="uid://be3s3qubevfnb" path="res://scenes/game/result_views.gd" id="10_4j704"]
 
-[node name="Game" type="Control" node_paths=PackedStringArray("start_view", "menu_view", "start_btn", "gallery_btn", "setting_btn", "exit_btn", "shop_btn", "slot_btn", "select_spin_view", "spin_7_btn", "spin_3_btn", "items_view", "symbols_odds_view", "pattern_odds_view", "level_info_view", "money_lbl", "voucher_lbl", "symbols_panel", "slot_view")]
+[node name="Game" type="Control" node_paths=PackedStringArray("start_view", "menu_view", "game_view", "items_views", "odds_views", "infos_views", "slot_views", "result_views", "shop_btn", "slot_btn", "select_spin_view", "spin_7_btn", "spin_3_btn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,28 +19,146 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sul5r")
-start_view = NodePath("Start")
+start_view = NodePath("StartViews")
 menu_view = NodePath("Menu")
-start_btn = NodePath("Start/StartButton")
-gallery_btn = NodePath("Start/GalleryButton")
-setting_btn = NodePath("Start/SettingButton")
-exit_btn = NodePath("Start/ExitButton")
+game_view = NodePath("SlotViews")
+items_views = NodePath("ItemsViews")
+odds_views = NodePath("OddsViews")
+infos_views = NodePath("InfosViews")
+slot_views = NodePath("SlotViews")
+result_views = NodePath("ResultViews")
 shop_btn = NodePath("Menu/ShopButton")
 slot_btn = NodePath("Menu/SlotButton")
-select_spin_view = NodePath("SelectSpinView")
-spin_7_btn = NodePath("SelectSpinView/7Btn")
-spin_3_btn = NodePath("SelectSpinView/3Btn")
-items_view = NodePath("ItemsView")
-symbols_odds_view = NodePath("SymbolsOddsView")
-pattern_odds_view = NodePath("PatternOddsView")
-level_info_view = NodePath("LevelInfo")
-money_lbl = NodePath("InfoView/Money")
-voucher_lbl = NodePath("InfoView/Voucher")
-symbols_panel = NodePath("Slot/Symbols")
-slot_view = NodePath("Slot")
+select_spin_view = NodePath("SelectSpinViews")
+spin_7_btn = NodePath("SelectSpinViews/7Btn")
+spin_3_btn = NodePath("SelectSpinViews/3Btn")
 metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
 
-[node name="ItemsView" type="Panel" parent="."]
+[node name="StartViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "start_btn", "gallery_btn", "setting_btn", "exit_btn")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_bdhmt")
+game_scene = NodePath("..")
+start_btn = NodePath("StartButton")
+gallery_btn = NodePath("GalleryButton")
+setting_btn = NodePath("SettingButton")
+exit_btn = NodePath("ExitButton")
+
+[node name="BG" type="ColorRect" parent="StartViews"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.294028, 0.294028, 0.294028, 1)
+
+[node name="StartButton" type="Button" parent="StartViews"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -193.0
+offset_right = 104.0
+offset_bottom = -115.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "開始遊戲"
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="GalleryButton" type="Button" parent="StartViews"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -94.0
+offset_right = 104.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "回想"
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="SettingButton" type="Button" parent="StartViews"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 6.0
+offset_right = 104.0
+offset_bottom = 84.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "設定"
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="ExitButton" type="Button" parent="StartViews"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 106.0
+offset_right = 104.0
+offset_bottom = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "離開"
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="TitleLabel" type="Label" parent="StartViews"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 40.0
+offset_right = 100.0
+offset_bottom = 180.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 100
+text = "標題"
+script = ExtResource("4_lfrn8")
+metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
+
+[node name="ItemsViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "items_view")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_lfrn8")
+game_scene = NodePath("..")
+items_view = NodePath("ItemsView")
+
+[node name="ItemsView" type="Panel" parent="ItemsViews"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -47,7 +171,7 @@ offset_right = 450.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="ItemsViewLbl" type="Label" parent="."]
+[node name="ItemsViewLbl" type="Label" parent="ItemsViews"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -62,19 +186,56 @@ text = "持有道具"
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
-[node name="LevelInfo" type="Panel" parent="."]
+[node name="OddsViews" type="Control" parent="." node_paths=PackedStringArray("symbols_odds_view", "pattern_odds_view")]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -500.0
-offset_top = -278.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_5i0tg")
+symbols_odds_view = NodePath("SymbolsOddsView")
+pattern_odds_view = NodePath("PatternOddsView")
+
+[node name="SymbolsOddsView" type="Panel" parent="OddsViews"]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 566.0
+
+[node name="PatternOddsView" type="Panel" parent="OddsViews"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_bottom = 800.0
 grow_horizontal = 0
+
+[node name="InfosViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "money_lbl", "voucher_lbl", "level_info_view")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("8_87uf6")
+game_scene = NodePath("..")
+money_lbl = NodePath("InfoView/MoneyLabel")
+voucher_lbl = NodePath("InfoView/VoucherLabel")
+level_info_view = NodePath("LevelInfo")
+
+[node name="LevelInfo" type="Panel" parent="InfosViews"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -470.0
+offset_right = 500.0
 grow_vertical = 0
 
-[node name="InfoView" type="Panel" parent="."]
+[node name="InfoView" type="Panel" parent="InfosViews"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -84,7 +245,7 @@ offset_right = 190.0
 offset_bottom = 150.0
 grow_horizontal = 2
 
-[node name="MoneyLabel" type="Label" parent="InfoView"]
+[node name="MoneyTitle" type="Label" parent="InfosViews/InfoView"]
 layout_mode = 0
 offset_right = 150.0
 offset_bottom = 70.0
@@ -93,7 +254,7 @@ text = "現金："
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
-[node name="Money" type="Label" parent="InfoView"]
+[node name="MoneyLabel" type="Label" parent="InfosViews/InfoView"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -106,7 +267,7 @@ text = "0123"
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
-[node name="VoucherLabel" type="Label" parent="InfoView"]
+[node name="VoucherTitle" type="Label" parent="InfosViews/InfoView"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -119,7 +280,7 @@ text = "兌換券："
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
-[node name="Voucher" type="Label" parent="InfoView"]
+[node name="VoucherLabel" type="Label" parent="InfosViews/InfoView"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -137,18 +298,21 @@ metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
 [node name="GalleryButton" type="Button" parent="."]
 layout_mode = 1
-anchors_preset = 2
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -208.0
 offset_top = -78.0
-offset_right = 208.0
+grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "回想"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="SelectSpinView" type="Panel" parent="."]
+[node name="SelectSpinViews" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -158,7 +322,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="7Btn" type="Button" parent="SelectSpinView"]
+[node name="7Btn" type="Button" parent="SelectSpinViews"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -176,7 +340,7 @@ text = "拉7次，兌換券+1"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="3Btn" type="Button" parent="SelectSpinView"]
+[node name="3Btn" type="Button" parent="SelectSpinViews"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -193,29 +357,35 @@ text = "拉3次，兌換券+2"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="SymbolsOddsView" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 400.0
-offset_bottom = 800.0
-
-[node name="PatternOddsView" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -400.0
-offset_bottom = 800.0
-grow_horizontal = 0
-
-[node name="Slot" type="Control" parent="."]
+[node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "cumulative_amount_lbl", "use_item_btn", "spin_btn", "slot_view", "symbols_panel")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("8_2a8rs")
+game_scene = NodePath("..")
+cumulative_amount_lbl = NodePath("CumulativeLabel")
+use_item_btn = NodePath("使用道具")
+spin_btn = NodePath("SpinButton")
+slot_view = NodePath("Symbols/Mask/SlotView")
+symbols_panel = NodePath("Symbols")
 
-[node name="使用道具" type="Button" parent="Slot"]
+[node name="CumulativeLabel" type="Label" parent="SlotViews"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -153.5
+offset_right = 153.5
+offset_bottom = 71.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 50
+text = "累積金額：00"
+
+[node name="使用道具" type="Button" parent="SlotViews"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -232,7 +402,7 @@ text = "使用主動道具"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="Symbols" type="Control" parent="Slot"]
+[node name="Symbols" type="Control" parent="SlotViews"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -246,7 +416,7 @@ offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Mask" type="ColorRect" parent="Slot/Symbols"]
+[node name="Mask" type="ColorRect" parent="SlotViews/Symbols"]
 clip_children = 1
 layout_mode = 1
 anchors_preset = 15
@@ -255,7 +425,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SlotView" type="Control" parent="Slot/Symbols/Mask"]
+[node name="SlotView" type="Control" parent="SlotViews/Symbols/Mask"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -266,6 +436,24 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_lfrn8")
 
+[node name="SpinButton" type="Button" parent="SlotViews"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 340.0
+offset_top = -39.0
+offset_right = 448.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "拉霸"
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
 [node name="Menu" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -273,6 +461,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="ShopButton" type="Button" parent="Menu"]
 layout_mode = 1
@@ -309,107 +498,30 @@ text = "開始拉霸"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="Start" type="Control" parent="."]
+[node name="ResultViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "result_img_view")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("10_4j704")
+game_scene = NodePath("..")
+result_img_view = NodePath("ResultImg")
 
-[node name="BG" type="ColorRect" parent="Start"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.294028, 0.294028, 0.294028, 1)
-
-[node name="StartButton" type="Button" parent="Start"]
+[node name="ResultImg" type="TextureRect" parent="ResultViews"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = -193.0
-offset_right = 104.0
-offset_bottom = -115.0
+offset_left = -750.0
+offset_top = -340.0
+offset_right = 750.0
+offset_bottom = 340.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 50
-text = "開始遊戲"
-script = ExtResource("3_0sr1o")
-metadata/_custom_type_script = "uid://busxpt8b3jr3b"
-
-[node name="GalleryButton" type="Button" parent="Start"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = -94.0
-offset_right = 104.0
-offset_bottom = -16.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 50
-text = "回想"
-script = ExtResource("3_0sr1o")
-metadata/_custom_type_script = "uid://busxpt8b3jr3b"
-
-[node name="SettingButton" type="Button" parent="Start"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = 6.0
-offset_right = 104.0
-offset_bottom = 84.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 50
-text = "設定"
-script = ExtResource("3_0sr1o")
-metadata/_custom_type_script = "uid://busxpt8b3jr3b"
-
-[node name="ExitButton" type="Button" parent="Start"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = 106.0
-offset_right = 104.0
-offset_bottom = 184.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 50
-text = "離開"
-script = ExtResource("3_0sr1o")
-metadata/_custom_type_script = "uid://busxpt8b3jr3b"
-
-[node name="LabelEx" type="Label" parent="Start"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -100.0
-offset_top = 40.0
-offset_right = 100.0
-offset_bottom = 180.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 100
-text = "標題"
-script = ExtResource("4_lfrn8")
-metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
+expand_mode = 1
+stretch_mode = 5

@@ -1,10 +1,13 @@
-extends Scene
-class_name SlotScene
+extends Control
+class_name SlotViews
 
-@export var directions_img: Texture
+@export var game_scene: GameScene
 
 @export var cumulative_amount_lbl: Label
+@export var use_item_btn: ButtonEx
+@export var spin_btn: ButtonEx
 @export var slot_view: SlotView
+@export var symbols_panel: Control
 
 var cumulative_amount = 0
 var btn_used = false
@@ -13,13 +16,12 @@ var Anim_State = SlotView.Anim_State
 
 
 func _ready():
-	reset()
-	$"數值".pressed.connect(Slot.show_probability)
-	$"使用道具".pressed.connect(_on_item_btn_pressed)
-	$"拉霸".pressed.connect(start_spin)
+	use_item_btn.pressed.connect(_on_item_btn_pressed)
+	spin_btn.pressed.connect(start_spin)
 	slot_view.anim_finished.connect(_on_spin_finish)
-	
-	$"說明".pressed.connect(Main.show_directions.bind(directions_img))
+	var slot_size = slot_view.get_slot_size()
+	symbols_panel.set_deferred("size", slot_size)
+	symbols_panel.position = (Main.screen_size as Vector2 - symbols_panel.size) / 2.0
 
 
 func start_spin():
@@ -30,7 +32,7 @@ func start_spin():
 	slot_view.old_grid = Slot.grid.duplicate(true)
 	Slot.start_spin()
 	slot_view.play_spin_anim()
-	refresh_view()
+	game_scene.refresh_view()
 
 
 func refresh_view():
@@ -43,15 +45,11 @@ func reset():
 	refresh_view()
 
 
-func show_scene():
-	cumulative_amount = 0
-	refresh_view()
-
-
 func _on_item_btn_pressed():
 	if not btn_used:
 		Slot.use_items()
 		btn_used = true
+		game_scene.refresh_view()
 
 
 func _on_spin_finish():
@@ -62,16 +60,14 @@ func _on_spin_finish():
 		cumulative_amount += r
 		Slot.money += r
 	
-	refresh_view()
+	game_scene.refresh_view()
 	
 	if Slot.spin_times <= 0:
 		await Main.show_talk_view("拉霸次數用完了").finished
-		Main.to_scene(Main.SCENE.game)
-
-func _on_slot_end():
-	Slot.slot_end()
-	var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
-	game_scene.slot_end()
+		Slot.slot_end()
+		game_scene.slot_end()
+		game_scene.switch_view(game_scene.VIEW_STATE.menu)
+		game_scene.refresh_view()
 
 func _input(event):
 	if event is InputEventKey and event.pressed:

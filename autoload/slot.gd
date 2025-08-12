@@ -116,7 +116,7 @@ class GridInfo:
 	var is_golden_modifiers: bool
 
 var grid = []
-var spin_times = 7
+var spin_times = 0
 var probability = []
 var luck: int
 var symbols_datum: Array
@@ -433,8 +433,11 @@ func add_item(item: Item):
 	var data: ItemData = Main.item_datas[item]
 	match item:
 		Item.道具15:
-			for key in items_usable.keys():
-				items_usable[key] = data.usable_count
+			for i in items.size():
+				var temp_item = items[i]
+				var temp_data: ItemData = Main.item_datas[temp_item]
+				if temp_data.active_item:
+					items_usable[temp_item] = temp_data.usable_count
 		Item.道具16:
 			voucher += 4
 		Item.道具19:
@@ -567,6 +570,13 @@ func add_buff(from: Item):
 		if get_buff(from).value < 0.25:
 			get_buff(from).value += 0.01
 		return
+	
+	# 畫像
+	#for i in 7:
+		#if from == (Item.道具26 + i) and get_buff(from):
+			#get_buff(from).value[1] += 2
+			#return
+	
 	# 黃標
 	for i in SYMBOLS.size():
 		if from == (Item.道具33 + i) and get_buff(from):

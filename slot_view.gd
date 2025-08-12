@@ -168,3 +168,6 @@ func reset():
 	anim_state = Anim_State.no_anim
 	anim_panel.visible = false
 	refresh_view()
+
+func get_slot_size() -> Vector2:
+	return Vector2(5 * SYMBOL_SIZE.x, 3 * SYMBOL_SIZE.y)

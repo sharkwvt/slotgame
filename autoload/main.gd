@@ -118,6 +118,7 @@ func to_scene(scene: SCENE, anim_type = 0):
 	# 滑鼠特效移到最前
 	#mouse_trail_effect.move_to_front()
 
+
 #region Save and load
 func reload_data():
 	Logger.log("platform: " + Main.this_platform)
@@ -149,6 +150,8 @@ func load_character_data():
 				if key in data:
 					data.set(key, dic[key])
 			character_datas.append(data)
+	# 直接讀第一個
+	current_character_data = character_datas[0]
 
 func load_item_data():
 	item_datas.clear()

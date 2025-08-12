@@ -4,27 +4,6 @@
 	  "id": 1,
 	  "file_name": "a",
 	  "level": 2
-	},
-	{
-	  "id": 2,
-	  "dlc_id": 3756280,
-	  "file_name": "b",
-	  "level": 2
-	},
-	{
-	  "id": 3,
-	  "file_name": "c",
-	  "level": 2
-	},
-	{
-	  "id": 4,
-	  "file_name": "d",
-	  "level": 2
-	},
-	{
-	  "id": 5,
-	  "file_name": "e",
-	  "level": 2
 	}
   ]
 }
