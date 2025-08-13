@@ -38,6 +38,9 @@ var put_in_money = 0
 var target_money = 0
 var now_interest = 0
 var data: CharacterData
+var triggered_item_tween: Tween
+
+signal triggered_anim_finish
 
 func _ready() -> void:
 	setup()
@@ -96,6 +99,48 @@ func show_result_scene(is_success: bool):
 	result_views.level = now_level
 	result_views.refresh_view()
 	switch_view(VIEW_STATE.result)
+
+
+func show_triggered_items():
+	# 排除道具
+	var skip_items = [Item.道具40]
+	for i in Slot.SYMBOLS.size():
+		skip_items.append(Item.道具33 + i)
+	var items = Slot.triggered_items.filter(func (item): return item not in skip_items)
+	
+	if items.size() > 0:
+		var last_tween: Tween
+		var offset = 50
+		for i in items.size():
+			var item: Slot.Item = items[i]
+			var item_data: ItemData = Main.item_datas[item]
+			var item_img = TextureRect.new()
+			add_child(item_img)
+			item_img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			item_img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			item_img.size = Vector2(100, 100)
+			item_img.texture = item_data.get_img()
+			item_img.position = Vector2(
+				offset,
+				Main.screen_size.y
+			)
+			var tween = item_img.create_tween()
+			tween.tween_interval(i * 0.5)
+			tween.tween_property(item_img, "position:y", Main.screen_size.y - item_img.size.y - offset, 0.5)
+			tween.tween_property(item_img, "position:y", Main.screen_size.y, 0.5)
+			tween.finished.connect(
+				func ():
+					item_img.queue_free()
+					tween.kill()
+			)
+			last_tween = tween
+		triggered_item_tween = last_tween
+		Slot.triggered_items.clear()
+		await triggered_item_tween.finished
+		triggered_anim_finish.emit()
+	else:
+		await get_tree().process_frame
+		triggered_anim_finish.emit()
 
 
 func refresh_view():

@@ -90,7 +90,7 @@ enum Item {
 	道具37, # 出現黃金標記機率+20%，符號價值永久+5
 	道具38, # 出現黃金標記機率+20%，符號價值永久+5
 	道具39, # 出現黃金標記機率+20%，符號價值永久+7
-	道具40 # 符號出現幸運草標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券
+	道具40 # 符號出現黃金標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券
 }
 
 enum Effect {
@@ -125,6 +125,8 @@ var pattern_odds: Array
 var symbols_multiplier: float
 var pattern_multiplier: float
 
+var game_scene: GameScene
+
 var rewards = []
 var rewards_waves = []
 var events = []
@@ -133,8 +135,10 @@ var items_usable = {}
 var max_item_size = 7
 var buffs = []
 var trigger_count = 0
+var triggered_items = []
 
 func setup():
+	game_scene = Main.instance_scenes[Main.SCENE.game]
 	refresh_state()
 	create_grid()
 
@@ -144,6 +148,7 @@ func reset():
 	items = []
 	buffs = []
 	events = []
+
 
 #region grid and spin
 func create_grid():
@@ -207,7 +212,10 @@ func start_spin():
 	trigger_count = 0
 	
 	# 轉時效果
+	triggered_items.clear()
 	effect_before_spin()
+	game_scene.show_triggered_items()
+	await game_scene.triggered_anim_finish
 	
 	rewards.clear()
 	var temp_grid = []
@@ -441,7 +449,6 @@ func add_item(item: Item):
 		Item.道具16:
 			voucher += 4
 		Item.道具19:
-			var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
 			money += int(game_scene.target_money * 0.3)
 		_: # 非消耗型道具
 			items.append(item)
@@ -496,7 +503,6 @@ func effect_after_spin():
 		
 		if Item.道具4 in items:
 			if rewards.size() >= 3:
-				var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
 				money += game_scene.put_in_money * game_scene.now_interest
 				trigger_count += 1
 		
@@ -543,7 +549,7 @@ func effect_after_spin():
 				if grid_info.is_golden_modifiers:
 					add_buff(Item.道具33 + reward.symbol)
 					if get_buff(Item.道具40):
-						add_buff(Item.道具40)
+						Slot.voucher += 1
 	
 	refresh_state()
 
@@ -556,6 +562,8 @@ func add_buff(from: Item):
 			items_usable[from] -= 1
 		else:
 			return
+	
+	triggered_items.append(from)
 	
 	if from == Item.道具6 and get_buff(from):
 		get_buff(from).value += 1
@@ -603,7 +611,6 @@ func refresh_state():
 	symbols_multiplier = ORG_SYMBOLS_MUL
 	pattern_multiplier = ORG_PATTERN_MUL
 	max_item_size = ITEMS_SIZE
-	var game_scene: GameScene = Main.instance_scenes[Main.SCENE.game]
 	game_scene.now_interest = game_scene.INTEREST
 	if buffs.size() > 0:
 		for buff: Buff in buffs:

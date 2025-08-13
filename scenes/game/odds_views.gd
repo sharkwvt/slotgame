@@ -9,6 +9,8 @@ func refresh_view():
 	# 清空
 	for child in symbols_odds_view.get_children():
 		child.queue_free()
+	for child in pattern_odds_view.get_children():
+		child.queue_free()
 	
 	var symblos_odds_string = "符號\n"
 	for i in Slot.SYMBOLS.size():
