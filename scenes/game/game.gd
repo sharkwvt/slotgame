@@ -55,6 +55,7 @@ func slot_end():
 	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
 		Main.show_talk_view("失敗了").finished.connect(
 			func ():
+				switch_view(VIEW_STATE.start)
 				reset()
 		)
 

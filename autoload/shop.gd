@@ -170,7 +170,6 @@ func switch_shop():
 
 
 func _on_refresh_button_pressed():
-	print("刷新商品...")
 	if Slot.money >= get_refresh_item_cost():
 		Slot.money -= get_refresh_item_cost()
 		refresh_item_times += 1
@@ -192,6 +191,8 @@ func _on_item_purchased(item_data: ItemData, index: int):
 	if Slot.get_buff(Slot.Item.道具40):
 		Slot.add_buff(Slot.Item.道具40)
 	current_items.remove_at(index)
+	if current_items.size() < 1:
+		refresh_items()
 	refresh_item_ui()
 	Main.current_scene.refresh_view()
 

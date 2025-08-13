@@ -43,6 +43,7 @@ func start_spin():
 func refresh_view():
 	slot_view.refresh_view()
 	cumulative_amount_lbl.text = "累積金額：%s" % cumulative_amount
+	cumulative_amount_lbl.text += "\n剩餘次數：%s" % Slot.spin_times
 
 func reset():
 	btn_used = false
