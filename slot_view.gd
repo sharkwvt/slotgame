@@ -1,13 +1,16 @@
 extends Control
 class_name SlotView
 
+@export var mask: Control
+@export var bingo_img: Texture
+
 var sym_panel: Control
 var anim_panel: Control
 
 const COLUMNS = Slot.COLUMNS
 const ROWS = Slot.ROWS
 const SYMBOLS = Slot.SYMBOLS
-const SYMBOL_SIZE = Vector2(100, 100)
+const SYMBOL_SIZE = Vector2(160, 150)
 
 const GridInfo = Slot.GridInfo
 
@@ -33,6 +36,9 @@ func _ready():
 
 
 func create_grid_view():
+	mask.size = Vector2(SYMBOL_SIZE.x * COLUMNS, SYMBOL_SIZE.y * ROWS)
+	mask.position -= mask.size / 2.0
+	#mask.size = sym_panel.size
 	for col in range(COLUMNS):
 		var view_column = []
 		for row in range(ROWS):
@@ -43,7 +49,7 @@ func create_grid_view():
 			#unit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			#unit.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			var unit = ColorRect.new()
-			unit.color = Color.GRAY
+			unit.color = Color(Color.GRAY, 0)
 			unit.size = SYMBOL_SIZE
 			unit.position = Vector2(offset_x + col * SYMBOL_SIZE.x, offset_y + row * SYMBOL_SIZE.y)
 			#unit.pivot_offset = unit.size/2.0
@@ -85,6 +91,7 @@ func refresh_view():
 
 
 func play_spin_anim():
+	sym_panel.visible = false
 	anim_state = Anim_State.spin_anim
 	anim_panel.visible = true
 	# 清空
@@ -102,7 +109,7 @@ func play_spin_anim():
 			var offset_x = (anim_panel.size.x - SYMBOL_SIZE.x*COLUMNS)/2.0
 			var offset_y = (anim_panel.size.y - SYMBOL_SIZE.y*ROWS)/2.0 - SYMBOL_SIZE.y * (new_rows - ROWS)
 			var unit = ColorRect.new()
-			unit.color = Color.GRAY
+			unit.color = grid_views[0][0].color
 			unit.size = SYMBOL_SIZE
 			unit.position = Vector2(offset_x + col * SYMBOL_SIZE.x, offset_y + row * SYMBOL_SIZE.y)
 			anim_panel.add_child(unit)
@@ -123,6 +130,7 @@ func play_spin_anim():
 		anim_grid_views.append(view_column)
 	
 	await last_tween.finished
+	sym_panel.visible = true
 	anim_panel.visible = false
 	show_reward_anim()
 
@@ -136,15 +144,29 @@ func show_reward_anim():
 		for pos in data.grid:
 			var target: ColorRect = grid_views[pos.x][pos.y]
 			var tween = target.create_tween()
+			var bingo_view = TextureRect.new()
+			bingo_view.texture = bingo_img
+			bingo_view.position = Vector2.ZERO
+			bingo_view.position = (target.size - bingo_view.size) / 2.0
+			bingo_view.position.y -= 10
+			bingo_view.modulate.a = 0.0
+			target.add_child(bingo_view)
 			#tween.tween_property(target, "rotation_degrees", 45, duration)
 			#tween.tween_property(target, "rotation_degrees", -45, duration)
 			#tween.tween_property(target, "rotation_degrees", 0, duration)
-			var org_color = target.color
-			tween.tween_property(target, "color", Color.RED, duration)
+			#var org_color = target.color
+			#tween.tween_property(target, "color", Color.RED, duration)
+			#if Slot.grid[pos.x][pos.y].is_golden_modifiers:
+				#tween.tween_property(target, "color", Color.YELLOW, duration)
+				#g_tween = tween
+			#tween.tween_property(target, "color", org_color, duration)
+			tween.tween_property(bingo_view, "modulate:a", 1.0, duration)
 			if Slot.grid[pos.x][pos.y].is_golden_modifiers:
-				tween.tween_property(target, "color", Color.YELLOW, duration)
+				for i in 3:
+					tween.tween_property(bingo_view, "modulate:a", 0.0, duration/3)
+					tween.tween_property(bingo_view, "modulate:a", 1.0, duration/3)
 				g_tween = tween
-			tween.tween_property(target, "color", org_color, duration)
+			tween.tween_property(bingo_view, "modulate:a", 0.0, duration)
 			tween.tween_callback(tween.kill)
 			temp_tween = tween
 		if g_tween:

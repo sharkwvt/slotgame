@@ -3,9 +3,14 @@ class_name GameScene
 
 const Item = Slot.Item
 
+@export var slot_img: TextureRect
+@export var slot_bg: TextureRect
+@export var camera: Camera2D
+
 @export var start_view: Control
 @export var menu_view: Control
 @export var game_view: Control
+@export var shop_view: Control
 
 @export var items_views: ItemsViews
 @export var odds_views: OddsViews
@@ -23,12 +28,14 @@ const Item = Slot.Item
 enum VIEW_STATE {
 	start,
 	menu,
+	shop,
 	game,
 	result
 }
 
 const SLOT_TIMES = 3 # 每輪可用機台次數
-const INTEREST = 0.05 # 基礎利息
+#const INTEREST = 0.05 # 基礎利息
+const INTEREST = 0.00 # 基礎利息
 
 var view_state: VIEW_STATE
 
@@ -39,8 +46,10 @@ var target_money = 0
 var now_interest = 0
 var data: CharacterData
 var triggered_item_tween: Tween
+var bg_tween: Tween
 
 signal triggered_anim_finish
+signal zoomed
 
 func _ready() -> void:
 	setup()
@@ -88,11 +97,19 @@ func get_bonus_voucher() -> int:
 func setup():
 	Main.instance_scenes[Main.SCENE.game] = self
 	Main.current_scene = self
+	Shop.game_scene = self
+	Shop.shop_view = shop_view
+	Shop.setup()
 	Slot.setup()
 	shop_btn.pressed.connect(_on_shop_btn_pressed)
 	slot_btn.pressed.connect(_on_slot_btn_pressed)
 	spin_7_btn.pressed.connect(_on_select_slot_pressed.bind(0))
 	spin_3_btn.pressed.connect(_on_select_slot_pressed.bind(1))
+	$Shop/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
+	slot_img.pivot_offset = slot_img.size / 2.0
+	slot_bg.pivot_offset = slot_bg.size / 2.0
+	slot_img.scale = Vector2(2, 2)
+	slot_bg.scale = Vector2(2, 2)
 
 
 func show_result_scene(is_success: bool):
@@ -152,27 +169,90 @@ func refresh_view():
 
 
 func switch_view(state: VIEW_STATE):
+	select_spin_view.visible = false
+	
+	var target_scale: Vector2
+	match state:
+		VIEW_STATE.start:
+			target_scale = Vector2(2, 2)
+		VIEW_STATE.menu:
+			target_scale = Vector2(2, 2)
+			slot_btn.visible = true
+			refresh_view()
+		VIEW_STATE.shop:
+			target_scale = Vector2(2, 2)
+		VIEW_STATE.game:
+			target_scale = Vector2(1, 1)
+			slot_views.cumulative_amount = 0
+			refresh_view()
+	
+	create_zoom_anim(target_scale)
+	await zoomed
+	
 	start_view.visible = state == VIEW_STATE.start
-	odds_views.visible = state != VIEW_STATE.start
-	items_views.visible = state != VIEW_STATE.start
+	odds_views.visible = state == VIEW_STATE.game
 	
 	menu_view.visible = state == VIEW_STATE.menu
+	items_views.visible = state == VIEW_STATE.menu
 	infos_views.visible = state == VIEW_STATE.menu
 	$GalleryButton.visible = state == VIEW_STATE.menu
-	if state == VIEW_STATE.menu:
-		select_spin_view.visible = false
-		slot_btn.visible = true
-		refresh_view()
+	
+	shop_view.visible = state == VIEW_STATE.shop
 	
 	game_view.visible = state == VIEW_STATE.game
-	if state == VIEW_STATE.game:
-		slot_views.cumulative_amount = 0
-		refresh_view()
 	
 	result_views.visible = state == VIEW_STATE.result
 	
 	view_state = state
 
+func create_zoom_anim(target_scale: Vector2):
+	if target_scale == slot_img.scale:
+		await get_tree().process_frame
+		zoomed.emit()
+		return
+	var is_scale_up = target_scale > slot_img.scale
+	var target_zoom = Vector2(2, 2) if is_scale_up else Vector2(0.5, 0.5)
+	var anim_bg = TextureRect.new()
+	anim_bg.expand_mode = slot_bg.expand_mode
+	anim_bg.stretch_mode = slot_bg.stretch_mode
+	anim_bg.texture = slot_bg.texture
+	anim_bg.size = slot_bg.size
+	anim_bg.scale = slot_bg.scale
+	anim_bg.pivot_offset = slot_bg.pivot_offset
+	anim_bg.position = slot_bg.position
+	anim_bg.modulate.a = 0
+	add_child(anim_bg)
+	var anim_img = TextureRect.new()
+	anim_img.expand_mode = slot_img.expand_mode
+	anim_img.stretch_mode = slot_img.stretch_mode
+	anim_img.texture = slot_img.texture
+	anim_img.size = slot_img.size
+	anim_img.scale = slot_img.scale
+	anim_img.pivot_offset = slot_img.pivot_offset
+	anim_img.modulate.a = 0
+	add_child(anim_img)
+	var set_anim_a = func (a: float):
+		anim_img.modulate.a = a
+		anim_bg.modulate.a = a
+	bg_tween = anim_bg.create_tween()
+	bg_tween.tween_method(set_anim_a, 0.0, 1.0, 0.5)
+	bg_tween.parallel().tween_property(camera, "zoom", target_zoom, 0.5)
+	bg_tween.tween_callback(
+		func ():
+			slot_img.scale = target_scale
+			slot_bg.scale = target_scale
+			camera.zoom = Vector2(1, 1)
+			anim_img.scale = target_scale
+			anim_bg.scale = target_scale
+			zoomed.emit()
+	)
+	bg_tween.tween_method(set_anim_a, 1.0, 0.0, 0.5)
+	bg_tween.finished.connect(
+		func ():
+			anim_img.queue_free()
+			anim_bg.queue_free()
+			bg_tween.kill()
+	)
 
 func reset():
 	Slot.reset()
@@ -187,14 +267,15 @@ func reset():
 
 
 func return_scene():
-	if Shop.shop_view and Shop.shop_view.visible:
-		Shop.switch_shop()
-	elif view_state == VIEW_STATE.menu:
-		switch_view(VIEW_STATE.start)
+	match view_state:
+		VIEW_STATE.menu:
+			switch_view(VIEW_STATE.start)
+		VIEW_STATE.shop:
+			switch_view(VIEW_STATE.menu)
 
 
 func _on_shop_btn_pressed():
-	Shop.switch_shop()
+	switch_view(VIEW_STATE.shop)
 
 func _on_put_in_btn_pressed():
 	var put_money = int(target_money / 10.0)

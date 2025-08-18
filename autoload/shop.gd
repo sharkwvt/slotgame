@@ -1,9 +1,13 @@
 extends Node
 
-var shop_title: Label
-var items_container: GridContainer
+var game_scene: GameScene
+
+var items_container: Control
 var refresh_button: Button
 var shop_view: Control
+
+const Item = Slot.Item
+var skip_items = [Item.道具4, Item.道具7, Item.道具12, Item.道具14, Item.道具25]
 
 var current_items = []
 var refresh_item_times = 0
@@ -11,17 +15,17 @@ var refresh_item_times = 0
 func _ready() -> void:
 	refresh_items()
 
+
 func reset():
 	refresh_item_times = 0
 	refresh_items()
-	
 
 func refresh_items():
 	# 隨機選擇4個道具
 	current_items.clear()
 	var available_items = Main.item_datas.filter(
 		func(item: ItemData):
-			return item.id not in Slot.items
+			return item.id not in Slot.items and item.id not in skip_items
 	)
 	
 	for i in range(4):
@@ -36,20 +40,29 @@ func refresh_items():
 
 func refresh_item_ui():
 	refresh_button.text = "🔄 刷新商品 (%s$)" % get_refresh_item_cost()
+	refresh_button.position = Vector2(
+		(Main.screen_size.x - refresh_button.size.x) / 2.0,
+		Main.screen_size.y - refresh_button.size.y - 150
+	)
 	# 清除現有道具UI
 	for child in items_container.get_children():
 		child.queue_free()
 	
-	for i in range(current_items.size()):
+	for i in current_items.size():
 		var item = current_items[i]
 		var item_panel = create_item_panel(item, i)
+		item_panel.position = Vector2(
+			item_panel.size.x * i + (Main.screen_size.x - item_panel.size.x * 4) / 2.0,
+			(Main.screen_size.y - item_panel.size.y) / 2.0
+		)
 		items_container.add_child(item_panel)
+		
 
 
 func create_item_panel(item_data: ItemData, index: int) -> Panel:
 	# 創建主面板
 	var panel = Panel.new()
-	panel.custom_minimum_size = Vector2(600, 330)
+	panel.size = Vector2(350, 500)
 	
 	# 添加背景顏色
 	var style_box = StyleBoxFlat.new()
@@ -160,14 +173,6 @@ func get_item_emoji(item_name: String) -> String:
 func get_refresh_item_cost() -> int:
 	return refresh_item_times * refresh_item_times
 
-func switch_shop():
-	if !shop_view:
-		create_shop()
-	else:
-		shop_view.visible = !shop_view.visible
-		if shop_view.visible:
-			shop_view.move_to_front()
-
 
 func _on_refresh_button_pressed():
 	if Slot.money >= get_refresh_item_cost():
@@ -197,47 +202,20 @@ func _on_item_purchased(item_data: ItemData, index: int):
 	Main.current_scene.refresh_view()
 
 
-func create_shop():
-	var window = ColorRect.new()
-	window.size = Main.screen_size
-	window.color = Color(Color.BLACK, 0.5)
-	window.gui_input.connect(
-		func (event: InputEvent):
-			if event.is_pressed():
-				switch_shop()
-	)
-	shop_view = window
-	
-	var bg = ColorRect.new()
-	window.add_child(bg)
-	
-	var main_vbox = VBoxContainer.new()
-	main_vbox.name = "VBoxContainer"
-	main_vbox.add_theme_constant_override("separation", 20)
-	bg.add_child(main_vbox)
-	
+func setup():
 	# 道具網格
-	var grid = GridContainer.new()
-	grid.name = "ItemsGrid"
-	grid.columns = 2
-	grid.add_theme_constant_override("h_separation", 15)
-	grid.add_theme_constant_override("v_separation", 15)
-	main_vbox.add_child(grid)
+	var grid = Control.new()
+	shop_view.add_child(grid)
 	items_container = grid
 	
 	# 刷新按鈕
 	refresh_button = Button.new()
 	refresh_button.name = "RefreshButton"
 	refresh_button.text = "🔄 刷新商品"
-	refresh_button.custom_minimum_size = Vector2(0, 40)
-	refresh_button.add_theme_font_size_override("font_size", 30)
+	refresh_button.add_theme_font_size_override("font_size", 50)
 	refresh_button.pressed.connect(_on_refresh_button_pressed)
-	main_vbox.add_child(refresh_button)
+	refresh_button.size = Vector2(500, 100)
+	refresh_button.position = Vector2.ZERO
+	shop_view.add_child(refresh_button)
 
 	refresh_item_ui()
-	
-	get_tree().get_root().add_child(window)
-	
-	await get_tree().process_frame
-	bg.size = main_vbox.size
-	bg.position = ((Main.screen_size as Vector2) - main_vbox.size) / 2.0
