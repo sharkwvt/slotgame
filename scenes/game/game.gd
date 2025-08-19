@@ -58,16 +58,27 @@ func _ready() -> void:
 
 
 func slot_end():
-	Slot.money += int(put_in_money * now_interest)
+	#Slot.money += int(put_in_money * now_interest)
 	refresh_view()
-	
-	if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
+
+func result_check():
+	#if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
+		#Main.show_talk_view("失敗了").finished.connect(
+			#func ():
+				#switch_view(VIEW_STATE.start)
+				#reset()
+		#)
+	if last_slot_times <= 0 and Slot.money < target_money:
 		Main.show_talk_view("失敗了").finished.connect(
 			func ():
 				switch_view(VIEW_STATE.start)
 				reset()
 		)
-
+	elif Slot.money >= target_money:
+		Main.show_talk_view("達成目標").finished.connect(
+			func ():
+				to_next_level()
+		)
 
 func to_next_level():
 	now_level += 1
@@ -185,6 +196,8 @@ func switch_view(state: VIEW_STATE):
 			target_scale = Vector2(1, 1)
 			slot_views.cumulative_amount = 0
 			refresh_view()
+		VIEW_STATE.result:
+			target_scale = Vector2(2, 2)
 	
 	create_zoom_anim(target_scale)
 	await zoomed
@@ -196,6 +209,7 @@ func switch_view(state: VIEW_STATE):
 	items_views.visible = state == VIEW_STATE.menu
 	infos_views.visible = state == VIEW_STATE.menu
 	$GalleryButton.visible = state == VIEW_STATE.menu
+	if state == VIEW_STATE.menu: result_check()
 	
 	shop_view.visible = state == VIEW_STATE.shop
 	

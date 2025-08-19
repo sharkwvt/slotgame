@@ -204,7 +204,6 @@ func assign_spin(count: int):
 			match buff.type:
 				Effect.spin_times:
 					spin_times += buff.value
-	voucher += 1
 
 
 func start_spin():

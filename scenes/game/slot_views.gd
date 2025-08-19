@@ -11,6 +11,7 @@ class_name SlotViews
 
 var cumulative_amount = 0
 var btn_used = false
+var in_spin = false
 
 var Anim_State = SlotView.Anim_State
 
@@ -21,14 +22,15 @@ func _ready():
 	slot_view.anim_finished.connect(_on_spin_finish)
 	var slot_size = slot_view.get_slot_size()
 	symbols_panel.set_deferred("size", slot_size)
-	symbols_panel.position = (Main.screen_size as Vector2 - symbols_panel.size) / 2.0
+	symbols_panel.position -= slot_size / 2.0
 
 
 func start_spin():
-	if slot_view.anim_state != Anim_State.no_anim:
+	if in_spin:
 		return
 	if Slot.spin_times <= 0:
 		return
+	in_spin = true
 	slot_view.old_grid = Slot.grid.duplicate(true)
 	Slot.start_spin()
 	await game_scene.triggered_anim_finish
@@ -37,6 +39,7 @@ func start_spin():
 	await slot_view.anim_finished # 轉後播放轉後道具觸發
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
+	in_spin = false
 	game_scene.refresh_view()
 
 

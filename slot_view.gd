@@ -3,6 +3,8 @@ class_name SlotView
 
 @export var mask: Control
 @export var bingo_img: Texture
+var symbols_img_path = "res://image/symbols"
+var symbols_imgs = []
 
 var sym_panel: Control
 var anim_panel: Control
@@ -31,21 +33,20 @@ signal anim_finished
 
 
 func _ready():
+	load_symbols_imgs()
 	setup()
 	create_grid_view()
 
 
 func create_grid_view():
-	mask.size = Vector2(SYMBOL_SIZE.x * COLUMNS, SYMBOL_SIZE.y * ROWS)
-	mask.position -= mask.size / 2.0
-	#mask.size = sym_panel.size
+	mask.size = get_slot_size()
 	for col in range(COLUMNS):
 		var view_column = []
 		for row in range(ROWS):
 			#var unit = Label.new()
 			#unit.add_theme_font_size_override("font_size", 50)
-			var offset_x = (sym_panel.size.x - SYMBOL_SIZE.x*COLUMNS)/2.0
-			var offset_y = (sym_panel.size.y - SYMBOL_SIZE.y*ROWS)/2.0
+			var offset_x = (sym_panel.size.x - get_slot_size().x) / 2.0
+			var offset_y = (sym_panel.size.y - get_slot_size().y) / 2.0
 			#unit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			#unit.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			var unit = ColorRect.new()
@@ -62,14 +63,17 @@ func set_symbol_view(node:Node, grid_info: GridInfo):
 	for child in node.get_children():
 		child.queue_free()
 	
-	var lbl = Label.new()
-	lbl.add_theme_font_size_override("font_size", 50)
-	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	lbl.size = SYMBOL_SIZE
-	lbl.pivot_offset = lbl.size/2.0
-	lbl.text = SYMBOLS[grid_info.symbol]
-	node.add_child(lbl)
+	#var lbl = Label.new()
+	#lbl.add_theme_font_size_override("font_size", 50)
+	#lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	#lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	#lbl.size = SYMBOL_SIZE
+	#lbl.pivot_offset = lbl.size/2.0
+	#lbl.text = SYMBOLS[grid_info.symbol]
+	#node.add_child(lbl)
+	var view = TextureRect.new()
+	view.texture = symbols_imgs[grid_info.symbol]
+	node.add_child(view)
 	if grid_info.is_golden_modifiers:
 		var gm_icon = ColorRect.new()
 		gm_icon.color = Color.YELLOW
@@ -106,8 +110,8 @@ func play_spin_anim():
 	for col in COLUMNS:
 		var view_column = []
 		for row in new_rows:
-			var offset_x = (anim_panel.size.x - SYMBOL_SIZE.x*COLUMNS)/2.0
-			var offset_y = (anim_panel.size.y - SYMBOL_SIZE.y*ROWS)/2.0 - SYMBOL_SIZE.y * (new_rows - ROWS)
+			var offset_x = (anim_panel.size.x - get_slot_size().x)/2.0
+			var offset_y = (anim_panel.size.y - get_slot_size().y)/2.0 - SYMBOL_SIZE.y * (new_rows - ROWS)
 			var unit = ColorRect.new()
 			unit.color = grid_views[0][0].color
 			unit.size = SYMBOL_SIZE
@@ -137,9 +141,11 @@ func play_spin_anim():
 func show_reward_anim():
 	anim_state = Anim_State.reward_anim
 	
-	var duration = 0.5
+	var org_duration = 0.5
 	var temp_tween: Tween
-	for data: Slot.RewardData in Slot.rewards:
+	for i in Slot.rewards.size():
+		var data: Slot.RewardData = Slot.rewards[i]
+		var duration = org_duration / ceil((i + 1) / 3.0)
 		var g_tween: Tween
 		for pos in data.grid:
 			var target: ColorRect = grid_views[pos.x][pos.y]
@@ -148,7 +154,6 @@ func show_reward_anim():
 			bingo_view.texture = bingo_img
 			bingo_view.position = Vector2.ZERO
 			bingo_view.position = (target.size - bingo_view.size) / 2.0
-			bingo_view.position.y -= 10
 			bingo_view.modulate.a = 0.0
 			target.add_child(bingo_view)
 			#tween.tween_property(target, "rotation_degrees", 45, duration)
@@ -162,7 +167,7 @@ func show_reward_anim():
 			#tween.tween_property(target, "color", org_color, duration)
 			tween.tween_property(bingo_view, "modulate:a", 1.0, duration)
 			if Slot.grid[pos.x][pos.y].is_golden_modifiers:
-				for i in 3:
+				for j in 3:
 					tween.tween_property(bingo_view, "modulate:a", 0.0, duration/3)
 					tween.tween_property(bingo_view, "modulate:a", 1.0, duration/3)
 				g_tween = tween
@@ -191,5 +196,12 @@ func reset():
 	anim_panel.visible = false
 	refresh_view()
 
+
+func load_symbols_imgs():
+	for i in SYMBOLS:
+		var path = symbols_img_path.path_join(i + ".png")
+		if FileAccess.file_exists(path):
+			symbols_imgs.append(load(path))
+
 func get_slot_size() -> Vector2:
-	return Vector2(5 * SYMBOL_SIZE.x, 3 * SYMBOL_SIZE.y)
+	return Vector2(SYMBOL_SIZE.x * COLUMNS, SYMBOL_SIZE.y * ROWS)
