@@ -210,12 +210,6 @@ func start_spin():
 	spin_times -= 1
 	trigger_count = 0
 	
-	# 轉時效果
-	triggered_items.clear()
-	effect_before_spin()
-	game_scene.show_triggered_items()
-	await game_scene.triggered_anim_finish
-	
 	rewards.clear()
 	var temp_grid = []
 	var temp_rewards = []
@@ -234,9 +228,6 @@ func start_spin():
 		rewards = temp_rewards.duplicate(true)
 	
 	rewards_waves.append(calculating_rewards())
-	
-	# 轉後效果
-	effect_after_spin()
 
 func spin():
 	for i in grid.size():
@@ -393,8 +384,20 @@ func check_reward(type: Pattern):
 				data.grid = pos_int
 				rewards.append(data)
 		Pattern.圖案:
-			# TODO 檢查圖案
-			pass
+			# 檢查圖案
+			var pos_all = []
+			for i in COLUMNS:
+				for j in ROWS:
+					pos_all.append(Vector2(i, j))
+			var remove_pos = [Vector2(0, 0), Vector2(4, 0), Vector2(2, 1), Vector2(0, 2), Vector2(4, 2)]
+			pos_all = pos_all.filter(func (pos: Vector2): return pos not in remove_pos)
+			if has_pattern(pos_all):
+				var data = RewardData.new()
+				data.symbol = grid[pos_all[0].x][pos_all[0].y].symbol
+				data.type = Pattern.圖案
+				data.grid = pos_all
+				rewards.append(data)
+			
 		Pattern.滿版:
 			# 檢查滿版
 			var pos_all = []

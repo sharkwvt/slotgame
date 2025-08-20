@@ -36,6 +36,7 @@ enum VIEW_STATE {
 const SLOT_TIMES = 3 # 每輪可用機台次數
 #const INTEREST = 0.05 # 基礎利息
 const INTEREST = 0.00 # 基礎利息
+const TARGET_MONEY = 50 # 初始目標金額
 
 var view_state: VIEW_STATE
 
@@ -84,7 +85,7 @@ func to_next_level():
 	now_level += 1
 	show_result_scene(true)
 	Shop.reset()
-	target_money = get_target_cash()
+	target_money *= 2
 	if Item.道具20 in Slot.items:
 		var get_voucher = int(Slot.voucher/3.0)
 		if get_voucher > 0:
@@ -95,11 +96,6 @@ func to_next_level():
 	Slot.voucher += get_bonus_voucher()
 	last_slot_times = SLOT_TIMES
 	refresh_view()
-
-
-func get_target_cash() -> int:
-	var offset = now_level + 1
-	return 50 * offset * offset
 
 func get_bonus_voucher() -> int:
 	return last_slot_times * 5
@@ -273,7 +269,7 @@ func reset():
 	Shop.reset()
 	now_level = 0
 	put_in_money = 0
-	target_money = get_target_cash()
+	target_money = TARGET_MONEY
 	last_slot_times = SLOT_TIMES
 	now_interest = INTEREST
 	select_spin_view.visible = false
