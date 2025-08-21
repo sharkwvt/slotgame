@@ -17,9 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://b6udh65ijprjm" path="res://image/slot/slot_bingo.png" id="11_otnwt"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_otnwt"]
-viewport_path = NodePath("SubViewport")
+viewport_path = NodePath("3DSubViewport")
 
-[node name="Game" type="Control" node_paths=PackedStringArray("slot_img", "slot_bg", "camera", "start_view", "menu_view", "game_view", "shop_view", "items_views", "odds_views", "infos_views", "slot_views", "result_views", "shop_btn", "slot_btn", "select_spin_view", "spin_7_btn", "spin_3_btn")]
+[node name="Game" type="Control" node_paths=PackedStringArray("slot_img", "slot_bg", "camera", "start_view", "menu_view", "game_view", "shop_view", "select_spin_view", "items_views", "odds_views", "infos_views", "slot_views", "result_views", "shop_btn", "slot_btn", "spin_7_btn", "spin_3_btn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,6 +34,7 @@ start_view = NodePath("StartViews")
 menu_view = NodePath("Menu")
 game_view = NodePath("SlotViews")
 shop_view = NodePath("Shop")
+select_spin_view = NodePath("SelectSpinViews")
 items_views = NodePath("ItemsViews")
 odds_views = NodePath("OddsViews")
 infos_views = NodePath("InfosViews")
@@ -41,7 +42,6 @@ slot_views = NodePath("SlotViews")
 result_views = NodePath("ResultViews")
 shop_btn = NodePath("Menu/ShopButton")
 slot_btn = NodePath("Menu/SlotButton")
-select_spin_view = NodePath("SelectSpinViews")
 spin_7_btn = NodePath("SelectSpinViews/7Btn")
 spin_3_btn = NodePath("SelectSpinViews/3Btn")
 metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
@@ -261,20 +261,14 @@ text = "回想"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="SelectSpinViews" type="Panel" parent="."]
-visible = false
+[node name="SelectSpinViews" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 399.0
-offset_top = -196.0
-offset_right = 399.0
-offset_bottom = -196.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="7Btn" type="Button" parent="SelectSpinViews"]
 layout_mode = 1
@@ -283,13 +277,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -197.0
-offset_top = -100.0
-offset_right = 197.0
-offset_bottom = -21.0
+offset_left = -389.0
+offset_top = -210.0
+offset_right = 390.0
+offset_bottom = -61.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 70
 text = "拉7次，兌換券+1"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
@@ -301,17 +295,26 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -197.0
-offset_right = 197.0
-offset_bottom = 79.0
+offset_left = -389.0
+offset_top = -5.0
+offset_right = 390.0
+offset_bottom = 144.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 70
 text = "拉3次，兌換券+2"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
+[node name="ReturnButton" parent="SelectSpinViews" instance=ExtResource("11_ftsea")]
+layout_mode = 1
+offset_left = 206.8
+offset_top = 86.2
+offset_right = 306.8
+offset_bottom = 186.2
+
 [node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -325,17 +328,7 @@ use_item_btn = NodePath("使用道具")
 spin_btn = NodePath("SpinButton")
 slot_view = NodePath("Symbols/Mask/SlotView")
 symbols_panel = NodePath("Symbols")
-info_lbl_3d = NodePath("../SubViewport/Label3D")
-
-[node name="Viewport3D" type="TextureRect" parent="SlotViews"]
-top_level = true
-layout_mode = 0
-offset_left = 137.0
-offset_top = 669.0
-offset_right = 437.0
-offset_bottom = 969.0
-texture = SubResource("ViewportTexture_otnwt")
-expand_mode = 1
+info_lbl_3d = NodePath("../3DSubViewport/Label3D")
 
 [node name="使用道具" type="Button" parent="SlotViews"]
 top_level = true
@@ -437,10 +430,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -134.0
-offset_top = -287.0
-offset_right = 134.0
-offset_bottom = -209.0
+offset_left = 302.0
+offset_top = -789.0
+offset_right = 570.0
+offset_bottom = -711.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
@@ -450,14 +443,17 @@ metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="SlotButton" type="Button" parent="Menu"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -659.0
-offset_top = 288.0
-offset_right = -451.0
-offset_bottom = 366.0
-grow_horizontal = 0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -104.0
+offset_top = -259.0
+offset_right = 104.0
+offset_bottom = -181.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "開始拉霸"
 script = ExtResource("3_0sr1o")
@@ -575,6 +571,15 @@ texture = ExtResource("2_kp23o")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Viewport3D" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 137.0
+offset_top = 669.0
+offset_right = 437.0
+offset_bottom = 969.0
+texture = SubResource("ViewportTexture_otnwt")
+expand_mode = 1
+
 [node name="OddsViews" type="Control" parent="." node_paths=PackedStringArray("symbols_odds_view", "pattern_btn", "pattern_odds_view", "symbols_btn")]
 layout_mode = 1
 anchors_preset = 15
@@ -668,10 +673,10 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="SubViewport" type="SubViewport" parent="."]
+[node name="3DSubViewport" type="SubViewport" parent="."]
 transparent_bg = true
 
-[node name="Label3D" type="Label3D" parent="SubViewport"]
+[node name="Label3D" type="Label3D" parent="3DSubViewport"]
 transform = Transform3D(0.888427, -0.21762, 0.404152, 0.0999611, 0.951066, 0.292372, -0.448001, -0.219352, 0.866706, 4, 185, 0)
 pixel_size = 1.0
 text = "testesttestest
@@ -682,6 +687,6 @@ s
 s"
 vertical_alignment = 0
 
-[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+[node name="Camera3D" type="Camera3D" parent="3DSubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0

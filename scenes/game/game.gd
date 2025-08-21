@@ -11,6 +11,7 @@ const Item = Slot.Item
 @export var menu_view: Control
 @export var game_view: Control
 @export var shop_view: Control
+@export var select_spin_view: Control
 
 @export var items_views: ItemsViews
 @export var odds_views: OddsViews
@@ -21,7 +22,6 @@ const Item = Slot.Item
 # menu_view
 @export var shop_btn: ButtonEx
 @export var slot_btn: ButtonEx
-@export var select_spin_view: Panel
 @export var spin_7_btn: ButtonEx
 @export var spin_3_btn: ButtonEx
 
@@ -29,6 +29,7 @@ enum VIEW_STATE {
 	start,
 	menu,
 	shop,
+	select_spin,
 	game,
 	result
 }
@@ -113,6 +114,7 @@ func setup():
 	spin_7_btn.pressed.connect(_on_select_slot_pressed.bind(0))
 	spin_3_btn.pressed.connect(_on_select_slot_pressed.bind(1))
 	$Shop/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
+	$SelectSpinViews/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
 	slot_img.pivot_offset = slot_img.size / 2.0
 	slot_bg.pivot_offset = slot_bg.size / 2.0
 	slot_img.scale = Vector2(2, 2)
@@ -176,8 +178,6 @@ func refresh_view():
 
 
 func switch_view(state: VIEW_STATE):
-	select_spin_view.visible = false
-	
 	var target_scale: Vector2
 	match state:
 		VIEW_STATE.start:
@@ -187,6 +187,8 @@ func switch_view(state: VIEW_STATE):
 			slot_btn.visible = true
 			refresh_view()
 		VIEW_STATE.shop:
+			target_scale = Vector2(2, 2)
+		VIEW_STATE.select_spin:
 			target_scale = Vector2(2, 2)
 		VIEW_STATE.game:
 			target_scale = Vector2(1, 1)
@@ -199,7 +201,6 @@ func switch_view(state: VIEW_STATE):
 	await zoomed
 	
 	start_view.visible = state == VIEW_STATE.start
-	odds_views.visible = state == VIEW_STATE.game
 	
 	menu_view.visible = state == VIEW_STATE.menu
 	items_views.visible = state == VIEW_STATE.menu
@@ -209,7 +210,11 @@ func switch_view(state: VIEW_STATE):
 	
 	shop_view.visible = state == VIEW_STATE.shop
 	
+	select_spin_view.visible = state == VIEW_STATE.select_spin
+	
 	game_view.visible = state == VIEW_STATE.game
+	odds_views.visible = state == VIEW_STATE.game
+	$Viewport3D.visible = state == VIEW_STATE.game
 	
 	result_views.visible = state == VIEW_STATE.result
 	
@@ -272,7 +277,6 @@ func reset():
 	target_money = TARGET_MONEY
 	last_slot_times = SLOT_TIMES
 	now_interest = INTEREST
-	select_spin_view.visible = false
 	refresh_view()
 
 
@@ -281,6 +285,8 @@ func return_scene():
 		VIEW_STATE.menu:
 			switch_view(VIEW_STATE.start)
 		VIEW_STATE.shop:
+			switch_view(VIEW_STATE.menu)
+		VIEW_STATE.select_spin:
 			switch_view(VIEW_STATE.menu)
 
 
@@ -299,8 +305,7 @@ func _on_put_in_btn_pressed():
 
 func _on_slot_btn_pressed():
 	if last_slot_times > 0:
-		select_spin_view.visible = true
-		slot_btn.visible = false
+		switch_view(VIEW_STATE.select_spin)
 	else:
 		Main.show_tip("請投入現金")
 
