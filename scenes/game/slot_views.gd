@@ -3,11 +3,12 @@ class_name SlotViews
 
 @export var game_scene: GameScene
 
-@export var cumulative_amount_lbl: Label
 @export var use_item_btn: ButtonEx
 @export var spin_btn: ButtonEx
 @export var slot_view: SlotView
 @export var symbols_panel: Control
+
+@export var info_lbl_3d: Label3D
 
 var cumulative_amount = 0
 var btn_used = false
@@ -50,11 +51,18 @@ func start_spin():
 	game_scene.refresh_view()
 	_on_spin_finish()
 
+func refresh_info_label():
+	info_lbl_3d.text = "剩餘次數："
+	info_lbl_3d.text += "\n%s" % Slot.spin_times
+	info_lbl_3d.text += "\n持有總額："
+	info_lbl_3d.text += "\n%s" % Slot.money
+	info_lbl_3d.text += "\n目標金額："
+	info_lbl_3d.text += "\n%s" % game_scene.target_money
+
 
 func refresh_view():
 	slot_view.refresh_view()
-	cumulative_amount_lbl.text = "累積金額：%s" % cumulative_amount
-	cumulative_amount_lbl.text += "\n剩餘次數：%s" % Slot.spin_times
+	refresh_info_label()
 
 func reset():
 	btn_used = false

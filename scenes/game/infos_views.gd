@@ -7,6 +7,7 @@ class_name InfosViews
 @export var voucher_lbl: LabelEx
 
 @export var level_info_view: Control
+@export var level_info_label_3d: Label3D 
 
 
 func refresh_view():

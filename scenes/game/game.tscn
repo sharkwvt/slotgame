@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=17 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -15,6 +15,9 @@
 [ext_resource type="Script" uid="uid://be3s3qubevfnb" path="res://scenes/game/result_views.gd" id="10_4j704"]
 [ext_resource type="PackedScene" uid="uid://c2hckrk53snne" path="res://common/btn/return/return_button.tscn" id="11_ftsea"]
 [ext_resource type="Texture2D" uid="uid://b6udh65ijprjm" path="res://image/slot/slot_bingo.png" id="11_otnwt"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_otnwt"]
+viewport_path = NodePath("SubViewport")
 
 [node name="Game" type="Control" node_paths=PackedStringArray("slot_img", "slot_bg", "camera", "start_view", "menu_view", "game_view", "shop_view", "items_views", "odds_views", "infos_views", "slot_views", "result_views", "shop_btn", "slot_btn", "select_spin_view", "spin_7_btn", "spin_3_btn")]
 layout_mode = 3
@@ -308,7 +311,7 @@ text = "拉3次，兌換券+2"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "cumulative_amount_lbl", "use_item_btn", "spin_btn", "slot_view", "symbols_panel")]
+[node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -318,23 +321,21 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_2a8rs")
 game_scene = NodePath("..")
-cumulative_amount_lbl = NodePath("CumulativeLabel")
 use_item_btn = NodePath("使用道具")
 spin_btn = NodePath("SpinButton")
 slot_view = NodePath("Symbols/Mask/SlotView")
 symbols_panel = NodePath("Symbols")
+info_lbl_3d = NodePath("../SubViewport/Label3D")
 
-[node name="CumulativeLabel" type="Label" parent="SlotViews"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -153.5
-offset_right = 153.5
-offset_bottom = 71.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 50
-text = "累積金額：00"
+[node name="Viewport3D" type="TextureRect" parent="SlotViews"]
+top_level = true
+layout_mode = 0
+offset_left = 137.0
+offset_top = 669.0
+offset_right = 437.0
+offset_bottom = 969.0
+texture = SubResource("ViewportTexture_otnwt")
+expand_mode = 1
 
 [node name="使用道具" type="Button" parent="SlotViews"]
 top_level = true
@@ -666,3 +667,21 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="Label3D" type="Label3D" parent="SubViewport"]
+transform = Transform3D(0.888427, -0.21762, 0.404152, 0.0999611, 0.951066, 0.292372, -0.448001, -0.219352, 0.866706, 4, 185, 0)
+pixel_size = 1.0
+text = "testesttestest
+sssss
+SSSSSSSSS
+安安安安安安安安
+s
+s"
+vertical_alignment = 0
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
+fov = 20.0
