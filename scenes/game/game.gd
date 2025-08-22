@@ -50,6 +50,9 @@ var data: CharacterData
 var triggered_item_tween: Tween
 var bg_tween: Tween
 
+var has_dialog: bool
+var dialog
+
 signal triggered_anim_finish
 signal zoomed
 
@@ -113,8 +116,10 @@ func setup():
 	slot_btn.pressed.connect(_on_slot_btn_pressed)
 	spin_7_btn.pressed.connect(_on_select_slot_pressed.bind(0))
 	spin_3_btn.pressed.connect(_on_select_slot_pressed.bind(1))
+	$Menu/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.start))
 	$Shop/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
 	$SelectSpinViews/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
+	$SlotViews/ReturnButton.pressed.connect(_on_shutdown_btn_pressed)
 	slot_img.pivot_offset = slot_img.size / 2.0
 	slot_bg.pivot_offset = slot_bg.size / 2.0
 	slot_img.scale = Vector2(2, 2)
@@ -320,3 +325,24 @@ func _on_select_slot_pressed(id: int):
 	Slot.next_wave()
 	last_slot_times -= 1
 	switch_view(VIEW_STATE.game)
+
+func _on_shutdown_btn_pressed():
+	if has_dialog:
+		return
+	has_dialog = true
+	dialog = Main.create_dialog_view()
+	dialog.title.text = "提示"
+	dialog.msg.text = "確定要退出嗎？"
+	dialog.confirm_btn.pressed.connect(_on_return_confirm)
+	dialog.cancel_btn.pressed.connect(_on_dialog_cancel)
+
+func close_dialog():
+	dialog.queue_free()
+	has_dialog = false
+
+func _on_return_confirm():
+	close_dialog()
+	switch_view(VIEW_STATE.menu)
+	
+func _on_dialog_cancel():
+	close_dialog()
