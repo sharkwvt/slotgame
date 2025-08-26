@@ -6,15 +6,18 @@ const Item = Slot.Item
 @export var game_scene: GameScene
 
 @export var items_view: Panel
+@export var items_view_slot: Control
+@export var item_bg: Texture
 
 func refresh_view():
 	# 清空
 	for child in items_view.get_children():
 		child.queue_free()
-	
-	var item_size = Vector2(100, 100)
-	var offset_x = item_size.x + 10
+	for child in items_view_slot.get_children():
+		child.queue_free()
 	for i in Slot.items.size():
+		var item_size = Vector2(100, 100)
+		var offset_x = item_size.x + 10
 		var item: Item = Slot.items[i]
 		var item_view = TextureRect.new()
 		item_view.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -31,6 +34,26 @@ func refresh_view():
 					show_item_info_view(item)
 		)
 		items_view.add_child(item_view)
+	
+	for i in Slot.ITEMS_SIZE:
+		var item_bg_view = TextureRect.new()
+		item_bg_view.texture = item_bg 
+		item_bg_view.position = Vector2.ZERO
+		var offset_x = item_bg_view.size.x + 1
+		item_bg_view.position = Vector2(i * offset_x + 10, -item_bg_view.size.y / 2.0)
+		items_view_slot.add_child(item_bg_view)
+		if i < Slot.items.size():
+			var item_icon = TextureRect.new()
+			var item: Item = Slot.items[i]
+			item_icon.texture = Main.item_datas[Slot.items[i]].get_img()
+			item_icon.gui_input.connect(
+				func (event: InputEvent):
+					if event.is_pressed():
+						show_item_info_view(item)
+			)
+			item_bg_view.add_child(item_icon)
+		
+		
 
 
 func show_item_info_view(item: Item):

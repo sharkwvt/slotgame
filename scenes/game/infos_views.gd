@@ -22,9 +22,11 @@ func refresh_level_info_view():
 	
 	var temp_view = Control.new()
 	var offset_x = 10
+	var font_color = Color("5f5105")
 	
 	var last_wave_string = str("剩餘機台使用次數: ", "%s" % game_scene.last_slot_times)
 	var last_wave_lbl = Label.new()
+	last_wave_lbl.add_theme_color_override("font_color", font_color)
 	last_wave_lbl.add_theme_font_size_override("font_size", 50)
 	last_wave_lbl.text = last_wave_string
 	last_wave_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
@@ -52,6 +54,7 @@ func refresh_level_info_view():
 	
 	var target_cash_string = str("目標金額: ", "%s" % game_scene.target_money)
 	var target_cash_lbl = Label.new()
+	target_cash_lbl.add_theme_color_override("font_color", font_color)
 	target_cash_lbl.add_theme_font_size_override("font_size", 50)
 	target_cash_lbl.text = target_cash_string
 	target_cash_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
@@ -61,6 +64,7 @@ func refresh_level_info_view():
 	
 	var cash_string = str("當前金額: ", "%s" % Slot.money)
 	var cash_lbl = Label.new()
+	cash_lbl.add_theme_color_override("font_color", font_color)
 	cash_lbl.add_theme_font_size_override("font_size", 50)
 	cash_lbl.text = cash_string
 	cash_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
@@ -70,6 +74,7 @@ func refresh_level_info_view():
 	
 	var bonus_string = str("結算獎勵: ", "%s兌換券" % game_scene.get_bonus_voucher())
 	var bonus_lbl = Label.new()
+	bonus_lbl.add_theme_color_override("font_color", font_color)
 	bonus_lbl.add_theme_font_size_override("font_size", 50)
 	bonus_lbl.text = bonus_string
 	bonus_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)

@@ -6,7 +6,7 @@ class_name LabelEx
 var org_size: int
 var temp_txt: String
 
-func _init() -> void:
+func _ready() -> void:
 	clip_text = true
 	org_size = get_theme_font_size("font_size")
 	adjust_font_size_to_fit()

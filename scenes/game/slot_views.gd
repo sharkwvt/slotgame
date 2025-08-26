@@ -3,6 +3,14 @@ class_name SlotViews
 
 @export var game_scene: GameScene
 
+@export var spin_img: TextureRect
+@export var spin_n: Texture
+@export var spin_p: Texture
+
+@export var item_btn_img: TextureRect
+@export var item_btn_n: Texture
+@export var item_btn_p: Texture
+
 @export var use_item_btn: ButtonEx
 @export var spin_btn: ButtonEx
 @export var slot_view: SlotView
@@ -31,6 +39,7 @@ func start_spin():
 	if Slot.spin_times <= 0:
 		return
 	in_spin = true
+	spin_img.texture = spin_p
 	slot_view.old_grid = Slot.grid.duplicate(true)
 	
 	# 轉時效果
@@ -73,6 +82,7 @@ func reset():
 
 func _on_item_btn_pressed():
 	if not btn_used:
+		item_btn_img.texture = item_btn_p
 		Slot.triggered_items.clear()
 		Slot.use_items()
 		btn_used = true
@@ -91,6 +101,8 @@ func _on_spin_finish():
 		cumulative_amount += r
 		Slot.money += r
 	
+	spin_img.texture = spin_n
+	item_btn_img.texture = item_btn_n
 	game_scene.refresh_view()
 	
 	if Slot.spin_times <= 0:

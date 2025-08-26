@@ -1,6 +1,7 @@
 extends Node
 
 var screen_size = Vector2i(1920, 1080)
+var theme_colors = [Color("5f5105"), Color("b9a865")]
 
 var debug = true
 

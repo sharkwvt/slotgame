@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=30 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -6,15 +6,35 @@
 [ext_resource type="Script" uid="uid://dtshx36t0vcu0" path="res://scenes/game/items_views.gd" id="2_lfrn8"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="3_0sr1o"]
 [ext_resource type="Script" uid="uid://b1qv01mbj1lv0" path="res://scenes/game/odds_views.gd" id="4_5i0tg"]
+[ext_resource type="StyleBox" uid="uid://b0nvqttgbtith" path="res://styles/style_btn_h.tres" id="4_gc57s"]
 [ext_resource type="Script" uid="uid://b7a8k4lq1idu8" path="res://extends/label_ex.gd" id="4_lfrn8"]
+[ext_resource type="StyleBox" uid="uid://24rr5oxpk3xc" path="res://styles/style_btn_n.tres" id="4_pg2xm"]
+[ext_resource type="StyleBox" uid="uid://box7443uumay" path="res://styles/style_btn_p.tres" id="5_gc57s"]
 [ext_resource type="Script" uid="uid://ij7vfug3b0xf" path="res://slot_view.gd" id="5_lfrn8"]
 [ext_resource type="Script" uid="uid://bd6gsgjh5fi2f" path="res://scenes/game/start_views.gd" id="7_bdhmt"]
 [ext_resource type="Script" uid="uid://c7x5wibemt3cl" path="res://scenes/game/slot_views.gd" id="8_2a8rs"]
 [ext_resource type="Script" uid="uid://cky4i1i2ppio" path="res://scenes/game/infos_views.gd" id="8_87uf6"]
+[ext_resource type="Texture2D" uid="uid://l6vk80ljg7y7" path="res://image/slot/item/ithem_bg.png" id="9_h48ew"]
 [ext_resource type="Texture2D" uid="uid://dto6da7coqg1n" path="res://image/slot/game_slot_bg.png" id="9_vaxfo"]
 [ext_resource type="Script" uid="uid://be3s3qubevfnb" path="res://scenes/game/result_views.gd" id="10_4j704"]
 [ext_resource type="PackedScene" uid="uid://c2hckrk53snne" path="res://common/btn/return/return_button.tscn" id="11_ftsea"]
 [ext_resource type="Texture2D" uid="uid://b6udh65ijprjm" path="res://image/slot/slot_bingo.png" id="11_otnwt"]
+[ext_resource type="Texture2D" uid="uid://ddlmawdn7qc1a" path="res://image/slot/push_a.png" id="13_3jaai"]
+[ext_resource type="Texture2D" uid="uid://cionvlqbj2rde" path="res://image/slot/push_b.png" id="14_1iff4"]
+[ext_resource type="Texture2D" uid="uid://c824p3xmlfgw1" path="res://image/slot/symbol_a.png" id="15_3xj4h"]
+[ext_resource type="Texture2D" uid="uid://dyvetrmmpmivf" path="res://image/slot/money.png" id="15_uyinl"]
+[ext_resource type="Texture2D" uid="uid://bdvm4v4okj208" path="res://image/slot/pattern_a.png" id="16_5v6r0"]
+[ext_resource type="Texture2D" uid="uid://x06u0enyxwke" path="res://image/slot/ues_ithem_n.png" id="16_wdnak"]
+[ext_resource type="Texture2D" uid="uid://c5yur1xob6seh" path="res://image/slot/ues_ithem_d.png" id="18_4vuph"]
+[ext_resource type="Texture2D" uid="uid://mkjtb01ihg8a" path="res://image/slot/symbol_bg.png" id="19_8b66f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8b66f"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.372549, 0.317647, 0.0196078, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_otnwt"]
 viewport_path = NodePath("3DSubViewport")
@@ -113,7 +133,13 @@ offset_right = 210.0
 offset_bottom = -30.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 70
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "開始遊戲"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
@@ -131,7 +157,13 @@ offset_right = 210.0
 offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 70
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "回想"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
@@ -149,7 +181,13 @@ offset_right = 210.0
 offset_bottom = 234.73
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 70
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "設定"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
@@ -167,7 +205,13 @@ offset_right = 210.0
 offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_color = Color(0.372549, 0.313726, 0.0823529, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 70
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "離開"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
@@ -177,17 +221,16 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -140.0
+offset_left = -280.0
 offset_top = 170.0
-offset_right = 140.0
+offset_right = 280.0
 offset_bottom = 367.0
 grow_horizontal = 2
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
 theme_override_font_sizes/font_size = 140
 text = "遊戲標題"
-script = ExtResource("4_lfrn8")
-metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
-[node name="ItemsViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "items_view")]
+[node name="ItemsViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "items_view", "items_view_slot")]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -199,6 +242,8 @@ mouse_filter = 2
 script = ExtResource("2_lfrn8")
 game_scene = NodePath("..")
 items_view = NodePath("ItemsView")
+items_view_slot = NodePath("../SlotViews/ItemView")
+item_bg = ExtResource("9_h48ew")
 
 [node name="ItemsView" type="Panel" parent="ItemsViews"]
 layout_mode = 1
@@ -213,6 +258,7 @@ offset_right = 719.0
 offset_bottom = -305.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8b66f")
 
 [node name="ItemsViewLbl" type="Label" parent="ItemsViews"]
 layout_mode = 1
@@ -224,6 +270,7 @@ offset_top = 519.0
 offset_right = 140.0
 offset_bottom = 618.0
 grow_horizontal = 2
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
 theme_override_font_sizes/font_size = 70
 text = "持有道具"
 script = ExtResource("4_lfrn8")
@@ -262,6 +309,7 @@ script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="SelectSpinViews" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -283,7 +331,13 @@ offset_right = 390.0
 offset_bottom = -61.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 70
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "拉7次，兌換券+1"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
@@ -301,20 +355,26 @@ offset_right = 390.0
 offset_bottom = 144.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 70
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "拉3次，兌換券+2"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="ReturnButton" parent="SelectSpinViews" instance=ExtResource("11_ftsea")]
+top_level = true
 layout_mode = 1
 offset_left = 206.8
 offset_top = 86.2
 offset_right = 306.8
 offset_bottom = 186.2
 
-[node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
-visible = false
+[node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "spin_img", "item_btn_img", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -324,11 +384,41 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_2a8rs")
 game_scene = NodePath("..")
+spin_img = NodePath("SpinImg")
+spin_n = ExtResource("13_3jaai")
+spin_p = ExtResource("14_1iff4")
+item_btn_img = NodePath("ItemBtnImg")
+item_btn_n = ExtResource("18_4vuph")
+item_btn_p = ExtResource("16_wdnak")
 use_item_btn = NodePath("使用道具")
 spin_btn = NodePath("SpinButton")
 slot_view = NodePath("Symbols/Mask/SlotView")
 symbols_panel = NodePath("Symbols")
 info_lbl_3d = NodePath("../3DSubViewport/Label3D")
+
+[node name="ItemBtnImg" type="TextureRect" parent="SlotViews"]
+top_level = true
+layout_mode = 0
+offset_left = 980.0
+offset_top = 164.0
+offset_right = 1116.0
+offset_bottom = 222.0
+texture = ExtResource("18_4vuph")
+
+[node name="SpinImg" type="TextureRect" parent="SlotViews"]
+top_level = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -397.0
+offset_top = -212.0
+offset_right = 397.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("13_3jaai")
 
 [node name="使用道具" type="Button" parent="SlotViews"]
 top_level = true
@@ -338,14 +428,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 103.0
-offset_top = -931.0
-offset_right = 411.0
-offset_bottom = -853.0
+offset_left = -14.0
+offset_top = -934.0
+offset_right = 186.0
+offset_bottom = -856.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
-text = "使用主動道具"
+flat = true
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
@@ -392,13 +482,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -200.0
-offset_right = 250.0
+offset_left = -350.0
+offset_top = -250.0
+offset_right = 350.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
-text = "拉霸"
+flat = true
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
@@ -415,7 +505,21 @@ offset_top = 47.0
 offset_right = 171.0
 offset_bottom = 147.0
 
+[node name="Items" type="Control" parent="SlotViews"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemView" type="Control" parent="SlotViews"]
+top_level = true
+anchors_preset = 0
+offset_left = 560.0
+offset_top = 195.0
+offset_right = 560.0
+offset_bottom = 195.0
+
 [node name="Menu" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -448,7 +552,13 @@ offset_right = 570.0
 offset_bottom = -711.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_colors/font_hover_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "商店按鈕"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
@@ -460,18 +570,25 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -104.0
-offset_top = -259.0
-offset_right = 104.0
-offset_bottom = -181.0
+offset_left = -150.0
+offset_top = -280.0
+offset_right = 150.0
+offset_bottom = -200.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_colors/font_hover_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_colors/font_pressed_color = Color(0.72549, 0.658824, 0.396078, 1)
 theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = ExtResource("4_gc57s")
+theme_override_styles/pressed = ExtResource("5_gc57s")
+theme_override_styles/normal = ExtResource("4_pg2xm")
 text = "開始拉霸"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="ReturnButton" parent="Menu" instance=ExtResource("11_ftsea")]
+top_level = true
 layout_mode = 1
 offset_left = 206.8
 offset_top = 86.2
@@ -489,6 +606,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="ReturnButton" parent="Shop" instance=ExtResource("11_ftsea")]
+top_level = true
 layout_mode = 1
 offset_left = 206.8
 offset_top = 86.2
@@ -567,7 +685,6 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_kp23o")
 expand_mode = 1
-stretch_mode = 5
 
 [node name="SlotImage2" type="TextureRect" parent="."]
 visible = false
@@ -588,7 +705,6 @@ pivot_offset = Vector2(960, 540)
 mouse_filter = 2
 texture = ExtResource("2_kp23o")
 expand_mode = 1
-stretch_mode = 5
 
 [node name="Viewport3D" type="TextureRect" parent="."]
 layout_mode = 0
@@ -599,7 +715,7 @@ offset_bottom = 969.0
 texture = SubResource("ViewportTexture_otnwt")
 expand_mode = 1
 
-[node name="OddsViews" type="Control" parent="." node_paths=PackedStringArray("symbols_odds_view", "pattern_btn", "pattern_odds_view", "symbols_btn")]
+[node name="OddsViews" type="Control" parent="." node_paths=PackedStringArray("slot_view", "symbols_odds_view", "pattern_btn", "pattern_odds_view", "symbols_btn", "bg_switch")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -608,20 +724,67 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("4_5i0tg")
+slot_view = NodePath("../SlotViews/Symbols/Mask/SlotView")
+money_img = ExtResource("15_uyinl")
 symbols_odds_view = NodePath("SymbolsOddsView")
 pattern_btn = NodePath("PatternBtn")
 pattern_odds_view = NodePath("PatternOddsView")
 symbols_btn = NodePath("SymbolsBtn")
+bg_switch = NodePath("BtnBGSwitch")
+
+[node name="BG" type="TextureRect" parent="OddsViews"]
+layout_mode = 0
+offset_left = 1465.0
+offset_top = 237.0
+offset_right = 1905.0
+offset_bottom = 853.0
+texture = ExtResource("19_8b66f")
+
+[node name="BtnBG1" type="TextureRect" parent="OddsViews"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -455.0
+offset_top = 168.0
+offset_right = -15.0
+offset_bottom = 238.0
+grow_horizontal = 0
+texture = ExtResource("15_3xj4h")
+
+[node name="BtnBG2" type="TextureRect" parent="OddsViews"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -455.0
+offset_top = 168.0
+offset_right = -15.0
+offset_bottom = 238.0
+grow_horizontal = 0
+texture = ExtResource("16_5v6r0")
+
+[node name="BtnBGSwitch" type="TextureRect" parent="OddsViews"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -455.0
+offset_top = 168.0
+offset_right = -15.0
+offset_bottom = 238.0
+grow_horizontal = 0
+texture = ExtResource("15_3xj4h")
 
 [node name="PatternBtn" type="Button" parent="OddsViews"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 707.0
-offset_top = 170.0
-offset_right = 861.0
-offset_bottom = 219.0
+offset_left = 726.0
+offset_top = 161.0
+offset_right = 906.0
+offset_bottom = 221.0
 grow_horizontal = 2
 flat = true
 script = ExtResource("3_0sr1o")
@@ -632,36 +795,36 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 552.0
-offset_top = 173.0
-offset_right = 706.0
-offset_bottom = 222.0
+offset_left = 545.0
+offset_top = 164.0
+offset_right = 725.0
+offset_bottom = 224.0
 grow_horizontal = 2
 flat = true
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="SymbolsOddsView" type="Panel" parent="OddsViews"]
+[node name="SymbolsOddsView" type="Control" parent="OddsViews"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -470.0
-offset_top = 245.0
-offset_right = -31.0
-offset_bottom = 861.0
+offset_left = -453.0
+offset_top = 239.0
+offset_right = -18.0
+offset_bottom = 839.0
 grow_horizontal = 0
 
-[node name="PatternOddsView" type="Panel" parent="OddsViews"]
+[node name="PatternOddsView" type="Control" parent="OddsViews"]
 visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -471.0
-offset_top = 243.0
-offset_right = -31.0
-offset_bottom = 865.0
+offset_left = -465.0
+offset_top = 175.0
+offset_right = -30.0
+offset_bottom = 775.0
 grow_horizontal = 0
 
 [node name="ResultViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "result_img_view")]
@@ -698,6 +861,8 @@ transparent_bg = true
 [node name="Label3D" type="Label3D" parent="3DSubViewport"]
 transform = Transform3D(0.888427, -0.21762, 0.404152, 0.0999611, 0.951066, 0.292372, -0.448001, -0.219352, 0.866706, 4, 185, 0)
 pixel_size = 1.0
+modulate = Color(0.372549, 0.317647, 0.0196078, 1)
+outline_modulate = Color(0, 0, 0, 0)
 text = "testesttestest
 sssss
 SSSSSSSSS
@@ -709,3 +874,32 @@ vertical_alignment = 0
 [node name="Camera3D" type="Camera3D" parent="3DSubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
+
+[node name="TempItemBtnImg" type="TextureRect" parent="."]
+top_level = true
+layout_mode = 0
+offset_left = 1068.0
+offset_top = -180.0
+offset_right = 1204.0
+offset_bottom = -122.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(68, 29)
+texture = ExtResource("18_4vuph")
+
+[node name="TempSpinImg" type="TextureRect" parent="."]
+top_level = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -397.0
+offset_top = 218.0
+offset_right = 397.0
+offset_bottom = 430.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(397, 106)
+texture = ExtResource("13_3jaai")

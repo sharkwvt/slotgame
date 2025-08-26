@@ -11,7 +11,17 @@ var not_occupy: bool
 var usable_count: int
 
 func get_img() -> Texture:
-	return load("res://image/app_icon.png")
+	var img: Texture
+	if Images.item_imgs.size() <= id+1:
+		Images.item_imgs.resize(id+1)
+	
+	if Images.item_imgs[id]:
+		img = Images.item_imgs[id]
+	else:
+		var path = "res://image/slot/item/%s.png" % id
+		img = load(path)
+		Images.item_imgs[id] = img
+	return img
 
 func get_buff() -> Slot.Buff:
 	Logger.log("觸發 " + title)

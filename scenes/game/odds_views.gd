@@ -1,21 +1,27 @@
 extends Control
 class_name OddsViews
 
-@export var symbols_odds_view: Panel
+@export var slot_view: SlotView
+@export var money_img: Texture
+
+@export var symbols_odds_view: Control
 @export var pattern_btn: ButtonEx
-@export var pattern_odds_view: Panel
+@export var pattern_odds_view: Control
 @export var symbols_btn: ButtonEx
+@export var bg_switch: TextureRect
 
 func _ready() -> void:
 	pattern_btn.pressed.connect(
 		func ():
 			pattern_odds_view.visible = true
 			symbols_odds_view.visible = false
+			bg_switch.visible = true
 	)
 	symbols_btn.pressed.connect(
 		func ():
-			symbols_odds_view.visible = true
 			pattern_odds_view.visible = false
+			symbols_odds_view.visible = true
+			bg_switch.visible = false
 	)
 
 func refresh_view():

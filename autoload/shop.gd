@@ -3,7 +3,7 @@ extends Node
 var game_scene: GameScene
 
 var items_container: Control
-var refresh_button: Button
+var refresh_button: CommonBtn
 var shop_view: Control
 
 const Item = Slot.Item
@@ -39,7 +39,7 @@ func refresh_items():
 
 
 func refresh_item_ui():
-	refresh_button.text = "🔄 刷新商品 (%s$)" % get_refresh_item_cost()
+	refresh_button.text = "刷新商品 (%s$)" % get_refresh_item_cost()
 	refresh_button.position = Vector2(
 		(Main.screen_size.x - refresh_button.size.x) / 2.0,
 		Main.screen_size.y - refresh_button.size.y - 150
@@ -51,32 +51,23 @@ func refresh_item_ui():
 	for i in current_items.size():
 		var item = current_items[i]
 		var item_panel = create_item_panel(item, i)
+		var offset = item_panel.size.x + 10
 		item_panel.position = Vector2(
-			item_panel.size.x * i + (Main.screen_size.x - item_panel.size.x * 4) / 2.0,
+			offset * i + (Main.screen_size.x - offset * 4) / 2.0,
 			(Main.screen_size.y - item_panel.size.y) / 2.0
 		)
 		items_container.add_child(item_panel)
 		
 
 
-func create_item_panel(item_data: ItemData, index: int) -> Panel:
+func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	# 創建主面板
-	var panel = Panel.new()
+	var panel = ButtonEx.new()
 	panel.size = Vector2(350, 500)
-	
-	# 添加背景顏色
-	var style_box = StyleBoxFlat.new()
-	style_box.bg_color = Color(0.2, 0.2, 0.3, 0.8)
-	style_box.border_width_left = 2
-	style_box.border_width_right = 2
-	style_box.border_width_top = 2
-	style_box.border_width_bottom = 2
-	style_box.border_color = Color(0.4, 0.4, 0.6)
-	style_box.corner_radius_top_left = 8
-	style_box.corner_radius_top_right = 8
-	style_box.corner_radius_bottom_left = 8
-	style_box.corner_radius_bottom_right = 8
-	panel.add_theme_stylebox_override("panel", style_box)
+	panel.pressed.connect(_on_item_purchased.bind(item_data, index))
+	panel.add_theme_stylebox_override("normal", load("res://styles/style_btn_h.tres"))
+	panel.add_theme_stylebox_override("hover", load("res://styles/style_btn_h.tres"))
+	panel.add_theme_stylebox_override("pressed", load("res://styles/style_btn_h.tres"))
 	
 	# 創建垂直布局容器
 	var vbox = VBoxContainer.new()
@@ -86,36 +77,47 @@ func create_item_panel(item_data: ItemData, index: int) -> Panel:
 	
 	# 添加邊距
 	var margin = MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 10)
-	margin.add_theme_constant_override("margin_right", 10)
-	margin.add_theme_constant_override("margin_top", 10)
-	margin.add_theme_constant_override("margin_bottom", 10)
+	margin.add_theme_constant_override("margin_left", 20)
+	margin.add_theme_constant_override("margin_right", 20)
+	margin.add_theme_constant_override("margin_top", 20)
+	margin.add_theme_constant_override("margin_bottom", 20)
 	vbox.add_child(margin)
 	
 	var content_vbox = VBoxContainer.new()
 	content_vbox.add_theme_constant_override("separation", 5)
 	margin.add_child(content_vbox)
 	
+	var title_root = Control.new()
+	title_root.custom_minimum_size.y = 70
+	content_vbox.add_child(title_root)
+	
 	# 道具圖標（使用文字代替圖片）
-	var icon_label = Label.new()
-	icon_label.text = get_item_emoji(item_data.name)
-	icon_label.add_theme_font_size_override("font_size", 50)
-	icon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	content_vbox.add_child(icon_label)
+	var icon = TextureRect.new()
+	icon.texture = item_data.get_img()
+	title_root.add_child(icon)
+	icon.position = Vector2.ZERO
+	#var icon_label = Label.new()
+	#icon_label.text = get_item_emoji(item_data.name)
+	#icon_label.add_theme_font_size_override("font_size", 50)
+	#icon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	#title_root.add_child(icon_label)
+	#icon_label.position = Vector2.ZERO
 	
 	# 道具名稱
-	var name_label = Label.new()
+	var name_label = LabelEx.new()
+	name_label.size = Vector2(panel.size.x - icon.size.x, icon.size.y)
 	name_label.text = item_data.title
 	name_label.add_theme_font_size_override("font_size", 30)
-	name_label.add_theme_color_override("font_color", Color.YELLOW)
+	name_label.add_theme_color_override("font_color", Main.theme_colors[0])
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	content_vbox.add_child(name_label)
+	title_root.add_child(name_label)
+	
 	
 	# 道具描述
 	var desc_label = Label.new()
 	desc_label.text = item_data.description
 	desc_label.add_theme_font_size_override("font_size", 30)
-	desc_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
+	desc_label.add_theme_color_override("font_color", Main.theme_colors[0])
 	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content_vbox.add_child(desc_label)
@@ -124,7 +126,7 @@ func create_item_panel(item_data: ItemData, index: int) -> Panel:
 		var usable_label = Label.new()
 		usable_label.text = "可用次數: %s" % item_data.usable_count
 		usable_label.add_theme_font_size_override("font_size", 30)
-		usable_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
+		usable_label.add_theme_color_override("font_color", Main.theme_colors[0])
 		usable_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		usable_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		content_vbox.add_child(usable_label)
@@ -133,36 +135,38 @@ func create_item_panel(item_data: ItemData, index: int) -> Panel:
 		var remark_label = Label.new()
 		remark_label.text = item_data.remark
 		remark_label.add_theme_font_size_override("font_size", 30)
-		remark_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
+		remark_label.add_theme_color_override("font_color", Main.theme_colors[0])
 		remark_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		remark_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		content_vbox.add_child(remark_label)
 		
 	
 	# 價格和購買按鈕的水平布局
+	var hbox_bg = ColorRect.new()
+	hbox_bg.color = Main.theme_colors[0]
+	hbox_bg.size = Vector2(panel.size.x, 70)
+	hbox_bg.position.y = panel.size.y - hbox_bg.size.y
+	panel.add_child(hbox_bg)
+	
 	var hbox = HBoxContainer.new()
 	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	content_vbox.add_child(hbox)
+	hbox_bg.add_child(hbox)
+	
+	var v_icon = TextureRect.new()
+	v_icon.texture = Images.voucher_icon_2
+	hbox.add_child(v_icon)
 	
 	# 價格標籤
 	var price_label = Label.new()
 	price_label.text = str(item_data.cost)
 	price_label.add_theme_font_size_override("font_size", 30)
-	price_label.add_theme_color_override("font_color", Color.GOLD)
+	price_label.add_theme_color_override("font_color", Main.theme_colors[1])
 	hbox.add_child(price_label)
 	
-	# 間隔
-	var spacer = Control.new()
-	spacer.custom_minimum_size = Vector2(10, 0)
-	hbox.add_child(spacer)
+	hbox.position = Vector2.ZERO
+	#hbox.position = Vector2((hbox_bg.size.x - hbox.size.x) / 2.0, hbox_bg.size.y - hbox.size.y)
 	
-	# 購買按鈕
-	var buy_button = Button.new()
-	buy_button.text = "購買"
-	buy_button.add_theme_font_size_override("font_size", 30)
-	buy_button.pressed.connect(_on_item_purchased.bind(item_data, index))
-	buy_button.size.y = 40
-	hbox.add_child(buy_button)
+	hbox.position = (hbox_bg.size - hbox.size) / 2.0
 	
 	return panel
 
@@ -209,9 +213,9 @@ func setup():
 	items_container = grid
 	
 	# 刷新按鈕
-	refresh_button = Button.new()
+	refresh_button = CommonBtn.new()
 	refresh_button.name = "RefreshButton"
-	refresh_button.text = "🔄 刷新商品"
+	refresh_button.text = "刷新商品"
 	refresh_button.add_theme_font_size_override("font_size", 50)
 	refresh_button.pressed.connect(_on_refresh_button_pressed)
 	refresh_button.size = Vector2(500, 100)
