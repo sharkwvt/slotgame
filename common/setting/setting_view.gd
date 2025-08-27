@@ -15,12 +15,13 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	if Input.is_action_pressed("ui_cancel"):
-		queue_free()
+#func _process(_delta: float) -> void:
+	#if Input.is_action_pressed("ui_cancel"):
+		#queue_free()
 
 
 func setup():
+	lang_lbl = $SettingBG/LangLabel
 	lang_lbl = $SettingBG/LangLabel
 	display_lbl = $SettingBG/DisplayLabel
 	music_lbl = $SettingBG/MusicLabel
@@ -29,6 +30,7 @@ func setup():
 	display_option = $SettingBG/DisplayLabel/OptionButton
 	option_btns.append(lang_option)
 	option_btns.append(display_option)
+	$ReturnButton.pressed.connect(_on_close_button_pressed)
 
 
 func refresh():
@@ -40,15 +42,15 @@ func refresh():
 	display_option.selected = Setting.setting_data[Setting.setting_screen_key]
 	for op_btn: OptionButton in option_btns:
 		var popup: PopupMenu = op_btn.get_popup()
-		popup.add_theme_font_size_override("font_size", 50) # 改字體大小
+		popup.add_theme_font_size_override("font_size", op_btn.get_theme_font_size("font_size")) # 改字體大小
 	
 	# 排版
-	var offset_y = 100
-	var lbl_count = $SettingBG.get_children().size()
-	$SettingBG.size.y = offset_y * (lbl_count + 1)
-	for i in lbl_count:
-		var lbl: Control = $SettingBG.get_children()[i]
-		lbl.position.y = $SettingBG.size.y/2.0 + offset_y * (i - lbl_count/2.0)
+	#var offset_y = 100
+	#var lbl_count = $SettingBG.get_children().size()
+	#$SettingBG.size.y = offset_y * (lbl_count + 1)
+	#for i in lbl_count:
+		#var lbl: Control = $SettingBG.get_children()[i]
+		#lbl.position.y = $SettingBG.size.y/2.0 + offset_y * (i - lbl_count/2.0)
 
 
 func _on_music_slider_value_changed(value: float) -> void:
@@ -64,7 +66,8 @@ func _on_sound_slider_drag_ended(_value_changed: bool) -> void:
 
 
 func _on_close_button_pressed() -> void:
-	queue_free()
+	#queue_free()
+	Main.current_scene.return_scene()
 
 
 func _on_lang_option_item_selected(index: int) -> void:

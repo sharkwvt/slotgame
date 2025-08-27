@@ -81,7 +81,7 @@ func reset():
 
 
 func _on_item_btn_pressed():
-	if not btn_used:
+	if not btn_used and not in_spin:
 		item_btn_img.texture = item_btn_p
 		Slot.triggered_items.clear()
 		Slot.use_items()

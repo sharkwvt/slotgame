@@ -3,8 +3,6 @@ class_name SlotView
 
 @export var mask: Control
 @export var bingo_img: Texture
-var symbols_img_path = "res://image/symbols"
-var symbols_imgs = []
 
 var sym_panel: Control
 var anim_panel: Control
@@ -33,7 +31,6 @@ signal anim_finished
 
 
 func _ready():
-	load_symbols_imgs()
 	setup()
 	create_grid_view()
 
@@ -72,7 +69,7 @@ func set_symbol_view(node:Node, grid_info: GridInfo):
 	#lbl.text = SYMBOLS[grid_info.symbol]
 	#node.add_child(lbl)
 	var view = TextureRect.new()
-	view.texture = symbols_imgs[grid_info.symbol]
+	view.texture = Images.symbols_imgs[grid_info.symbol]
 	node.add_child(view)
 	if grid_info.is_golden_modifiers:
 		var gm_icon = ColorRect.new()
@@ -145,7 +142,7 @@ func show_reward_anim():
 	var temp_tween: Tween
 	for i in Slot.rewards.size():
 		var data: Slot.RewardData = Slot.rewards[i]
-		var duration = org_duration / ceil((i + 1) / 3.0)
+		var duration = org_duration / ceil((i + 1) / 2.0)
 		var g_tween: Tween
 		for pos in data.grid:
 			var target: ColorRect = grid_views[pos.x][pos.y]
@@ -167,7 +164,7 @@ func show_reward_anim():
 			#tween.tween_property(target, "color", org_color, duration)
 			tween.tween_property(bingo_view, "modulate:a", 1.0, duration)
 			if Slot.grid[pos.x][pos.y].is_golden_modifiers:
-				for j in 3:
+				for j in 2:
 					tween.tween_property(bingo_view, "modulate:a", 0.0, duration/3)
 					tween.tween_property(bingo_view, "modulate:a", 1.0, duration/3)
 				g_tween = tween
@@ -195,13 +192,6 @@ func reset():
 	anim_state = Anim_State.no_anim
 	anim_panel.visible = false
 	refresh_view()
-
-
-func load_symbols_imgs():
-	for i in SYMBOLS:
-		var path = symbols_img_path.path_join(i + ".png")
-		if FileAccess.file_exists(path):
-			symbols_imgs.append(load(path))
 
 func get_slot_size() -> Vector2:
 	return Vector2(SYMBOL_SIZE.x * COLUMNS, SYMBOL_SIZE.y * ROWS)

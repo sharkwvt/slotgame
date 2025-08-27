@@ -16,7 +16,7 @@ func refresh_view():
 	for child in items_view_slot.get_children():
 		child.queue_free()
 	for i in Slot.items.size():
-		var item_size = Vector2(100, 100)
+		var item_size = Vector2(50, 50)
 		var offset_x = item_size.x + 10
 		var item: Item = Slot.items[i]
 		var item_view = TextureRect.new()
@@ -44,25 +44,24 @@ func refresh_view():
 		items_view_slot.add_child(item_bg_view)
 		if i < Slot.items.size():
 			var item_icon = TextureRect.new()
-			var item: Item = Slot.items[i]
+			#var item: Item = Slot.items[i]
 			item_icon.texture = Main.item_datas[Slot.items[i]].get_img()
-			item_icon.gui_input.connect(
-				func (event: InputEvent):
-					if event.is_pressed():
-						show_item_info_view(item)
-			)
+			#item_icon.gui_input.connect(
+				#func (event: InputEvent):
+					#if event.is_pressed():
+						#show_item_info_view(item)
+			#)
 			item_bg_view.add_child(item_icon)
-		
-		
 
 
 func show_item_info_view(item: Item):
 	var item_data: ItemData = Main.item_datas[item]
 	
-	var offset = 30
+	var font_size = 20
+	var offset = 10
 	var temp_view: Control
 	
-	var mouse_pos = get_viewport().get_mouse_position()
+	var mouse_pos = get_global_mouse_position()
 	var window = ColorRect.new()
 	window.size = Main.screen_size
 	window.color = Color(Color.WHITE, 0)
@@ -78,16 +77,16 @@ func show_item_info_view(item: Item):
 	window.add_child(bg)
 	
 	var title_lbl = Label.new()
-	title_lbl.add_theme_font_size_override("font_size", 30)
+	title_lbl.add_theme_font_size_override("font_size", font_size)
 	title_lbl.text = item_data.title
 	title_lbl.position = Vector2(offset, offset)
 	bg.add_child(title_lbl)
 	temp_view = title_lbl
 	
 	var description_lbl = Label.new()
-	description_lbl.size = Vector2(500, 30)
+	description_lbl.size = Vector2(250, 30)
 	description_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	description_lbl.add_theme_font_size_override("font_size", 30)
+	description_lbl.add_theme_font_size_override("font_size", font_size)
 	description_lbl.text = item_data.description
 	description_lbl.position = Vector2(
 		offset,
@@ -98,7 +97,7 @@ func show_item_info_view(item: Item):
 	
 	if item in Slot.items_usable.keys():
 		var usable_lbl = Label.new()
-		usable_lbl.add_theme_font_size_override("font_size", 30)
+		usable_lbl.add_theme_font_size_override("font_size", font_size)
 		usable_lbl.text = "剩餘次數: %s" % Slot.items_usable[item]
 		usable_lbl.position = Vector2(
 			offset,
@@ -109,7 +108,7 @@ func show_item_info_view(item: Item):
 	
 	if item_data.remark:
 		var remark_lbl = Label.new()
-		remark_lbl.add_theme_font_size_override("font_size", 30)
+		remark_lbl.add_theme_font_size_override("font_size", font_size)
 		remark_lbl.text = item_data.remark
 		remark_lbl.position = Vector2(
 			offset,
@@ -119,7 +118,7 @@ func show_item_info_view(item: Item):
 		temp_view = remark_lbl
 	
 	var remove_btn = ButtonEx.new()
-	remove_btn.add_theme_font_size_override("font_size", 30)
+	remove_btn.add_theme_font_size_override("font_size", font_size)
 	remove_btn.text = "銷毀"
 	remove_btn.position = Vector2(
 		offset,
@@ -139,5 +138,8 @@ func show_item_info_view(item: Item):
 		temp_view.position.y + temp_view.size.y + offset
 	)
 	bg.position = mouse_pos
-	bg.position.x -= bg.size.x + offset
+	if mouse_pos.x < Main.screen_size.x / 2.0:
+		bg.position.x += offset
+	else:
+		bg.position.x -= bg.size.x + offset
 	bg.position.y -= bg.size.y

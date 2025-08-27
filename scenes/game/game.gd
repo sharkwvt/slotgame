@@ -8,6 +8,7 @@ const Item = Slot.Item
 @export var camera: Camera2D
 
 @export var start_view: Control
+@export var setting_view: Control
 @export var menu_view: Control
 @export var game_view: Control
 @export var shop_view: Control
@@ -27,6 +28,7 @@ const Item = Slot.Item
 
 enum VIEW_STATE {
 	start,
+	setting,
 	menu,
 	shop,
 	select_spin,
@@ -48,7 +50,7 @@ var target_money = 0
 var now_interest = 0
 var data: CharacterData
 var triggered_item_tween: Tween
-var bg_tween: Tween
+var cam_tween: Tween
 
 var has_dialog: bool
 var dialog
@@ -74,16 +76,19 @@ func result_check():
 				#reset()
 		#)
 	if last_slot_times <= 0 and Slot.money < target_money:
-		Main.show_talk_view("失敗了").finished.connect(
-			func ():
-				switch_view(VIEW_STATE.start)
-				reset()
-		)
+		#Main.show_talk_view("失敗了").finished.connect(
+			#func ():
+				#switch_view(VIEW_STATE.start)
+				#reset()
+		#)
+		switch_view(VIEW_STATE.start)
+		reset()
 	elif Slot.money >= target_money:
-		Main.show_talk_view("達成目標").finished.connect(
-			func ():
-				to_next_level()
-		)
+		#Main.show_talk_view("達成目標").finished.connect(
+			#func ():
+				#to_next_level()
+		#)
+		to_next_level()
 
 func to_next_level():
 	now_level += 1
@@ -122,8 +127,6 @@ func setup():
 	$SlotViews/ReturnButton.pressed.connect(_on_shutdown_btn_pressed)
 	slot_img.pivot_offset = slot_img.size / 2.0
 	slot_bg.pivot_offset = slot_bg.size / 2.0
-	slot_img.scale = Vector2(2, 2)
-	slot_bg.scale = Vector2(2, 2)
 
 
 func show_result_scene(is_success: bool):
@@ -183,29 +186,33 @@ func refresh_view():
 
 
 func switch_view(state: VIEW_STATE):
-	var target_scale: Vector2
+	var target_zoom: Vector2
 	match state:
 		VIEW_STATE.start:
-			target_scale = Vector2(2, 2)
+			target_zoom = Vector2(2, 2)
+		VIEW_STATE.setting:
+			target_zoom = Vector2(2, 2)
 		VIEW_STATE.menu:
-			target_scale = Vector2(2, 2)
+			target_zoom = Vector2(2, 2)
 			slot_btn.visible = true
 			refresh_view()
 		VIEW_STATE.shop:
-			target_scale = Vector2(2, 2)
+			target_zoom = Vector2(2, 2)
 		VIEW_STATE.select_spin:
-			target_scale = Vector2(2, 2)
+			target_zoom = Vector2(2, 2)
 		VIEW_STATE.game:
-			target_scale = Vector2(1, 1)
+			target_zoom = Vector2(1, 1)
 			slot_views.cumulative_amount = 0
 			refresh_view()
 		VIEW_STATE.result:
-			target_scale = Vector2(2, 2)
+			target_zoom = Vector2(2, 2)
 	
-	create_zoom_anim(target_scale)
+	zoom_anim(target_zoom)
 	await zoomed
 	
 	start_view.visible = state == VIEW_STATE.start
+	
+	setting_view.visible = state == VIEW_STATE.setting
 	
 	menu_view.visible = state == VIEW_STATE.menu
 	items_views.visible = state == VIEW_STATE.menu
@@ -225,22 +232,21 @@ func switch_view(state: VIEW_STATE):
 	
 	view_state = state
 
-func create_zoom_anim(target_scale: Vector2):
-	if target_scale == slot_img.scale:
+func zoom_anim(target_zoom: Vector2):
+	if camera.zoom == target_zoom:
 		await get_tree().process_frame
 		zoomed.emit()
 		return
-	var is_scale_up = target_scale > slot_img.scale
-	var target_zoom = Vector2(2, 2) if is_scale_up else Vector2(0.5, 0.5)
+	if cam_tween:
+		cam_tween.kill()
 	var anim_bg = TextureRect.new()
 	anim_bg.expand_mode = slot_bg.expand_mode
 	anim_bg.stretch_mode = slot_bg.stretch_mode
 	anim_bg.texture = slot_bg.texture
 	anim_bg.size = slot_bg.size
-	anim_bg.scale = slot_bg.scale
 	anim_bg.pivot_offset = slot_bg.pivot_offset
 	anim_bg.position = slot_bg.position
-	anim_bg.modulate.a = 0
+	anim_bg.modulate.a = 0.0
 	add_child(anim_bg)
 	var anim_img = TextureRect.new()
 	anim_img.expand_mode = slot_img.expand_mode
@@ -249,30 +255,23 @@ func create_zoom_anim(target_scale: Vector2):
 	anim_img.size = slot_img.size
 	anim_img.scale = slot_img.scale
 	anim_img.pivot_offset = slot_img.pivot_offset
-	anim_img.modulate.a = 0
+	anim_img.modulate.a = 0.0
 	add_child(anim_img)
 	var set_anim_a = func (a: float):
 		anim_img.modulate.a = a
 		anim_bg.modulate.a = a
-	bg_tween = anim_bg.create_tween()
-	bg_tween.tween_method(set_anim_a, 0.0, 1.0, 0.5)
-	bg_tween.parallel().tween_property(camera, "zoom", target_zoom, 0.5)
-	bg_tween.tween_callback(
+	cam_tween = camera.create_tween()
+	cam_tween.tween_method(set_anim_a, 0.0, 1.0, 0.5)
+	cam_tween.parallel().tween_property(camera, "zoom", target_zoom, 0.5)
+	cam_tween.tween_callback(zoomed.emit)
+	cam_tween.tween_method(set_anim_a, 1.0, 0.0, 0.5)
+	cam_tween.finished.connect(
 		func ():
-			slot_img.scale = target_scale
-			slot_bg.scale = target_scale
-			camera.zoom = Vector2(1, 1)
-			anim_img.scale = target_scale
-			anim_bg.scale = target_scale
-			zoomed.emit()
-	)
-	bg_tween.tween_method(set_anim_a, 1.0, 0.0, 0.5)
-	bg_tween.finished.connect(
-		func ():
-			anim_img.queue_free()
 			anim_bg.queue_free()
-			bg_tween.kill()
+			anim_img.queue_free()
+			cam_tween.kill()
 	)
+
 
 func reset():
 	Slot.reset()
@@ -287,6 +286,8 @@ func reset():
 
 func return_scene():
 	match view_state:
+		VIEW_STATE.setting:
+			switch_view(VIEW_STATE.start)
 		VIEW_STATE.menu:
 			switch_view(VIEW_STATE.start)
 		VIEW_STATE.shop:

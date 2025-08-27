@@ -21,6 +21,7 @@ func _on_btn_pressed(id: int):
 		1: # 回想
 			pass
 		2: # 設定
-			Main.show_setting_view()
+			#Main.show_setting_view()
+			game_scene.switch_view(game_scene.VIEW_STATE.setting)
 		3: # 關閉遊戲
 			get_tree().quit()

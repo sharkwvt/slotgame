@@ -58,6 +58,8 @@ var statistics: Dictionary = {
 	STAT_KEY_Achievements: []
 }
 
+var main_cam: Camera2D
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	packed_scenes.resize(SCENE.size())
@@ -266,7 +268,8 @@ func show_tip(msg: String):
 	lbl.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	lbl.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	lbl.text = msg
-	lbl.position = get_viewport().get_mouse_position()
+	#lbl.position = get_viewport().get_mouse_position()
+	lbl.position = current_scene.get_global_mouse_position()
 	get_tree().root.add_child(lbl)
 	var tween: Tween = lbl.create_tween()
 	tween.set_parallel(true)
@@ -314,7 +317,8 @@ func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		var click_effect: GPUParticles2D = mouse_click_effect.instantiate()
 		click_effect.emitting = true
-		click_effect.position = Vector2(event.position.x+0,event.position.y+0)
+		#click_effect.position = Vector2(event.position.x+0,event.position.y+0)
+		click_effect.position = current_scene.get_global_mouse_position()
 		get_tree().root.add_child(click_effect)
 
 func _unhandled_key_input(event: InputEvent) -> void:
