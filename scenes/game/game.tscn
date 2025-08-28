@@ -650,6 +650,7 @@ offset_right = 650.8
 offset_bottom = 389.2
 
 [node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "spin_img", "item_btn_img", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

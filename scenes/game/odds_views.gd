@@ -36,6 +36,7 @@ func refresh_symbols_odds():
 	var offset = 20
 	var gc = GridContainer.new()
 	gc.columns = 5
+	gc.add_theme_constant_override("v_separation", 10)
 	odds_view.add_child(gc)
 	for i in Slot.SYMBOLS.size():
 		var icon = TextureRect.new()
@@ -92,7 +93,7 @@ func refresh_symbols_odds():
 	)
 	odds_bg.position = Vector2(
 		offset,
-		odds_view.size.y - offset - odds_bg.size.y
+		odds_view.size.y - odds_bg.size.y
 	)
 	multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
 	money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
@@ -107,6 +108,7 @@ func refresh_pattern_odds():
 	var offset = 20
 	var gc = GridContainer.new()
 	gc.columns = 4
+	#gc.add_theme_constant_override("v_separation", 1)
 	odds_view.add_child(gc)
 	for i in Slot.Pattern.size():
 		var icon = TextureRect.new()
@@ -119,11 +121,14 @@ func refresh_pattern_odds():
 		
 		var icon_money = TextureRect.new()
 		icon_money.texture = Images.money_icon
+		icon_money.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon_money.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_money.custom_minimum_size = Vector2(50, icon.size.y)
 		gc.add_child(icon_money)
 		
 		var money_lbl = Label.new()
 		money_lbl.text = "x%s" % (Slot.pattern_odds[i])
-		money_lbl.add_theme_font_size_override("font_size", 40)
+		money_lbl.add_theme_font_size_override("font_size", 30)
 		gc.add_child(money_lbl)
 	gc.position = Vector2.ZERO
 	gc.position = (odds_view.size - gc.size) / 2.0
@@ -155,7 +160,7 @@ func refresh_pattern_odds():
 	)
 	odds_bg.position = Vector2(
 		offset,
-		odds_view.size.y - offset - odds_bg.size.y
+		odds_view.size.y - odds_bg.size.y
 	)
 	multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
 	money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
