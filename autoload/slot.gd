@@ -208,7 +208,6 @@ func assign_spin(count: int):
 
 func start_spin():
 	spin_times -= 1
-	trigger_count = 0
 	
 	rewards.clear()
 	var temp_grid = []
@@ -250,7 +249,6 @@ func get_grid_info() -> GridInfo:
 			grid_info.is_golden_modifiers = true
 	
 	return grid_info
-	
 
 
 func check_rewards():

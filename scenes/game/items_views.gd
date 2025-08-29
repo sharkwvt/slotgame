@@ -9,24 +9,32 @@ const Item = Slot.Item
 @export var items_view_slot: Control
 @export var item_bg: Texture
 
+var item_views = []
+
 func refresh_view():
+	refresh_menu_items_view()
+	refresh_slot_items_view()
+
+
+func refresh_menu_items_view():
 	# 清空
 	for child in items_view.get_children():
 		child.queue_free()
-	for child in items_view_slot.get_children():
-		child.queue_free()
+	
+	var view_size = Vector2(60, 60)
+	#var offset_x = view_size.x + 10
+	var offset_x = (items_view.size.x - view_size.x * Slot.ITEMS_SIZE) / (Slot.ITEMS_SIZE + 1)
 	for i in Slot.items.size():
-		var item_size = Vector2(50, 50)
-		var offset_x = item_size.x + 10
 		var item: Item = Slot.items[i]
 		var item_view = TextureRect.new()
 		item_view.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		item_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		item_view.size = item_size
+		item_view.size = view_size
 		item_view.texture = Main.item_datas[item].get_img()
 		item_view.position = Vector2(
-			i * offset_x + (items_view.size.x - offset_x * Slot.ITEMS_SIZE)/2.0,
-			(items_view.size.y - item_size.y) / 2.0
+			#i * offset_x + (items_view.size.x - offset_x * Slot.ITEMS_SIZE)/2.0,
+			offset_x + i * (view_size.x + offset_x),
+			(items_view.size.y - view_size.y) / 2.0
 		)
 		item_view.gui_input.connect(
 			func (event: InputEvent):
@@ -34,6 +42,12 @@ func refresh_view():
 					show_item_info_view(item)
 		)
 		items_view.add_child(item_view)
+
+func refresh_slot_items_view():
+	# 清空
+	for child in items_view_slot.get_children():
+		child.queue_free()
+	item_views.clear()
 	
 	for i in Slot.ITEMS_SIZE:
 		var item_bg_view = TextureRect.new()
@@ -52,7 +66,13 @@ func refresh_view():
 						#show_item_info_view(item)
 			#)
 			item_bg_view.add_child(item_icon)
+			item_views.append(item_icon)
 
+func get_item_view(item_id: int) -> TextureRect:
+	for i in Slot.items.size():
+		if Slot.items[i] == item_id:
+			return item_views[i]
+	return
 
 func show_item_info_view(item: Item):
 	var item_data: ItemData = Main.item_datas[item]

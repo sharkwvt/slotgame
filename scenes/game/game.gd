@@ -92,9 +92,12 @@ func result_check():
 
 func to_next_level():
 	now_level += 1
-	show_result_scene(true)
+	if now_level >= 4:
+		show_result_scene(true)
+		return
+	
 	Shop.reset()
-	target_money *= 2
+	target_money = get_target_money()
 	if Item.道具20 in Slot.items:
 		var get_voucher = int(Slot.voucher/3.0)
 		if get_voucher > 0:
@@ -108,6 +111,19 @@ func to_next_level():
 
 func get_bonus_voucher() -> int:
 	return last_slot_times * 5
+
+func get_target_money() -> int:
+	var num: int
+	match now_level:
+		0:
+			num = 50
+		1:
+			num = 100
+		2:
+			num = 360
+		3:
+			num = 1200
+	return num
 
 
 func setup():
@@ -145,24 +161,31 @@ func show_triggered_items():
 	
 	if items.size() > 0:
 		var last_tween: Tween
-		var offset = 50
+		#var offset = 50
 		for i in items.size():
 			var item: Slot.Item = items[i]
-			var item_data: ItemData = Main.item_datas[item]
+			#var item_data: ItemData = Main.item_datas[item]
+			var item_view = items_views.get_item_view(item)
 			var item_img = TextureRect.new()
 			add_child(item_img)
 			item_img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			item_img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			item_img.size = Vector2(100, 100)
-			item_img.texture = item_data.get_img()
-			item_img.position = Vector2(
-				offset,
-				Main.screen_size.y
-			)
+			#item_img.size = Vector2(100, 100)
+			#item_img.texture = item_data.get_img()
+			#item_img.position = Vector2(
+				#offset,
+				#Main.screen_size.y
+			#)
+			item_img.size = item_view.size
+			item_img.texture = item_view.texture
+			item_img.position = item_view.global_position
+			item_img.pivot_offset = item_img.size / 2.0
 			var tween = item_img.create_tween()
-			tween.tween_interval(i * 0.5)
-			tween.tween_property(item_img, "position:y", Main.screen_size.y - item_img.size.y - offset, 0.5)
-			tween.tween_property(item_img, "position:y", Main.screen_size.y, 0.5)
+			#tween.tween_interval(i * 0.5)
+			#tween.tween_property(item_img, "position:y", Main.screen_size.y - item_img.size.y - offset, 0.5)
+			#tween.tween_property(item_img, "position:y", Main.screen_size.y, 0.5)
+			tween.tween_property(item_img, "scale", Vector2(2.0, 2.0), 0.5)
+			tween.tween_property(item_img, "scale", Vector2(1.0, 1.0), 0.5)
 			tween.finished.connect(
 				func ():
 					item_img.queue_free()

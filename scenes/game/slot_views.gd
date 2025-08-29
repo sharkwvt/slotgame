@@ -42,8 +42,9 @@ func start_spin():
 	spin_img.texture = spin_p
 	slot_view.old_grid = Slot.grid.duplicate(true)
 	
-	# 轉時效果
 	Slot.triggered_items.clear()
+	Slot.trigger_count = 0
+	# 轉時效果
 	Slot.effect_before_spin()
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
