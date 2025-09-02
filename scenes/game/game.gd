@@ -125,17 +125,17 @@ func get_target_money() -> int:
 	var num: int
 	match now_level:
 		0:
-			#num = 50
-			num = 5
+			num = 50
+			#num = 5
 		1:
-			#num = 100
-			num = 10
+			num = 100
+			#num = 10
 		2:
-			#num = 360
-			num = 3
+			num = 360
+			#num = 3
 		3:
-			#num = 1200
-			num = 12
+			num = 1200
+			#num = 12
 	return num
 
 

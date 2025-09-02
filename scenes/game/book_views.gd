@@ -14,6 +14,8 @@ var return_view: GameScene.VIEW_STATE
 var tween: Tween
 var is_anim_playing: bool
 
+
+var max_img_count = 50
 var duration = 0.5
 
 func _ready() -> void:
@@ -25,6 +27,9 @@ func page_up():
 		return
 	if Main.game_data.progress <= progress:
 		Main.show_tip("未解鎖")
+		return
+	if progress >= max_img_count:
+		Main.show_tip("到底了")
 		return
 	is_anim_playing = true
 	back_view.texture = load_book_imgs(progress + 1)
