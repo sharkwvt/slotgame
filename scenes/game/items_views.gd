@@ -58,13 +58,13 @@ func refresh_slot_items_view():
 		items_view_slot.add_child(item_bg_view)
 		if i < Slot.items.size():
 			var item_icon = TextureRect.new()
-			#var item: Item = Slot.items[i]
+			var item: Item = Slot.items[i]
 			item_icon.texture = Main.item_datas[Slot.items[i]].get_img()
-			#item_icon.gui_input.connect(
-				#func (event: InputEvent):
-					#if event.is_pressed():
-						#show_item_info_view(item)
-			#)
+			item_icon.gui_input.connect(
+				func (event: InputEvent):
+					if event.is_pressed():
+						show_item_info_view(item)
+			)
 			item_bg_view.add_child(item_icon)
 			item_views.append(item_icon)
 
@@ -77,7 +77,8 @@ func get_item_view(item_id: int) -> TextureRect:
 func show_item_info_view(item: Item):
 	var item_data: ItemData = Main.item_datas[item]
 	
-	var font_size = 20
+	var in_zoom = Main.main_cam.zoom == Vector2(2, 2)
+	var font_size = 20 if in_zoom else 40
 	var offset = 10
 	var temp_view: Control
 	
@@ -104,7 +105,7 @@ func show_item_info_view(item: Item):
 	temp_view = title_lbl
 	
 	var description_lbl = Label.new()
-	description_lbl.size = Vector2(250, 30)
+	description_lbl.size = Vector2(250, 30) if in_zoom else Vector2(500, 60)
 	description_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description_lbl.add_theme_font_size_override("font_size", font_size)
 	description_lbl.text = item_data.description
@@ -162,4 +163,5 @@ func show_item_info_view(item: Item):
 		bg.position.x += offset
 	else:
 		bg.position.x -= bg.size.x + offset
-	bg.position.y -= bg.size.y
+	if in_zoom:
+		bg.position.y -= bg.size.y

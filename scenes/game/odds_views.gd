@@ -116,7 +116,7 @@ func refresh_pattern_odds():
 		gc.add_child(icon)
 		
 		var spacer = Control.new()
-		spacer.custom_minimum_size.x = offset
+		spacer.custom_minimum_size.x = offset * 3
 		gc.add_child(spacer)
 		
 		var icon_money = TextureRect.new()

@@ -300,7 +300,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("scale_time"):
 		#get_tree().paused = not get_tree().paused
 		Engine.time_scale = 1.0 if Engine.time_scale == 0.01 else 0.01
-		show_setting_view()
+		#show_setting_view()
 	
 	if event.is_action_pressed("ui_cancel"):
 		if Steamworks.dlc_tip:

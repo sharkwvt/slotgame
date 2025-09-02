@@ -103,7 +103,7 @@ shader_parameter/x_end_factor = 3.0
 shader_parameter/y_end_factor = 0.775
 shader_parameter/reverse_dark = 0.68
 
-[node name="Game" type="Control" node_paths=PackedStringArray("slot_img", "slot_bg", "camera", "start_view", "setting_view", "menu_view", "game_view", "shop_view", "select_spin_view", "items_views", "odds_views", "infos_views", "slot_views", "book_views", "shop_btn", "slot_btn", "spin_7_btn", "spin_3_btn")]
+[node name="Game" type="Control" node_paths=PackedStringArray("slot_img", "slot_bg", "camera", "zoom_anim_view", "start_view", "setting_view", "menu_view", "game_view", "shop_view", "select_spin_view", "items_views", "odds_views", "infos_views", "slot_views", "book_views", "shop_btn", "slot_btn", "spin_7_btn", "spin_3_btn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -114,6 +114,7 @@ script = ExtResource("1_sul5r")
 slot_img = NodePath("SlotImage")
 slot_bg = NodePath("SlotBG")
 camera = NodePath("Camera2D")
+zoom_anim_view = NodePath("ZoomAnimView")
 start_view = NodePath("StartViews")
 setting_view = NodePath("SettingViews")
 menu_view = NodePath("Menu")
@@ -928,6 +929,15 @@ text = "0123"
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
+[node name="ZoomAnimView" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="SlotImage" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -940,7 +950,6 @@ texture = ExtResource("2_kp23o")
 expand_mode = 1
 
 [node name="ItemBtnImg" type="TextureRect" parent="SlotImage"]
-top_level = true
 layout_mode = 0
 offset_left = 980.0
 offset_top = 164.0
@@ -950,7 +959,6 @@ mouse_filter = 2
 texture = ExtResource("18_4vuph")
 
 [node name="SpinImg" type="TextureRect" parent="SlotImage"]
-top_level = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -966,7 +974,6 @@ mouse_filter = 2
 texture = ExtResource("13_3jaai")
 
 [node name="ItemView" type="Control" parent="SlotImage"]
-top_level = true
 anchors_preset = 0
 offset_left = 560.0
 offset_top = 195.0
@@ -974,7 +981,6 @@ offset_right = 560.0
 offset_bottom = 195.0
 
 [node name="Viewport3D" type="TextureRect" parent="SlotImage"]
-top_level = true
 layout_mode = 0
 offset_left = 137.0
 offset_top = 669.0
@@ -984,7 +990,6 @@ texture = SubResource("ViewportTexture_otnwt")
 expand_mode = 1
 
 [node name="BookButton" type="Button" parent="SlotImage"]
-top_level = true
 layout_mode = 0
 offset_left = 92.0
 offset_top = 308.0
@@ -1127,6 +1132,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
 
 [node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view", "back_view", "return_btn")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1147,7 +1153,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-stretch_mode = 3
+stretch_mode = 5
 
 [node name="Forward" type="TextureRect" parent="BookViews"]
 material = SubResource("ShaderMaterial_tyhjx")
@@ -1158,7 +1164,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("36_6ehwc")
-stretch_mode = 3
+stretch_mode = 5
 
 [node name="ReturnButton" parent="BookViews" instance=ExtResource("11_ftsea")]
 top_level = true

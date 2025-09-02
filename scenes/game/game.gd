@@ -6,6 +6,7 @@ const Item = Slot.Item
 @export var slot_img: TextureRect
 @export var slot_bg: TextureRect
 @export var camera: Camera2D
+@export var zoom_anim_view: Control
 
 @export var start_view: Control
 @export var setting_view: Control
@@ -142,6 +143,7 @@ func get_target_money() -> int:
 func setup():
 	Main.instance_scenes[Main.SCENE.game] = self
 	Main.current_scene = self
+	Main.main_cam = $Camera2D
 	Shop.game_scene = self
 	Shop.shop_view = shop_view
 	Shop.setup()
@@ -232,6 +234,8 @@ func refresh_view():
 
 
 func switch_view(state: VIEW_STATE):
+	view_state = state
+	
 	var target_zoom: Vector2
 	match state:
 		VIEW_STATE.start:
@@ -275,8 +279,6 @@ func switch_view(state: VIEW_STATE):
 	#$Viewport3D.visible = state == VIEW_STATE.game
 	
 	book_views.visible = state == VIEW_STATE.book
-	
-	view_state = state
 
 func zoom_anim(target_zoom: Vector2):
 	if camera.zoom == target_zoom:
@@ -293,18 +295,19 @@ func zoom_anim(target_zoom: Vector2):
 	anim_bg.pivot_offset = slot_bg.pivot_offset
 	anim_bg.position = slot_bg.position
 	anim_bg.modulate.a = 0.0
-	add_child(anim_bg)
-	var anim_img = TextureRect.new()
-	anim_img.expand_mode = slot_img.expand_mode
-	anim_img.stretch_mode = slot_img.stretch_mode
-	anim_img.texture = slot_img.texture
-	anim_img.size = slot_img.size
-	anim_img.scale = slot_img.scale
-	anim_img.pivot_offset = slot_img.pivot_offset
-	anim_img.modulate.a = 0.0
-	add_child(anim_img)
+	#add_child(anim_bg)
+	zoom_anim_view.add_child(anim_bg)
+	#var anim_img = TextureRect.new()
+	#anim_img.expand_mode = slot_img.expand_mode
+	#anim_img.stretch_mode = slot_img.stretch_mode
+	#anim_img.texture = slot_img.texture
+	#anim_img.size = slot_img.size
+	#anim_img.scale = slot_img.scale
+	#anim_img.pivot_offset = slot_img.pivot_offset
+	#anim_img.modulate.a = 0.0
+	#add_child(anim_img)
 	var set_anim_a = func (a: float):
-		anim_img.modulate.a = a
+		#anim_img.modulate.a = a
 		anim_bg.modulate.a = a
 	cam_tween = camera.create_tween()
 	cam_tween.tween_method(set_anim_a, 0.0, 1.0, 0.5)
@@ -314,7 +317,7 @@ func zoom_anim(target_zoom: Vector2):
 	cam_tween.finished.connect(
 		func ():
 			anim_bg.queue_free()
-			anim_img.queue_free()
+			#anim_img.queue_free()
 			cam_tween.kill()
 	)
 
