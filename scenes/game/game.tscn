@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=48 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -19,7 +19,6 @@
 [ext_resource type="StyleBox" uid="uid://dt668qnahk8mf" path="res://common/option/option_bg.tres" id="9_mumkj"]
 [ext_resource type="Texture2D" uid="uid://dto6da7coqg1n" path="res://image/slot/game_slot_bg.png" id="9_vaxfo"]
 [ext_resource type="StyleBox" uid="uid://iq7a2hdjuv66" path="res://common/option/option_bg_pressed.tres" id="10_2vph8"]
-[ext_resource type="Script" uid="uid://be3s3qubevfnb" path="res://scenes/game/result_views.gd" id="10_4j704"]
 [ext_resource type="Texture2D" uid="uid://bb4exyrnh7o00" path="res://image/scrollbar_bg.png" id="11_0gkf7"]
 [ext_resource type="PackedScene" uid="uid://c2hckrk53snne" path="res://common/btn/return/return_button.tscn" id="11_ftsea"]
 [ext_resource type="Texture2D" uid="uid://b6udh65ijprjm" path="res://image/slot/slot_bingo.png" id="11_otnwt"]
@@ -34,6 +33,9 @@
 [ext_resource type="Texture2D" uid="uid://x06u0enyxwke" path="res://image/slot/ues_ithem_n.png" id="16_wdnak"]
 [ext_resource type="Texture2D" uid="uid://c5yur1xob6seh" path="res://image/slot/ues_ithem_d.png" id="18_4vuph"]
 [ext_resource type="Texture2D" uid="uid://mkjtb01ihg8a" path="res://image/slot/symbol_bg.png" id="19_8b66f"]
+[ext_resource type="Shader" uid="uid://b2ajuns4yry8e" path="res://shaders/page_flip.gdshader" id="35_0gkf7"]
+[ext_resource type="Script" uid="uid://bnnn8vu33wexd" path="res://scenes/game/book_views.gd" id="35_6ehwc"]
+[ext_resource type="Texture2D" uid="uid://cgngijr2aspx3" path="res://image/book/sex_book.png" id="36_6ehwc"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_ah1mj"]
 
@@ -92,7 +94,16 @@ border_color = Color(0.372549, 0.317647, 0.0196078, 1)
 [sub_resource type="ViewportTexture" id="ViewportTexture_otnwt"]
 viewport_path = NodePath("3DSubViewport")
 
-[node name="Game" type="Control" node_paths=PackedStringArray("slot_img", "slot_bg", "camera", "start_view", "setting_view", "menu_view", "game_view", "shop_view", "select_spin_view", "items_views", "odds_views", "infos_views", "slot_views", "result_views", "shop_btn", "slot_btn", "spin_7_btn", "spin_3_btn")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tyhjx"]
+shader = ExtResource("35_0gkf7")
+shader_parameter/flip_h = true
+shader_parameter/flip_v = false
+shader_parameter/progress = 0.0
+shader_parameter/x_end_factor = 3.0
+shader_parameter/y_end_factor = 0.775
+shader_parameter/reverse_dark = 0.68
+
+[node name="Game" type="Control" node_paths=PackedStringArray("slot_img", "slot_bg", "camera", "start_view", "setting_view", "menu_view", "game_view", "shop_view", "select_spin_view", "items_views", "odds_views", "infos_views", "slot_views", "book_views", "shop_btn", "slot_btn", "spin_7_btn", "spin_3_btn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,7 +124,7 @@ items_views = NodePath("ItemsViews")
 odds_views = NodePath("OddsViews")
 infos_views = NodePath("InfosViews")
 slot_views = NodePath("SlotViews")
-result_views = NodePath("ResultViews")
+book_views = NodePath("BookViews")
 shop_btn = NodePath("Menu/ShopButton")
 slot_btn = NodePath("Menu/SlotButton")
 spin_7_btn = NodePath("SelectSpinViews/7Btn")
@@ -514,7 +525,7 @@ mouse_filter = 2
 script = ExtResource("2_lfrn8")
 game_scene = NodePath("..")
 items_view = NodePath("ItemsView")
-items_view_slot = NodePath("../SlotViews/ItemView")
+items_view_slot = NodePath("../SlotImage/ItemView")
 item_bg = ExtResource("9_h48ew")
 
 [node name="ItemsView" type="Panel" parent="ItemsViews"]
@@ -566,23 +577,6 @@ money_lbl = NodePath("../Shop/InfoView/MoneyLabel")
 voucher_lbl = NodePath("../Shop/InfoView/VoucherLabel")
 level_info_view = NodePath("../Menu/LevelInfo")
 wave_lbl = NodePath("../Menu/WaveLabel")
-
-[node name="GalleryButton" type="Button" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -208.0
-offset_top = -78.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 50
-text = "回想"
-script = ExtResource("3_0sr1o")
-metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="SelectSpinViews" type="Control" parent="."]
 visible = false
@@ -650,7 +644,6 @@ offset_right = 650.8
 offset_bottom = 389.2
 
 [node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "spin_img", "item_btn_img", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -660,10 +653,10 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_2a8rs")
 game_scene = NodePath("..")
-spin_img = NodePath("SpinImg")
+spin_img = NodePath("../SlotImage/SpinImg")
 spin_n = ExtResource("13_3jaai")
 spin_p = ExtResource("14_1iff4")
-item_btn_img = NodePath("ItemBtnImg")
+item_btn_img = NodePath("../SlotImage/ItemBtnImg")
 item_btn_n = ExtResource("18_4vuph")
 item_btn_p = ExtResource("16_wdnak")
 use_item_btn = NodePath("使用道具")
@@ -671,30 +664,6 @@ spin_btn = NodePath("SpinButton")
 slot_view = NodePath("Symbols/Mask/SlotView")
 symbols_panel = NodePath("Symbols")
 info_lbl_3d = NodePath("../3DSubViewport/Label3D")
-
-[node name="ItemBtnImg" type="TextureRect" parent="SlotViews"]
-top_level = true
-layout_mode = 0
-offset_left = 980.0
-offset_top = 164.0
-offset_right = 1116.0
-offset_bottom = 222.0
-texture = ExtResource("18_4vuph")
-
-[node name="SpinImg" type="TextureRect" parent="SlotViews"]
-top_level = true
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -397.0
-offset_top = -212.0
-offset_right = 397.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("13_3jaai")
 
 [node name="使用道具" type="Button" parent="SlotViews"]
 top_level = true
@@ -780,19 +749,6 @@ offset_left = 71.0
 offset_top = 47.0
 offset_right = 171.0
 offset_bottom = 147.0
-
-[node name="Items" type="Control" parent="SlotViews"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ItemView" type="Control" parent="SlotViews"]
-top_level = true
-anchors_preset = 0
-offset_left = 560.0
-offset_top = 195.0
-offset_right = 560.0
-offset_bottom = 195.0
 
 [node name="Menu" type="Control" parent="."]
 visible = false
@@ -983,7 +939,42 @@ mouse_filter = 2
 texture = ExtResource("2_kp23o")
 expand_mode = 1
 
-[node name="Viewport3D" type="TextureRect" parent="."]
+[node name="ItemBtnImg" type="TextureRect" parent="SlotImage"]
+top_level = true
+layout_mode = 0
+offset_left = 980.0
+offset_top = 164.0
+offset_right = 1116.0
+offset_bottom = 222.0
+mouse_filter = 2
+texture = ExtResource("18_4vuph")
+
+[node name="SpinImg" type="TextureRect" parent="SlotImage"]
+top_level = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -397.0
+offset_top = -212.0
+offset_right = 397.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("13_3jaai")
+
+[node name="ItemView" type="Control" parent="SlotImage"]
+top_level = true
+anchors_preset = 0
+offset_left = 560.0
+offset_top = 195.0
+offset_right = 560.0
+offset_bottom = 195.0
+
+[node name="Viewport3D" type="TextureRect" parent="SlotImage"]
+top_level = true
 layout_mode = 0
 offset_left = 137.0
 offset_top = 669.0
@@ -992,7 +983,19 @@ offset_bottom = 969.0
 texture = SubResource("ViewportTexture_otnwt")
 expand_mode = 1
 
+[node name="BookButton" type="Button" parent="SlotImage"]
+top_level = true
+layout_mode = 0
+offset_left = 92.0
+offset_top = 308.0
+offset_right = 274.0
+offset_bottom = 534.0
+icon = ExtResource("36_6ehwc")
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
 [node name="OddsViews" type="Control" parent="." node_paths=PackedStringArray("slot_view", "symbols_odds_view", "pattern_btn", "pattern_odds_view", "symbols_btn", "bg_switch")]
+top_level = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1103,32 +1106,6 @@ offset_right = -18.0
 offset_bottom = 839.0
 grow_horizontal = 0
 
-[node name="ResultViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "result_img_view")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("10_4j704")
-game_scene = NodePath("..")
-result_img_view = NodePath("ResultImg")
-
-[node name="ResultImg" type="TextureRect" parent="ResultViews"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 608.0
-offset_top = 330.0
-offset_right = -612.0
-offset_bottom = -350.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
 [node name="3DSubViewport" type="SubViewport" parent="."]
 transparent_bg = true
 
@@ -1148,3 +1125,49 @@ vertical_alignment = 0
 [node name="Camera3D" type="Camera3D" parent="3DSubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
+
+[node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view", "back_view", "return_btn")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("35_6ehwc")
+game_scene = NodePath("..")
+forward_view = NodePath("Forward")
+back_view = NodePath("Back")
+return_btn = NodePath("ReturnButton")
+
+[node name="Back" type="TextureRect" parent="BookViews"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 3
+
+[node name="Forward" type="TextureRect" parent="BookViews"]
+material = SubResource("ShaderMaterial_tyhjx")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("36_6ehwc")
+stretch_mode = 3
+
+[node name="ReturnButton" parent="BookViews" instance=ExtResource("11_ftsea")]
+top_level = true
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 71.0
+offset_top = 47.0
+offset_right = 171.0
+offset_bottom = 147.0

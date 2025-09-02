@@ -27,7 +27,11 @@ func setup():
 	music_lbl = $SettingBG/MusicLabel
 	sound_lbl = $SettingBG/SoundLabel
 	lang_option = $SettingBG/LangLabel/OptionButton
+	lang_option.pressed.connect(_on_option_button_pressed)
+	lang_option.item_selected.connect(_on_lang_option_item_selected)
 	display_option = $SettingBG/DisplayLabel/OptionButton
+	display_option.pressed.connect(_on_option_button_pressed)
+	display_option.item_selected.connect(_on_display_option_item_selected)
 	option_btns.append(lang_option)
 	option_btns.append(display_option)
 	$ReturnButton.pressed.connect(_on_close_button_pressed)

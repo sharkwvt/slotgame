@@ -18,7 +18,7 @@ const Item = Slot.Item
 @export var odds_views: OddsViews
 @export var infos_views: InfosViews
 @export var slot_views: SlotViews
-@export var result_views: ResultViews
+@export var book_views: BookViews
 
 # menu_view
 @export var shop_btn: ButtonEx
@@ -33,13 +33,13 @@ enum VIEW_STATE {
 	shop,
 	select_spin,
 	game,
-	result
+	book
 }
 
 const SLOT_TIMES = 3 # 每輪可用機台次數
 #const INTEREST = 0.05 # 基礎利息
 const INTEREST = 0.00 # 基礎利息
-const TARGET_MONEY = 50 # 初始目標金額
+const MAX_LEVEL = 3
 
 var view_state: VIEW_STATE
 
@@ -48,7 +48,6 @@ var last_slot_times = 0
 var put_in_money = 0
 var target_money = 0
 var now_interest = 0
-var data: CharacterData
 var triggered_item_tween: Tween
 var cam_tween: Tween
 
@@ -68,7 +67,8 @@ func slot_end():
 	#Slot.money += int(put_in_money * now_interest)
 	refresh_view()
 
-func result_check():
+func result_check() -> bool:
+	var has_result = false
 	#if last_slot_times <= 0 and Slot.money + put_in_money < target_money:
 		#Main.show_talk_view("失敗了").finished.connect(
 			#func ():
@@ -76,25 +76,34 @@ func result_check():
 				#reset()
 		#)
 	if last_slot_times <= 0 and Slot.money < target_money:
-		#Main.show_talk_view("失敗了").finished.connect(
-			#func ():
-				#switch_view(VIEW_STATE.start)
-				#reset()
-		#)
-		switch_view(VIEW_STATE.start)
-		reset()
+		has_result = true
+		Main.show_talk_view("失敗了").finished.connect(
+			func ():
+				switch_view(VIEW_STATE.start)
+				reset()
+		)
 	elif Slot.money >= target_money:
-		#Main.show_talk_view("達成目標").finished.connect(
-			#func ():
-				#to_next_level()
-		#)
+		has_result = now_level >= MAX_LEVEL
+		#if view_state == VIEW_STATE.game:
+			#Main.show_talk_view("達成目標").finished.connect(
+				#func ():
+					#to_next_level()
+			#)
+		#else:
 		to_next_level()
+	return has_result
 
 func to_next_level():
-	now_level += 1
-	if now_level >= 4:
-		show_result_scene(true)
+	if now_level >= MAX_LEVEL:
+		Main.game_data.progress += 1
+		Main.save_game()
+		if view_state == VIEW_STATE.game:
+			Main.show_talk_view("過關").finished.connect(show_result_scene)
+		else:
+			show_result_scene()
 		return
+		
+	now_level += 1
 	
 	Shop.reset()
 	target_money = get_target_money()
@@ -116,13 +125,17 @@ func get_target_money() -> int:
 	var num: int
 	match now_level:
 		0:
-			num = 50
+			#num = 50
+			num = 5
 		1:
-			num = 100
+			#num = 100
+			num = 10
 		2:
-			num = 360
+			#num = 360
+			num = 3
 		3:
-			num = 1200
+			#num = 1200
+			num = 12
 	return num
 
 
@@ -141,15 +154,25 @@ func setup():
 	$Shop/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
 	$SelectSpinViews/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
 	$SlotViews/ReturnButton.pressed.connect(_on_shutdown_btn_pressed)
+	$SlotImage/BookButton.pressed.connect(
+		func ():
+			if slot_views.in_spin:
+				return
+			book_views.return_view = VIEW_STATE.game
+			switch_view(VIEW_STATE.book)
+	)
 	slot_img.pivot_offset = slot_img.size / 2.0
 	slot_bg.pivot_offset = slot_bg.size / 2.0
 
 
-func show_result_scene(is_success: bool):
-	result_views.is_success = is_success
-	result_views.level = now_level
-	result_views.refresh_view()
-	switch_view(VIEW_STATE.result)
+func show_result_scene():
+	reset()
+	book_views.progress = Main.game_data.progress - 1
+	book_views.return_view = VIEW_STATE.start
+	switch_view(VIEW_STATE.book)
+	await zoomed
+	await get_tree().create_timer(0.5).timeout
+	book_views.page_up()
 
 
 func show_triggered_items():
@@ -227,8 +250,9 @@ func switch_view(state: VIEW_STATE):
 			target_zoom = Vector2(1, 1)
 			slot_views.cumulative_amount = 0
 			refresh_view()
-		VIEW_STATE.result:
-			target_zoom = Vector2(2, 2)
+		VIEW_STATE.book:
+			target_zoom = Vector2(1, 1)
+			book_views.refresh_view()
 	
 	zoom_anim(target_zoom)
 	await zoomed
@@ -240,7 +264,6 @@ func switch_view(state: VIEW_STATE):
 	menu_view.visible = state == VIEW_STATE.menu
 	items_views.visible = state == VIEW_STATE.menu
 	infos_views.visible = state == VIEW_STATE.menu
-	$GalleryButton.visible = state == VIEW_STATE.menu
 	if state == VIEW_STATE.menu: result_check()
 	
 	shop_view.visible = state == VIEW_STATE.shop
@@ -248,10 +271,10 @@ func switch_view(state: VIEW_STATE):
 	select_spin_view.visible = state == VIEW_STATE.select_spin
 	
 	game_view.visible = state == VIEW_STATE.game
-	odds_views.visible = state == VIEW_STATE.game
-	$Viewport3D.visible = state == VIEW_STATE.game
+	#odds_views.visible = state == VIEW_STATE.game
+	#$Viewport3D.visible = state == VIEW_STATE.game
 	
-	result_views.visible = state == VIEW_STATE.result
+	book_views.visible = state == VIEW_STATE.book
 	
 	view_state = state
 
@@ -301,7 +324,7 @@ func reset():
 	Shop.reset()
 	now_level = 0
 	put_in_money = 0
-	target_money = TARGET_MONEY
+	target_money = get_target_money()
 	last_slot_times = SLOT_TIMES
 	now_interest = INTEREST
 	refresh_view()
@@ -317,6 +340,9 @@ func return_scene():
 			switch_view(VIEW_STATE.menu)
 		VIEW_STATE.select_spin:
 			switch_view(VIEW_STATE.menu)
+		VIEW_STATE.book:
+			book_views.visible = false
+			switch_view(book_views.return_view)
 
 
 func _on_shop_btn_pressed():

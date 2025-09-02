@@ -12,6 +12,8 @@ var money_icon: Texture
 var voucher_icon: Texture
 var voucher_icon_2: Texture
 
+var book_img_count = 50
+
 func _ready() -> void:
 	money_icon = load("res://image/slot/money.png")
 	voucher_icon = load("res://image/slot/money_3.png")

@@ -110,8 +110,9 @@ func _on_spin_finish():
 		await Main.show_talk_view("拉霸次數用完了").finished
 		Slot.slot_end()
 		game_scene.slot_end()
-		game_scene.switch_view(game_scene.VIEW_STATE.menu)
-		game_scene.refresh_view()
+		if !game_scene.result_check():
+			game_scene.switch_view(game_scene.VIEW_STATE.menu)
+			game_scene.refresh_view()
 
 func _input(event):
 	if event is InputEventKey and event.pressed:

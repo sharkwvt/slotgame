@@ -27,12 +27,10 @@ var mouse_trail_effect: GPUParticles2D
 var packed_scenes = []
 var item_datas = []
 var event_datas = []
-var character_datas = []
 
 var instance_talk_view: Control
 
 var current_scene: Control
-var current_character_data: CharacterData
 
 var instance_scenes = [] # 實例化場景
 enum SCENE {
@@ -50,13 +48,17 @@ var music_player: AudioStreamPlayer
 
 var this_platform: String = "other" # 遊戲平台
 
-const STAT_KEY_Characters = "characters_data"
+const STAT_KEY_GAME = "game_data"
 const STAT_KEY_Achievements = "achievements_data"
 # 要同步的數據
 var statistics: Dictionary = {
-	STAT_KEY_Characters: [],
+	STAT_KEY_GAME: GameData,
 	STAT_KEY_Achievements: []
 }
+
+class GameData:
+	var progress: int
+var game_data: GameData
 
 var main_cam: Camera2D
 
@@ -64,6 +66,7 @@ var main_cam: Camera2D
 func _ready() -> void:
 	packed_scenes.resize(SCENE.size())
 	instance_scenes.resize(SCENE.size())
+	game_data = GameData.new()
 	reload_data()
 	#Input.set_custom_mouse_cursor(load("res://image/mouse.png"),Input.CURSOR_ARROW)
 	#Input.set_custom_mouse_cursor(load("res://image/mouse2.png"),Input.CURSOR_POINTING_HAND)
@@ -125,7 +128,6 @@ func to_scene(scene: SCENE, anim_type = 0):
 #region Save and load
 func reload_data():
 	Logger.log("platform: " + Main.this_platform)
-	load_character_data()
 	load_item_data()
 	load_event_data()
 	load_game_save()
@@ -141,20 +143,6 @@ func load_scenes():
 				packed_scenes[SCENE[file_name]] = load(scene)
 				print("Found scene: " + file_name)
 			file_name = dir.get_next()
-
-func load_character_data():
-	character_datas.clear()
-	var json_data = get_json_data(characters_json_path)
-	if !json_data.is_empty():
-		var characters: Array = json_data["characters"]
-		for dic: Dictionary in characters:
-			var data = CharacterData.new()
-			for key in dic.keys():
-				if key in data:
-					data.set(key, dic[key])
-			character_datas.append(data)
-	# 直接讀第一個
-	current_character_data = character_datas[0]
 
 func load_item_data():
 	item_datas.clear()
@@ -182,17 +170,8 @@ func load_event_data():
 
 
 func save_game():
-	statistics[STAT_KEY_Characters] = []
 	var save_file = FileAccess.open(game_save_path, FileAccess.WRITE)
-	
-	for data: CharacterData in character_datas:
-		var dic = {
-			"id" = data.id,
-			"progress" = data.progress,
-			"has_bonus" = data.has_bonus
-		}
-		statistics[STAT_KEY_Characters].append(dic)
-	
+	statistics[STAT_KEY_GAME] = {"progress":game_data.progress}
 	statistics[STAT_KEY_Achievements] = Steamworks.achievements
 	#save_file.store_line(JSON.stringify(statistics))
 	save_file.store_var(statistics)
@@ -213,15 +192,11 @@ func load_game_save():
 	if save_data == null:
 		print("存擋為空")
 		return
-		
-	statistics = save_data
-	for data: CharacterData in character_datas:
-		for obj in statistics[STAT_KEY_Characters]:
-			if obj["id"] == data.id:
-				data.progress = obj["progress"]
-				data.has_bonus = obj["has_bonus"]
 	
-	if statistics.find_key(STAT_KEY_Achievements):
+	statistics = save_data
+	if STAT_KEY_GAME in statistics.keys():
+		game_data.progress = statistics[STAT_KEY_GAME]["progress"]
+	if STAT_KEY_Achievements in statistics.keys():
 		Steamworks.achievements = statistics[STAT_KEY_Achievements]
 #endregion
 
