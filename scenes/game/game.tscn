@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=54 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -36,6 +36,11 @@
 [ext_resource type="Shader" uid="uid://b2ajuns4yry8e" path="res://shaders/page_flip.gdshader" id="35_0gkf7"]
 [ext_resource type="Script" uid="uid://bnnn8vu33wexd" path="res://scenes/game/book_views.gd" id="35_6ehwc"]
 [ext_resource type="Texture2D" uid="uid://cgngijr2aspx3" path="res://image/book/sex_book.png" id="36_6ehwc"]
+[ext_resource type="Texture2D" uid="uid://qhqpvoji8uts" path="res://image/book/content/sex_image_0.jpg" id="36_tyhjx"]
+[ext_resource type="Texture2D" uid="uid://c6wmpxuw5b5c0" path="res://image/book/sex_image_bg.png" id="37_5q2xh"]
+[ext_resource type="Texture2D" uid="uid://btdqgkrl0ds2j" path="res://image/book/left_image.png" id="39_sikks"]
+[ext_resource type="Texture2D" uid="uid://bs20gdscefdl8" path="res://image/book/right_image.png" id="40_ah1mj"]
+[ext_resource type="Texture2D" uid="uid://dmfj5o1t2vv0a" path="res://image/book/back_a02.png" id="41_ah1mj"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_ah1mj"]
 
@@ -96,10 +101,19 @@ viewport_path = NodePath("3DSubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tyhjx"]
 shader = ExtResource("35_0gkf7")
+shader_parameter/flip_h = false
+shader_parameter/flip_v = false
+shader_parameter/progress = 0.0
+shader_parameter/x_end_factor = 2.2
+shader_parameter/y_end_factor = 0.775
+shader_parameter/reverse_dark = 0.68
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sikks"]
+shader = ExtResource("35_0gkf7")
 shader_parameter/flip_h = true
 shader_parameter/flip_v = false
 shader_parameter/progress = 0.0
-shader_parameter/x_end_factor = 3.0
+shader_parameter/x_end_factor = 2.2
 shader_parameter/y_end_factor = 0.775
 shader_parameter/reverse_dark = 0.68
 
@@ -738,19 +752,6 @@ flat = true
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
-[node name="ReturnButton" parent="SlotViews" instance=ExtResource("11_ftsea")]
-top_level = true
-layout_mode = 1
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 71.0
-offset_top = 47.0
-offset_right = 171.0
-offset_bottom = 147.0
-
 [node name="Menu" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -999,8 +1000,19 @@ icon = ExtResource("36_6ehwc")
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
+[node name="ReturnButton" parent="SlotImage" instance=ExtResource("11_ftsea")]
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 71.0
+offset_top = 47.0
+offset_right = 171.0
+offset_bottom = 147.0
+
 [node name="OddsViews" type="Control" parent="." node_paths=PackedStringArray("slot_view", "symbols_odds_view", "pattern_btn", "pattern_odds_view", "symbols_btn", "bg_switch")]
-top_level = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1131,32 +1143,50 @@ vertical_alignment = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
 
-[node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view", "back_view", "return_btn")]
-visible = false
+[node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "next_btn", "back_btn", "return_btn")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("35_6ehwc")
+lock_img = ExtResource("36_tyhjx")
 game_scene = NodePath("..")
-forward_view = NodePath("Forward")
-back_view = NodePath("Back")
+forward_view_l = NodePath("BackL/ForwardL")
+back_view_l = NodePath("BackL")
+forward_view_r = NodePath("BackR/ForwardR")
+back_view_r = NodePath("BackR")
+next_btn = NodePath("NextBtn")
+back_btn = NodePath("BackBtn")
 return_btn = NodePath("ReturnButton")
 
-[node name="Back" type="TextureRect" parent="BookViews"]
+[node name="BG" type="TextureRect" parent="BookViews"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("37_5q2xh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BackL" type="TextureRect" parent="BookViews"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 80.0
+offset_right = -940.0
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Forward" type="TextureRect" parent="BookViews"]
+[node name="ForwardL" type="TextureRect" parent="BookViews/BackL"]
 material = SubResource("ShaderMaterial_tyhjx")
 layout_mode = 1
 anchors_preset = 15
@@ -1164,9 +1194,67 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("36_6ehwc")
+texture = ExtResource("36_tyhjx")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="BackR" type="TextureRect" parent="BookViews"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1040.0
+offset_top = 80.0
+offset_right = -180.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ForwardR" type="TextureRect" parent="BookViews/BackR"]
+material = SubResource("ShaderMaterial_sikks")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("36_tyhjx")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BackBtn" type="Button" parent="BookViews"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 294.0
+offset_top = -500.0
+offset_right = 394.0
+offset_bottom = 500.0
+grow_vertical = 2
+icon = ExtResource("39_sikks")
+flat = true
+icon_alignment = 1
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="NextBtn" type="Button" parent="BookViews"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1640.0
+offset_top = -504.0
+offset_right = 1740.0
+offset_bottom = 496.0
+grow_vertical = 2
+icon = ExtResource("40_ah1mj")
+flat = true
+icon_alignment = 1
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="ReturnButton" parent="BookViews" instance=ExtResource("11_ftsea")]
 top_level = true
@@ -1175,7 +1263,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 71.0
-offset_top = 47.0
-offset_right = 171.0
-offset_bottom = 147.0
+offset_left = 32.0
+offset_top = 20.0
+offset_right = 160.0
+offset_bottom = 148.0
+icon = ExtResource("41_ah1mj")

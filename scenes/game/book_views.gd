@@ -1,104 +1,167 @@
 extends Control
 class_name BookViews
 
-var book_img_path = "res://image/book"
+var book_img_path = "res://image/book/content"
 
+@export var lock_img: Texture
 @export var game_scene: GameScene
-@export var forward_view: TextureRect
-@export var back_view: TextureRect
+@export var forward_view_l: TextureRect
+@export var back_view_l: TextureRect
+@export var forward_view_r: TextureRect
+@export var back_view_r: TextureRect
+@export var next_btn: ButtonEx
+@export var back_btn: ButtonEx
 @export var return_btn: ButtonEx
 
-var progress: int
+var index: int
 var book_imgs = []
 var return_view: GameScene.VIEW_STATE
 var tween: Tween
-var is_anim_playing: bool
-
 
 var max_img_count = 50
 var duration = 0.5
 
 func _ready() -> void:
+	next_btn.pressed.connect(page_next)
+	back_btn.pressed.connect(page_back)
 	return_btn.pressed.connect(game_scene.return_scene)
 	refresh_view()
 
-func page_up():
-	if is_anim_playing:
+func page_next():
+	if tween and tween.is_running():
 		return
-	if Main.game_data.progress <= progress:
-		Main.show_tip("未解鎖")
-		return
-	if progress >= max_img_count:
+	if index >= int((max_img_count - 1) / 2.0):
 		Main.show_tip("到底了")
 		return
-	is_anim_playing = true
-	forward_view.texture = load_book_imgs(progress)
-	back_view.texture = load_book_imgs(progress + 1)
-	set_shader_material(0.0, "progress")
-	tween = forward_view.create_tween()
-	tween.tween_method(set_shader_material.bind("progress"), 0.0, 1.0, duration)
-	tween.finished.connect(
-		func ():
-			progress += 1
-			tween.kill()
-			is_anim_playing = false
-	)
-
-func page_down():
-	if is_anim_playing:
+	if int((Main.game_data.progress - 1) / 2.0) <= index:
+		Main.show_tip("未解鎖")
 		return
-	if progress <= 0:
-		return
-	is_anim_playing = true
-	forward_view.texture = load_book_imgs(progress - 1)
-	back_view.texture = load_book_imgs(progress)
-	set_shader_material(1.0, "progress")
-	tween = forward_view.create_tween()
-	tween.tween_method(set_shader_material.bind("progress"), 1.0, 0.0, duration)
-	tween.finished.connect(
-		func ():
-			progress -= 1
-			tween.kill()
-			is_anim_playing = false
+	back_view_l.texture = load_book_imgs(index * 2)
+	forward_view_r.texture = load_book_imgs(index * 2 + 1)
+	set_shader_material(0.0, forward_view_r.material, "progress")
+	index += 1
+	forward_view_l.texture = load_book_imgs(index * 2)
+	back_view_r.texture = load_book_imgs(index * 2 + 1)
+	set_shader_material(1.0, forward_view_l.material, "progress")
+	tween = create_tween()
+	tween.tween_method(
+		set_shader_material.bind(forward_view_r.material, "progress"),
+		0.0,
+		1.0,
+		duration
 	)
+	tween.parallel().tween_method(
+		set_shader_material.bind(forward_view_l.material, "progress"),
+		1.0,
+		0.0,
+		duration
+	).set_delay(duration / 2.0)
+	tween.finished.connect(tween.kill)
+
+func page_back():
+	if tween and tween.is_running():
+		return
+	if index <= 0:
+		return
+	forward_view_l.texture = load_book_imgs(index * 2)
+	back_view_r.texture = load_book_imgs(index * 2 + 1)
+	set_shader_material(0.0, forward_view_l.material, "progress")
+	index -= 1
+	back_view_l.texture = load_book_imgs(index * 2)
+	forward_view_r.texture = load_book_imgs(index * 2 + 1)
+	set_shader_material(1.0, forward_view_r.material, "progress")
+	tween = create_tween()
+	tween.tween_method(
+		set_shader_material.bind(forward_view_l.material, "progress"),
+		0.0,
+		1.0,
+		duration
+	)
+	tween.parallel().tween_method(
+		set_shader_material.bind(forward_view_r.material, "progress"),
+		1.0,
+		0.0,
+		duration
+	).set_delay(duration / 2.0)
+	tween.finished.connect(tween.kill)
+
+func new_page_anim():
+	var progress = Main.game_data.progress
+	index = int((progress - 1) / 2.0)
+	refresh_view()
+	
+	var flip_page: TextureRect
+	if progress % 2 > 0:
+		back_view_r.texture = lock_img
+		forward_view_r.texture = load_book_imgs(index * 2 + 1)
+		flip_page = forward_view_r
+	else:
+		back_view_l.texture = lock_img
+		forward_view_l.texture = load_book_imgs(index * 2)
+		flip_page = forward_view_l
+	
+	await tween.finished
+	tween = create_tween()
+	tween.tween_method(
+		set_shader_material.bind(flip_page.material, "progress"),
+		1.0,
+		0.0,
+		duration
+	)
+	tween.finished.connect(tween.kill)
 
 
-func set_progress(value):
-	progress = value if value <= max_img_count else max_img_count
+func set_index(value: int):
+	var max_index = int(max_img_count / 2.0)
+	index = value if value < max_index else max_index
 	refresh_view()
 
-func set_shader_material(value: float, param: String):
-	var shader_material: ShaderMaterial = forward_view.material
-	shader_material.set_shader_parameter(param, value)
+func set_shader_material(value: float, sm: ShaderMaterial, param: String):
+	sm.set_shader_parameter(param, value)
 
 
 func refresh_view():
-	forward_view.texture = load_book_imgs(progress)
-	set_shader_material(0.0, "progress")
+	set_shader_material(1.0, forward_view_l.material, "progress")
+	set_shader_material(1.0, forward_view_r.material, "progress")
+	back_view_l.texture = load_book_imgs(index * 2)
+	back_view_r.texture = load_book_imgs(index * 2 + 1)
+
+func show_anim():
+	self.modulate.a = 0.0
+	tween = create_tween()
+	tween.tween_property(self, "modulate:a", 1.0, 0.5)
+	tween.finished.connect(tween.kill)
+
+func hide_anim():
+	if tween and tween.is_running():
+		return
+	self.modulate.a = 1.0
+	tween = create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.5)
+	tween.finished.connect(tween.kill)
 
 
-func load_book_imgs(index) -> Texture:
-	if book_imgs.size() <= index:
-		book_imgs.resize(index + 1)
+func load_book_imgs(i) -> Texture:
+	if book_imgs.size() < i + 1:
+		book_imgs.resize(i + 1)
 		
 	var texture: Texture
-	if !book_imgs[index]:
-		var path: String
-		if index == 0:
-			path = book_img_path.path_join("sex_book.png")
-		else:
-			path = book_img_path.path_join("content").path_join(str("slot_sex_", index, ".png"))
-		if FileAccess.file_exists(path):
-			book_imgs[index] = load(path)
-	texture = book_imgs[index]
+	if i < Main.game_data.progress and i < max_img_count:
+		if !book_imgs[i]:
+			var path = book_img_path.path_join(str("sex_image_", i + 1, ".jpg"))
+			if FileAccess.file_exists(path):
+				book_imgs[i] = load(path)
+		texture = book_imgs[i]
+	else:
+		texture = lock_img
 	
 	return texture
 
 
-func _input(event):
+func _input(event: InputEvent):
 	# 滑鼠任何鍵
-	if event is InputEventMouseButton and event.pressed and visible:
-		if (event as InputEventMouseButton).is_action("page_up"):
-			page_up()
-		elif (event as InputEventMouseButton).is_action("page_down"):
-			page_down()
+	if visible:
+		if event.is_action("page_next"):
+			page_next()
+		elif event.is_action("page_back"):
+			page_back()

@@ -157,7 +157,7 @@ func setup():
 	$Menu/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.start))
 	$Shop/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
 	$SelectSpinViews/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
-	$SlotViews/ReturnButton.pressed.connect(_on_shutdown_btn_pressed)
+	$SlotImage/ReturnButton.pressed.connect(_on_shutdown_btn_pressed)
 	$SlotImage/BookButton.pressed.connect(
 		func ():
 			if slot_views.in_spin:
@@ -175,14 +175,12 @@ func show_result_scene():
 	switch_view(VIEW_STATE.book)
 	await zoomed
 	if Main.game_data.progress <= book_views.max_img_count:
-		book_views.set_progress(Main.game_data.progress - 1)
-		Main.show_talk_view("新圖解鎖")
-		await get_tree().create_timer(0.5).timeout
-		book_views.page_up()
+		#Main.show_talk_view("新圖解鎖")
+		#await get_tree().create_timer(0.5).timeout
+		book_views.new_page_anim()
 	else:
-		book_views.set_progress(Main.game_data.progress)
+		book_views.set_index(int((Main.game_data.progress - 1)/ 2.0))
 		Main.show_talk_view("已全解鎖")
-	print(Main.game_data.progress)
 
 
 func show_triggered_items():
@@ -286,6 +284,7 @@ func switch_view(state: VIEW_STATE):
 	#$Viewport3D.visible = state == VIEW_STATE.game
 	
 	book_views.visible = state == VIEW_STATE.book
+	if state == VIEW_STATE.book: book_views.show_anim()
 
 func zoom_anim(target_zoom: Vector2):
 	if camera.zoom == target_zoom:

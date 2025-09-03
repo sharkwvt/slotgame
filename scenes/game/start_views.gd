@@ -19,7 +19,7 @@ func _on_btn_pressed(id: int):
 		0: # 開始遊戲
 			game_scene.switch_view(game_scene.VIEW_STATE.menu)
 		1: # 回想
-			game_scene.book_views.set_progress(0)
+			game_scene.book_views.set_index(0)
 			game_scene.book_views.return_view = game_scene.VIEW_STATE.start
 			game_scene.switch_view(game_scene.VIEW_STATE.book)
 		2: # 設定
