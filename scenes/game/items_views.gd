@@ -77,8 +77,7 @@ func get_item_view(item_id: int) -> TextureRect:
 func show_item_info_view(item: Item):
 	var item_data: ItemData = Main.item_datas[item]
 	
-	var in_zoom = Main.main_cam.zoom == Vector2(2, 2)
-	var font_size = 20 if in_zoom else 40
+	var font_size = 20 if Main.in_zoom else 40
 	var offset = 10
 	var temp_view: Control
 	
@@ -105,7 +104,7 @@ func show_item_info_view(item: Item):
 	temp_view = title_lbl
 	
 	var description_lbl = Label.new()
-	description_lbl.size = Vector2(250, 30) if in_zoom else Vector2(500, 60)
+	description_lbl.size = Vector2(250, 30) if Main.in_zoom else Vector2(500, 60)
 	description_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description_lbl.add_theme_font_size_override("font_size", font_size)
 	description_lbl.text = item_data.description
@@ -163,5 +162,5 @@ func show_item_info_view(item: Item):
 		bg.position.x += offset
 	else:
 		bg.position.x -= bg.size.x + offset
-	if in_zoom:
+	if Main.in_zoom:
 		bg.position.y -= bg.size.y

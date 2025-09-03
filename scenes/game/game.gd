@@ -91,6 +91,7 @@ func result_check() -> bool:
 					#to_next_level()
 			#)
 		#else:
+			#to_next_level()
 		to_next_level()
 	return has_result
 
@@ -98,8 +99,9 @@ func to_next_level():
 	if now_level >= MAX_LEVEL:
 		Main.game_data.progress += 1
 		Main.save_game()
-		if view_state == VIEW_STATE.game:
-			Main.show_talk_view("過關").finished.connect(show_result_scene)
+		if cam_tween and cam_tween.is_running():
+			await cam_tween.finished
+			show_result_scene()
 		else:
 			show_result_scene()
 		return
@@ -169,12 +171,18 @@ func setup():
 
 func show_result_scene():
 	reset()
-	book_views.progress = Main.game_data.progress - 1
 	book_views.return_view = VIEW_STATE.start
 	switch_view(VIEW_STATE.book)
 	await zoomed
-	await get_tree().create_timer(0.5).timeout
-	book_views.page_up()
+	if Main.game_data.progress <= book_views.max_img_count:
+		book_views.set_progress(Main.game_data.progress - 1)
+		Main.show_talk_view("新圖解鎖")
+		await get_tree().create_timer(0.5).timeout
+		book_views.page_up()
+	else:
+		book_views.set_progress(Main.game_data.progress)
+		Main.show_talk_view("已全解鎖")
+	print(Main.game_data.progress)
 
 
 func show_triggered_items():
@@ -256,7 +264,6 @@ func switch_view(state: VIEW_STATE):
 			refresh_view()
 		VIEW_STATE.book:
 			target_zoom = Vector2(1, 1)
-			book_views.refresh_view()
 	
 	zoom_anim(target_zoom)
 	await zoomed
@@ -285,8 +292,6 @@ func zoom_anim(target_zoom: Vector2):
 		await get_tree().process_frame
 		zoomed.emit()
 		return
-	if cam_tween:
-		cam_tween.kill()
 	var anim_bg = TextureRect.new()
 	anim_bg.expand_mode = slot_bg.expand_mode
 	anim_bg.stretch_mode = slot_bg.stretch_mode

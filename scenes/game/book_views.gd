@@ -32,8 +32,8 @@ func page_up():
 		Main.show_tip("到底了")
 		return
 	is_anim_playing = true
-	back_view.texture = load_book_imgs(progress + 1)
 	forward_view.texture = load_book_imgs(progress)
+	back_view.texture = load_book_imgs(progress + 1)
 	set_shader_material(0.0, "progress")
 	tween = forward_view.create_tween()
 	tween.tween_method(set_shader_material.bind("progress"), 0.0, 1.0, duration)
@@ -50,8 +50,8 @@ func page_down():
 	if progress <= 0:
 		return
 	is_anim_playing = true
-	back_view.texture = load_book_imgs(progress)
 	forward_view.texture = load_book_imgs(progress - 1)
+	back_view.texture = load_book_imgs(progress)
 	set_shader_material(1.0, "progress")
 	tween = forward_view.create_tween()
 	tween.tween_method(set_shader_material.bind("progress"), 1.0, 0.0, duration)
@@ -62,6 +62,10 @@ func page_down():
 			is_anim_playing = false
 	)
 
+
+func set_progress(value):
+	progress = value if value <= max_img_count else max_img_count
+	refresh_view()
 
 func set_shader_material(value: float, param: String):
 	var shader_material: ShaderMaterial = forward_view.material

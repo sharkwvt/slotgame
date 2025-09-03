@@ -61,6 +61,7 @@ class GameData:
 var game_data: GameData
 
 var main_cam: Camera2D
+var in_zoom: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -74,13 +75,13 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	#move_mouse_trail()
-	pass
+	in_zoom = main_cam.zoom != Vector2(1, 1)
 
 
 func move_mouse_trail():
 	if mouse_trail_effect == null:
 		create_mouse_trail()
-	mouse_trail_effect.position = get_tree().root.get_mouse_position()
+	mouse_trail_effect.position = current_scene.get_global_mouse_position()
 	
 
 func create_mouse_trail():
@@ -237,7 +238,7 @@ func show_talk_view(text) -> Tween:
 
 func show_tip(msg: String):
 	var lbl := Label.new()
-	lbl.add_theme_font_size_override("font_size", 50)
+	lbl.add_theme_font_size_override("font_size", 25 if in_zoom else 50)
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.grow_horizontal = Control.GROW_DIRECTION_BOTH
