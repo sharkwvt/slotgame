@@ -200,7 +200,6 @@ func _on_item_purchased(item_data: ItemData, index: int):
 	if item_data.cost > Slot.voucher:
 		Main.show_tip("兌換券不夠")
 		return
-	print("購買道具: ", item_data.title, " 價格: ", item_data.cost)
 	Slot.voucher -= item_data.cost
 	Slot.add_item(item_data.id)
 	if Slot.get_buff(Slot.Item.道具40):

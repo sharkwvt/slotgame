@@ -4,6 +4,7 @@ var screen_size = Vector2i(1920, 1080)
 var theme_colors = [Color("5f5105"), Color("b9a865")]
 
 var debug = true
+var skip_anim = false
 
 var scenes_path = "res://scenes"
 var characters_json_path = "res://data/json/characters.json"
@@ -298,10 +299,18 @@ func _input(event):
 		get_tree().root.add_child(click_effect)
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action_pressed("scale_time"):
-		#get_tree().paused = not get_tree().paused
-		Engine.time_scale = 1.0 if Engine.time_scale == 0.01 else 0.01
-		#show_setting_view()
+	if debug:
+		if event.is_action_pressed("scale_time"):
+			#get_tree().paused = not get_tree().paused
+			Engine.time_scale = 1.0 if Engine.time_scale == 0.01 else 0.01
+			#show_setting_view()
+		if event.is_action_pressed("debug_tool"):
+			if skip_anim:
+				skip_anim = false
+				show_talk_view("開啟動畫")
+			else:
+				skip_anim = true
+				show_talk_view("關閉動畫")
 	
 	if event.is_action_pressed("ui_cancel"):
 		if Steamworks.dlc_tip:
