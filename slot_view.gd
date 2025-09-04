@@ -27,7 +27,8 @@ var anim_grid_views = []
 var new_rows: int
 var old_grid: Array
 
-signal anim_finished
+signal spin_anim_finished
+signal reward_anim_finished
 
 
 func _ready():
@@ -131,12 +132,18 @@ func play_spin_anim():
 		anim_grid_views.append(view_column)
 	
 	await last_tween.finished
+	anim_state = Anim_State.no_anim
 	sym_panel.visible = true
 	anim_panel.visible = false
-	show_reward_anim()
+	spin_anim_finished.emit()
 
 func show_reward_anim():
 	anim_state = Anim_State.reward_anim
+	if Slot.rewards.size() == 0:
+		anim_state = Anim_State.no_anim
+		await get_tree().process_frame
+		reward_anim_finished.emit()
+		return
 	
 	var org_duration = 0.5
 	var temp_tween: Tween
@@ -173,13 +180,35 @@ func show_reward_anim():
 			temp_tween = tween
 		if g_tween:
 			temp_tween = g_tween
+		
 		await temp_tween.finished
 	
 	anim_state = Anim_State.no_anim
 	
 	refresh_view()
 	
-	anim_finished.emit()
+	reward_anim_finished.emit()
+
+
+func show_reward_tip(msg: String, duration: float):
+	var lbl := Label.new()
+	lbl.add_theme_font_size_override("font_size", 100)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	lbl.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	lbl.text = msg
+	lbl.position = Vector2.ZERO
+	lbl.position = (self.size - lbl.size) / 2.0
+	add_child(lbl)
+	var tween: Tween = lbl.create_tween()
+	#tween.set_parallel(true)
+	tween.tween_property(lbl, "position:y", lbl.position.y - 10, duration / 2.0)
+	tween.tween_property(lbl, "position:y", lbl.position.y + 10, duration / 2.0)
+	#tween.finished.connect(lbl.queue_free)
+	await tween.finished
+	lbl.queue_free()
+	tween.kill()
 
 func setup():
 	sym_panel = Control.new()

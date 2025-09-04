@@ -9,6 +9,10 @@ var book_img_path = "res://image/book/content"
 @export var back_view_l: TextureRect
 @export var forward_view_r: TextureRect
 @export var back_view_r: TextureRect
+@export var browse_view_bg: ColorRect
+@export var browse_view: TextureRect
+@export var btn_l: ButtonEx
+@export var btn_r: ButtonEx
 @export var next_btn: ButtonEx
 @export var back_btn: ButtonEx
 @export var return_btn: ButtonEx
@@ -22,9 +26,7 @@ var max_img_count = 50
 var duration = 0.5
 
 func _ready() -> void:
-	next_btn.pressed.connect(page_next)
-	back_btn.pressed.connect(page_back)
-	return_btn.pressed.connect(game_scene.return_scene)
+	setup()
 	refresh_view()
 
 func page_next():
@@ -91,7 +93,7 @@ func new_page_anim():
 	refresh_view()
 	
 	var flip_page: TextureRect
-	if progress % 2 > 0:
+	if (progress - 1) % 2 > 0:
 		back_view_r.texture = lock_img
 		forward_view_r.texture = load_book_imgs(index * 2 + 1)
 		flip_page = forward_view_r
@@ -110,6 +112,18 @@ func new_page_anim():
 	)
 	tween.finished.connect(tween.kill)
 
+func show_browse(is_l: bool):
+	var img = load_book_imgs(index * 2 + (0 if is_l else 1))
+	if img != lock_img:
+		browse_view_bg.visible = true
+		browse_view.texture = img
+	else:
+		Main.show_tip("未解鎖")
+
+func hide_browse(event: InputEvent):
+	if event.is_pressed():
+		browse_view_bg.visible = false
+
 
 func set_index(value: int):
 	var max_index = int(max_img_count / 2.0)
@@ -120,11 +134,20 @@ func set_shader_material(value: float, sm: ShaderMaterial, param: String):
 	sm.set_shader_parameter(param, value)
 
 
+func setup():
+	next_btn.pressed.connect(page_next)
+	back_btn.pressed.connect(page_back)
+	return_btn.pressed.connect(game_scene.return_scene)
+	btn_l.pressed.connect(show_browse.bind(true))
+	btn_r.pressed.connect(show_browse.bind(false))
+	browse_view_bg.gui_input.connect(hide_browse)
+
 func refresh_view():
 	set_shader_material(1.0, forward_view_l.material, "progress")
 	set_shader_material(1.0, forward_view_r.material, "progress")
 	back_view_l.texture = load_book_imgs(index * 2)
 	back_view_r.texture = load_book_imgs(index * 2 + 1)
+
 
 func show_anim():
 	self.modulate.a = 0.0

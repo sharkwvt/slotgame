@@ -422,9 +422,13 @@ func has_pattern(pos: Array) -> bool:
 func calculating_rewards() -> int:
 	var total_reward = 0
 	for data: RewardData in rewards:
-		var r = symbols_odds[data.symbol] * pattern_odds[data.type]
-		total_reward += r * symbols_multiplier * pattern_multiplier
+		total_reward += calculating_reward(data)
 	return total_reward
+
+func calculating_reward(data: RewardData) -> int:
+	var r = symbols_odds[data.symbol] * pattern_odds[data.type]
+	return r * symbols_multiplier * pattern_multiplier
+
 #endregion
 
 func use_items():

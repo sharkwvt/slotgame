@@ -175,7 +175,7 @@ func show_result_scene():
 	switch_view(VIEW_STATE.book)
 	await zoomed
 	if Main.game_data.progress <= book_views.max_img_count:
-		#Main.show_talk_view("新圖解鎖")
+		Main.show_talk_view("成功解鎖")
 		#await get_tree().create_timer(0.5).timeout
 		book_views.new_page_anim()
 	else:

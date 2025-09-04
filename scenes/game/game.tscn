@@ -1143,7 +1143,7 @@ vertical_alignment = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
 
-[node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "next_btn", "back_btn", "return_btn")]
+[node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "browse_view_bg", "browse_view", "btn_l", "btn_r", "next_btn", "back_btn", "return_btn")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1157,6 +1157,10 @@ forward_view_l = NodePath("BackL/ForwardL")
 back_view_l = NodePath("BackL")
 forward_view_r = NodePath("BackR/ForwardR")
 back_view_r = NodePath("BackR")
+browse_view_bg = NodePath("BrowseViewBG")
+browse_view = NodePath("BrowseViewBG/BrowseView")
+btn_l = NodePath("BackL/ButtonL")
+btn_r = NodePath("BackR/ButtonR")
 next_btn = NodePath("NextBtn")
 back_btn = NodePath("BackBtn")
 return_btn = NodePath("ReturnButton")
@@ -1198,6 +1202,17 @@ texture = ExtResource("36_tyhjx")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="ButtonL" type="Button" parent="BookViews/BackL"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
 [node name="BackR" type="TextureRect" parent="BookViews"]
 layout_mode = 1
 anchors_preset = 15
@@ -1223,6 +1238,17 @@ grow_vertical = 2
 texture = ExtResource("36_tyhjx")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="ButtonR" type="Button" parent="BookViews/BackR"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+script = ExtResource("3_0sr1o")
+metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="BackBtn" type="Button" parent="BookViews"]
 layout_mode = 1
@@ -1257,7 +1283,6 @@ script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="ReturnButton" parent="BookViews" instance=ExtResource("11_ftsea")]
-top_level = true
 anchors_preset = 0
 anchor_left = 0.0
 anchor_top = 0.0
@@ -1268,3 +1293,23 @@ offset_top = 20.0
 offset_right = 160.0
 offset_bottom = 148.0
 icon = ExtResource("41_ah1mj")
+
+[node name="BrowseViewBG" type="ColorRect" parent="BookViews"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.556863)
+
+[node name="BrowseView" type="TextureRect" parent="BookViews/BrowseViewBG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5

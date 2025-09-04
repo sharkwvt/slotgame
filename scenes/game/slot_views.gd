@@ -51,8 +51,10 @@ func start_spin():
 	# 轉動
 	Slot.start_spin()
 	game_scene.refresh_view()
-	slot_view.play_spin_anim()
-	await slot_view.anim_finished
+	#slot_view.play_spin_anim()
+	#await slot_view.spin_anim_finished
+	slot_view.show_reward_anim()
+	await slot_view.reward_anim_finished
 	# 轉後效果
 	Slot.effect_after_spin()
 	game_scene.show_triggered_items()
@@ -98,6 +100,7 @@ func _on_spin_finish():
 	use_item_btn.disabled = false
 	if Slot.rewards.size() > 0:
 		var r = Slot.calculating_rewards()
+		slot_view.show_reward_tip(str(r), 1)
 		Logger.log(str("中了 ", r))
 		cumulative_amount += r
 		Slot.money += r
