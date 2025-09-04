@@ -51,8 +51,8 @@ func start_spin():
 	# 轉動
 	Slot.start_spin()
 	game_scene.refresh_view()
-	#slot_view.play_spin_anim()
-	#await slot_view.spin_anim_finished
+	slot_view.play_spin_anim()
+	await slot_view.spin_anim_finished
 	slot_view.show_reward_anim()
 	await slot_view.reward_anim_finished
 	# 轉後效果
