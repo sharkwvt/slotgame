@@ -598,10 +598,14 @@ func add_buff(from: Item):
 	buffs.append(data.get_buff())
 
 func get_buff(from: Item) -> Buff:
+	var temp_buff: Buff
 	for buff: Buff in buffs:
 		if buff.from == from:
-			return buff
-	return null
+			temp_buff = buff
+	return temp_buff
+
+func get_buffs(from: Item) -> Array[Buff]:
+	return buffs.filter(func(buff: Buff): return buff.from == from)
 
 func remove_buff(from: Item):
 	buffs = buffs.filter(func(buff: Buff): return buff.from != from)

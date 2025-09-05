@@ -112,10 +112,9 @@ func to_next_level():
 	target_money = get_target_money()
 	if Item.道具20 in Slot.items:
 		var get_voucher = int(Slot.voucher/3.0)
-		if get_voucher > 0:
-			if get_voucher > 10:
-				get_voucher = 10
-			Slot.voucher += get_voucher
+		if get_voucher > 10:
+			get_voucher = 10
+		Slot.voucher += get_voucher
 	Slot.next_level()
 	Slot.voucher += get_bonus_voucher()
 	last_slot_times = SLOT_TIMES

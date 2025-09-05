@@ -137,6 +137,35 @@ func show_item_info_view(item: Item):
 		bg.add_child(remark_lbl)
 		temp_view = remark_lbl
 	
+	var development_buffs = [Item.道具6, Item.道具8, Item.道具10, Item.道具20, Item.道具21, Item.道具22, Item.道具40]
+	if Slot.get_buff(item) and item in development_buffs:
+		var buff = Slot.get_buff(item)
+		var value_txt: String
+		if item in [Item.道具6, Item.道具8, Item.道具10, Item.道具22]:
+			value_txt = str("當前增幅：", buff.value)
+		if item == Item.道具20:
+			var get_voucher = int(Slot.voucher/3.0)
+			if get_voucher > 10:
+				get_voucher = 10
+			value_txt = str("當前增幅：", get_voucher)
+		if item == Item.道具21:
+			var v = 0
+			for b: Slot.Buff in Slot.get_buffs(item):
+				v *= b.value
+			value_txt = str("當前增幅：", v)
+		if item == Item.道具40:
+			value_txt = str("當前增幅：%s" % int(buff.value * 100), "%")
+		
+		var value_lbl = Label.new()
+		value_lbl.add_theme_font_size_override("font_size", font_size)
+		value_lbl.text = value_txt
+		value_lbl.position = Vector2(
+			offset,
+			temp_view.position.y + temp_view.size.y + offset
+		)
+		bg.add_child(value_lbl)
+		temp_view = value_lbl
+	
 	var remove_btn = ButtonEx.new()
 	remove_btn.add_theme_font_size_override("font_size", font_size)
 	remove_btn.text = "銷毀"
