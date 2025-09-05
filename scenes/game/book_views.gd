@@ -172,7 +172,7 @@ func load_book_imgs(i) -> Texture:
 	if i < Main.game_data.progress and i < max_img_count:
 		if !book_imgs[i]:
 			var path = book_img_path.path_join(str("sex_image_", i + 1, ".jpg"))
-			if FileAccess.file_exists(path):
+			if ResourceLoader.exists(path):
 				book_imgs[i] = load(path)
 		texture = book_imgs[i]
 	else:

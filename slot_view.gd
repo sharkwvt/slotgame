@@ -107,6 +107,9 @@ func play_spin_anim():
 	var last_tween: Tween
 	for col in COLUMNS:
 		var view_column = []
+		var rotation_duration = anim_duration - randf() * 0.5
+		var interval_duration = randf() * 0.5
+		var temp_duration = 0 # 計算時長
 		for row in new_rows:
 			var offset_x = (anim_panel.size.x - get_slot_size().x)/2.0
 			var offset_y = (anim_panel.size.y - get_slot_size().y)/2.0 - SYMBOL_SIZE.y * (new_rows - ROWS)
@@ -125,9 +128,13 @@ func play_spin_anim():
 			set_symbol_view(unit, grid_info)
 			# 動畫
 			var tween = unit.create_tween()
-			tween.tween_interval(anim_duration / COLUMNS * col)
-			tween.tween_property(unit, "position:y", unit.position.y + (SYMBOL_SIZE.y * (new_rows - ROWS)), anim_duration)
-			if col == COLUMNS-1 and row == new_rows -1:
+			#tween.tween_interval(anim_duration / COLUMNS * col)
+			tween.tween_interval(interval_duration)
+			tween.tween_property(unit, "position:y", unit.position.y + (SYMBOL_SIZE.y * (new_rows - ROWS)), rotation_duration)
+			#if col == COLUMNS-1 and row == new_rows -1:
+				#last_tween = tween
+			if rotation_duration + interval_duration > temp_duration:
+				temp_duration = rotation_duration + interval_duration
 				last_tween = tween
 		anim_grid_views.append(view_column)
 	

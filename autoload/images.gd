@@ -23,14 +23,14 @@ func _ready() -> void:
 func load_symbols_imgs():
 	for i in Slot.SYMBOLS:
 		var path = symbols_img_path.path_join(i + ".png")
-		if FileAccess.file_exists(path):
+		if ResourceLoader.exists(path):
 			symbols_imgs.append(load(path))
 		var s_path = symbols_img_path.path_join("s").path_join(i + ".png")
-		if FileAccess.file_exists(s_path):
+		if ResourceLoader.exists(s_path):
 			symbols_imgs_s.append(load(s_path))
 
 func load_pattern_imgs():
 	for i in Slot.Pattern.size():
 		var path = pattern_img_path.path_join(str("line_", i + 1, ".png"))
-		if FileAccess.file_exists(path):
+		if ResourceLoader.exists(path):
 			pattern_imgs.append(load(path))

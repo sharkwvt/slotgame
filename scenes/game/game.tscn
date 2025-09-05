@@ -1144,6 +1144,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
 
 [node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "browse_view_bg", "browse_view", "btn_l", "btn_r", "next_btn", "back_btn", "return_btn")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1283,6 +1284,7 @@ script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="ReturnButton" parent="BookViews" instance=ExtResource("11_ftsea")]
+layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
 anchor_top = 0.0
