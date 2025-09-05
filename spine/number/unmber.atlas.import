@@ -1,0 +1,15 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://cygrbmk4ljyo4"
+path="res://.godot/imported/unmber.atlas-2b70128e92d6eb753a6a6b89bb6b8a11.spatlas"
+
+[deps]
+
+source_file="res://spine/number/unmber.atlas"
+dest_files=["res://.godot/imported/unmber.atlas-2b70128e92d6eb753a6a6b89bb6b8a11.spatlas"]
+
+[params]
+
+normal_map_prefix="n"

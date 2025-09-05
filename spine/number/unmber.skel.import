@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://cqm05wo3ijkn0"
+path="res://.godot/imported/unmber.skel-0e4dcf343f0dd70ac9c476078be8686f.spskel"
+
+[deps]
+
+source_file="res://spine/number/unmber.skel"
+dest_files=["res://.godot/imported/unmber.skel-0e4dcf343f0dd70ac9c476078be8686f.spskel"]
+
+[params]
+

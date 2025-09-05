@@ -1,0 +1,15 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://bsl7urhaas3h7"
+path="res://.godot/imported/push_b.atlas-b28b038df22c9b238bb7f437ad78feab.spatlas"
+
+[deps]
+
+source_file="res://spine/button/push_b.atlas"
+dest_files=["res://.godot/imported/push_b.atlas-b28b038df22c9b238bb7f437ad78feab.spatlas"]
+
+[params]
+
+normal_map_prefix="n"

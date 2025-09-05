@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://oshmv10dnkr"
-path="res://.godot/imported/箭頭.png-26b415612214d201fc4e128b5f367b5f.ctex"
+uid="uid://c5io1ymc46q8i"
+path="res://.godot/imported/money_2.png-4b2e476d6e149d5d1ba0df396cefbfce.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/箭頭.png"
-dest_files=["res://.godot/imported/箭頭.png-26b415612214d201fc4e128b5f367b5f.ctex"]
+source_file="res://image/slot/money_2.png"
+dest_files=["res://.godot/imported/money_2.png-4b2e476d6e149d5d1ba0df396cefbfce.ctex"]
 
 [params]
 

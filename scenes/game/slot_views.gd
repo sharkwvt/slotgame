@@ -3,9 +3,7 @@ class_name SlotViews
 
 @export var game_scene: GameScene
 
-@export var spin_img: TextureRect
-@export var spin_n: Texture
-@export var spin_p: Texture
+@export var spin_spine: SpineSpriteEx
 
 @export var item_btn_img: TextureRect
 @export var item_btn_n: Texture
@@ -21,6 +19,7 @@ class_name SlotViews
 var cumulative_amount = 0
 var btn_used = false
 var in_spin = false
+var btn_on_enter = false
 
 var Anim_State = SlotView.Anim_State
 
@@ -28,18 +27,19 @@ var Anim_State = SlotView.Anim_State
 func _ready():
 	use_item_btn.pressed.connect(_on_item_btn_pressed)
 	spin_btn.pressed.connect(start_spin)
+	spin_btn.mouse_entered.connect(_on_spin_btn_mouse_entered)
+	spin_btn.mouse_exited.connect(_on_spin_btn_mouse_exited)
 	var slot_size = slot_view.get_slot_size()
 	symbols_panel.set_deferred("size", slot_size)
 	symbols_panel.position -= slot_size / 2.0
 
 
 func start_spin():
-	if in_spin:
-		return
-	if Slot.spin_times <= 0:
+	if !can_spin():
 		return
 	in_spin = true
-	spin_img.texture = spin_p
+	spin_spine.set_skin("push_0")
+	spin_spine.play_first_anim(false)
 	slot_view.old_grid = Slot.grid.duplicate(true)
 	
 	Slot.triggered_items.clear()
@@ -61,6 +61,8 @@ func start_spin():
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
 	in_spin = false
+	if btn_on_enter and can_spin():
+		spin_spine.set_skin("push_1")
 	game_scene.refresh_view()
 	_on_spin_finish()
 
@@ -106,7 +108,7 @@ func _on_spin_finish():
 		cumulative_amount += r
 		Slot.money += r
 	
-	spin_img.texture = spin_n
+	#spin_img.texture = spin_n
 	item_btn_img.texture = item_btn_n
 	game_scene.refresh_view()
 	
@@ -117,6 +119,18 @@ func _on_spin_finish():
 		if !game_scene.result_check():
 			game_scene.switch_view(game_scene.VIEW_STATE.menu)
 			game_scene.refresh_view()
+
+func can_spin() -> bool:
+	return !(in_spin or Slot.spin_times <= 0)
+
+func _on_spin_btn_mouse_entered():
+	btn_on_enter = true
+	if can_spin():
+		spin_spine.set_skin("push_1")
+
+func _on_spin_btn_mouse_exited():
+	btn_on_enter = false
+	spin_spine.set_skin("push_0")
 
 func _input(event):
 	if event is InputEventKey and event.pressed:

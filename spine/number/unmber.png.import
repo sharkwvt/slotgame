@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cj5ghtnmxuhvm"
-path="res://.godot/imported/功能.png-f01a3cbc7f4b5498b81ed621401fc277.ctex"
+uid="uid://ykc5c1xk8yh8"
+path="res://.godot/imported/unmber.png-349258f0a4f1a1777295e1adce6cfb80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/功能.png"
-dest_files=["res://.godot/imported/功能.png-f01a3cbc7f4b5498b81ed621401fc277.ctex"]
+source_file="res://spine/number/unmber.png"
+dest_files=["res://.godot/imported/unmber.png-349258f0a4f1a1777295e1adce6cfb80.ctex"]
 
 [params]
 

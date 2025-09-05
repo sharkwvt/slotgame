@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=58 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -25,7 +25,6 @@
 [ext_resource type="Texture2D" uid="uid://dhac8pkp4th8t" path="res://image/scrollbar_button.png" id="12_6ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddlmawdn7qc1a" path="res://image/slot/push_a.png" id="13_3jaai"]
 [ext_resource type="Texture2D" uid="uid://b11ieyxtcxqxy" path="res://image/scrollbar_a.png" id="13_tyhjx"]
-[ext_resource type="Texture2D" uid="uid://cionvlqbj2rde" path="res://image/slot/push_b.png" id="14_1iff4"]
 [ext_resource type="Texture2D" uid="uid://cf56efcp2a3ll" path="res://image/scrollbar_b.png" id="14_5q2xh"]
 [ext_resource type="Texture2D" uid="uid://c824p3xmlfgw1" path="res://image/slot/symbol_a.png" id="15_3xj4h"]
 [ext_resource type="AudioStream" uid="uid://c12134dx2n1k4" path="res://sound/maou_se_system47.mp3" id="15_sikks"]
@@ -33,6 +32,11 @@
 [ext_resource type="Texture2D" uid="uid://x06u0enyxwke" path="res://image/slot/ues_ithem_n.png" id="16_wdnak"]
 [ext_resource type="Texture2D" uid="uid://c5yur1xob6seh" path="res://image/slot/ues_ithem_d.png" id="18_4vuph"]
 [ext_resource type="Texture2D" uid="uid://mkjtb01ihg8a" path="res://image/slot/symbol_bg.png" id="19_8b66f"]
+[ext_resource type="Texture2D" uid="uid://b38f2iosctec5" path="res://image/slot/money_bg.png" id="29_t5owt"]
+[ext_resource type="Texture2D" uid="uid://c5io1ymc46q8i" path="res://image/slot/money_2.png" id="30_fba2n"]
+[ext_resource type="Texture2D" uid="uid://2bt48w2ryax5" path="res://image/slot/money_3.png" id="31_teoly"]
+[ext_resource type="SpineSkeletonDataResource" uid="uid://c1gnadbiohdgu" path="res://spine/button/btn.tres" id="33_b7fhm"]
+[ext_resource type="Script" uid="uid://74aly0fqsq5b" path="res://extends/spine_sprite_ex.gd" id="34_i600x"]
 [ext_resource type="Shader" uid="uid://b2ajuns4yry8e" path="res://shaders/page_flip.gdshader" id="35_0gkf7"]
 [ext_resource type="Script" uid="uid://bnnn8vu33wexd" path="res://scenes/game/book_views.gd" id="35_6ehwc"]
 [ext_resource type="Texture2D" uid="uid://cgngijr2aspx3" path="res://image/book/sex_book.png" id="36_6ehwc"]
@@ -588,8 +592,8 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_87uf6")
 game_scene = NodePath("..")
-money_lbl = NodePath("../Shop/InfoView/MoneyLabel")
-voucher_lbl = NodePath("../Shop/InfoView/VoucherLabel")
+money_lbl = NodePath("../Shop/InfoBG/MoneyLabel")
+voucher_lbl = NodePath("../Shop/InfoBG/VoucherLabel")
 level_info_view = NodePath("../Menu/LevelInfo")
 wave_lbl = NodePath("../Menu/WaveLabel")
 
@@ -658,7 +662,7 @@ offset_top = 289.2
 offset_right = 650.8
 offset_bottom = 389.2
 
-[node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "spin_img", "item_btn_img", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
+[node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "spin_spine", "item_btn_img", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -668,9 +672,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_2a8rs")
 game_scene = NodePath("..")
-spin_img = NodePath("../SlotImage/SpinImg")
-spin_n = ExtResource("13_3jaai")
-spin_p = ExtResource("14_1iff4")
+spin_spine = NodePath("../SlotImage/SpinSpine")
 item_btn_img = NodePath("../SlotImage/ItemBtnImg")
 item_btn_n = ExtResource("18_4vuph")
 item_btn_p = ExtResource("16_wdnak")
@@ -848,7 +850,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Shop" type="Control" parent="."]
-visible = false
+top_level = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -864,69 +866,82 @@ offset_top = 289.2
 offset_right = 650.8
 offset_bottom = 389.2
 
-[node name="InfoView" type="Panel" parent="Shop"]
-top_level = true
+[node name="InfoBG" type="TextureRect" parent="Shop"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -218.0
+offset_top = 257.0
+offset_right = 218.0
+offset_bottom = 376.0
+grow_horizontal = 2
+texture = ExtResource("29_t5owt")
+
+[node name="MoneyIcon" type="TextureRect" parent="Shop/InfoBG"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 52.0
+offset_top = -29.5
+offset_right = 102.0
+offset_bottom = 20.5
+grow_vertical = 2
+texture = ExtResource("30_fba2n")
+
+[node name="MoneyLabel" type="Label" parent="Shop/InfoBG"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -95.0
-offset_top = -233.0
-offset_right = 95.0
-offset_bottom = -158.0
+offset_left = -115.0
+offset_top = -25.5
+offset_right = 22.0
+offset_bottom = 16.5
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="MoneyTitle" type="Label" parent="Shop/InfoView"]
-layout_mode = 0
-offset_right = 75.0
-offset_bottom = 36.0
-theme_override_font_sizes/font_size = 25
-text = "現金："
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_font_sizes/font_size = 30
+text = "01234567"
+horizontal_alignment = 1
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
-[node name="MoneyLabel" type="Label" parent="Shop/InfoView"]
+[node name="VoucherIcon" type="TextureRect" parent="Shop/InfoBG"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -110.0
-offset_bottom = 35.0
-grow_horizontal = 0
-theme_override_font_sizes/font_size = 25
-text = "0123"
-script = ExtResource("4_lfrn8")
-metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 45.0
+offset_top = -29.5
+offset_right = 95.0
+offset_bottom = 20.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("31_teoly")
 
-[node name="VoucherTitle" type="Label" parent="Shop/InfoView"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -36.0
-offset_right = 100.0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 25
-text = "兌換券："
-script = ExtResource("4_lfrn8")
-metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
-
-[node name="VoucherLabel" type="Label" parent="Shop/InfoView"]
+[node name="VoucherLabel" type="Label" parent="Shop/InfoBG"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -87.0
-offset_top = -35.0
+offset_left = -119.0
+offset_top = -85.0
+offset_right = -50.0
+offset_bottom = -43.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 25
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
+theme_override_font_sizes/font_size = 30
 text = "0123"
+horizontal_alignment = 1
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
@@ -950,6 +965,16 @@ mouse_filter = 2
 texture = ExtResource("2_kp23o")
 expand_mode = 1
 
+[node name="SpinSpine" type="SpineSprite" parent="SlotImage"]
+skeleton_data_res = ExtResource("33_b7fhm")
+preview_skin = "push_0"
+preview_animation = "-- Empty --"
+preview_frame = false
+preview_time = 0.0
+position = Vector2(960, 1080)
+script = ExtResource("34_i600x")
+metadata/_custom_type_script = "uid://74aly0fqsq5b"
+
 [node name="ItemBtnImg" type="TextureRect" parent="SlotImage"]
 layout_mode = 0
 offset_left = 980.0
@@ -960,6 +985,7 @@ mouse_filter = 2
 texture = ExtResource("18_4vuph")
 
 [node name="SpinImg" type="TextureRect" parent="SlotImage"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5

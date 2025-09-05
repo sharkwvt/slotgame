@@ -1,0 +1,17 @@
+push_b.png
+size:418,418
+filter:Linear,Linear
+scale:0.5
+push_0
+bounds:417,417,1,1
+push_1
+bounds:0,301,416,117
+offsets:1,0,418,118
+push_t_a
+bounds:0,43,258,85
+push_t_b
+bounds:0,129,258,89
+push_t_bg
+bounds:0,219,397,81
+push_t_z
+bounds:0,11,258,31

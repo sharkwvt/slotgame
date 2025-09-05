@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://ctn128xfvnd1"
+path="res://.godot/imported/push_b.skel-a38f6cd3aed033ab653e363646ecdc29.spskel"
+
+[deps]
+
+source_file="res://spine/button/push_b.skel"
+dest_files=["res://.godot/imported/push_b.skel-a38f6cd3aed033ab653e363646ecdc29.spskel"]
+
+[params]
+

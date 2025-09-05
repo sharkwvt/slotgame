@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy0qwurdpahtv"
-path="res://.godot/imported/mouse.png-6ac7cb3f8441d5e14065755ad91724db.ctex"
+uid="uid://b38f2iosctec5"
+path="res://.godot/imported/money_bg.png-7e5c8d796394f25a4f0e02741baafed9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/mouse.png"
-dest_files=["res://.godot/imported/mouse.png-6ac7cb3f8441d5e14065755ad91724db.ctex"]
+source_file="res://image/slot/money_bg.png"
+dest_files=["res://.godot/imported/money_bg.png-7e5c8d796394f25a4f0e02741baafed9.ctex"]
 
 [params]
 
