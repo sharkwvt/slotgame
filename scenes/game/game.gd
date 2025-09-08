@@ -22,7 +22,7 @@ const Item = Slot.Item
 @export var book_views: BookViews
 
 # menu_view
-@export var shop_btn: ButtonEx
+@export var shop_btn: CommonBtn
 @export var slot_btn: ButtonEx
 @export var spin_7_btn: ButtonEx
 @export var spin_3_btn: ButtonEx

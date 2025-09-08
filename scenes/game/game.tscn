@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=61 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -32,6 +32,8 @@
 [ext_resource type="Texture2D" uid="uid://mkjtb01ihg8a" path="res://image/slot/symbol_bg.png" id="19_8b66f"]
 [ext_resource type="Texture2D" uid="uid://cbpaqvyy32o0t" path="res://image/slot/ues_ithem_l.png" id="23_b7fhm"]
 [ext_resource type="Texture2D" uid="uid://uqveir2hevy4" path="res://image/slot/ues_ithem_e.png" id="23_teoly"]
+[ext_resource type="Texture2D" uid="uid://fl5sew672gvb" path="res://image/slot/shop_1.png" id="29_i600x"]
+[ext_resource type="Script" uid="uid://c1nsqe74dk0j0" path="res://common/btn/common_btn.gd" id="30_35t1a"]
 [ext_resource type="Texture2D" uid="uid://c5io1ymc46q8i" path="res://image/slot/money_2.png" id="30_fba2n"]
 [ext_resource type="Texture2D" uid="uid://2bt48w2ryax5" path="res://image/slot/money_3.png" id="31_teoly"]
 [ext_resource type="SpineSkeletonDataResource" uid="uid://c1gnadbiohdgu" path="res://spine/button/btn.tres" id="33_b7fhm"]
@@ -231,7 +233,7 @@ theme_override_font_sizes/font_size = 35
 theme_override_styles/hover = ExtResource("4_gc57s")
 theme_override_styles/pressed = ExtResource("5_gc57s")
 theme_override_styles/normal = ExtResource("4_pg2xm")
-text = "回想"
+text = "畫廊"
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
@@ -664,6 +666,7 @@ offset_right = 650.8
 offset_bottom = 389.2
 
 [node name="SlotViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "spin_spine", "item_btn_img", "use_item_btn", "spin_btn", "slot_view", "symbols_panel", "info_lbl_3d")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -784,10 +787,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 127.0
-offset_top = -685.0
-offset_right = 327.0
-offset_bottom = -625.0
+offset_left = 140.0
+offset_top = -652.0
+offset_right = 300.0
+offset_bottom = -602.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_hover_color = Color(0.372549, 0.317647, 0.0196078, 1)
@@ -797,9 +800,10 @@ theme_override_font_sizes/font_size = 35
 theme_override_styles/hover = ExtResource("4_gc57s")
 theme_override_styles/pressed = ExtResource("5_gc57s")
 theme_override_styles/normal = ExtResource("4_pg2xm")
-text = "商店按鈕"
-script = ExtResource("3_0sr1o")
-metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+text = "商店"
+icon = ExtResource("29_i600x")
+script = ExtResource("30_35t1a")
+metadata/_custom_type_script = "uid://c1nsqe74dk0j0"
 
 [node name="SlotButton" type="Button" parent="Menu"]
 layout_mode = 1

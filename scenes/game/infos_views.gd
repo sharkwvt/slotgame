@@ -74,13 +74,21 @@ func refresh_level_info_view():
 	
 	temp_view = cash_lbl
 	
-	var bonus_string = str("結算獎勵: ", "%s兌換券" % game_scene.get_bonus_voucher())
+	var bonus_string = str("結算獎勵: ", "%s" % game_scene.get_bonus_voucher())
 	var bonus_lbl = Label.new()
 	bonus_lbl.add_theme_color_override("font_color", font_color)
 	bonus_lbl.add_theme_font_size_override("font_size", font_size)
 	bonus_lbl.text = bonus_string
 	bonus_lbl.position = Vector2(offset_x, temp_view.position.y + temp_view.size.y + offset_x)
 	level_info_view.add_child(bonus_lbl)
+	var voucher_icon = TextureRect.new()
+	voucher_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	voucher_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	voucher_icon.texture = Images.voucher_icon
+	voucher_icon.size = Vector2(bonus_lbl.size.y, bonus_lbl.size.y)
+	voucher_icon.position = bonus_lbl.position
+	voucher_icon.position.x += bonus_lbl.size.x
+	level_info_view.add_child(voucher_icon)
 	
 	temp_view = bonus_lbl
 	
