@@ -105,12 +105,12 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	
 	# 道具名稱
 	var name_label = LabelEx.new()
-	name_label.size = Vector2(panel.size.x - icon.size.x - 20, icon.size.y)
-	name_label.position.x = icon.size.x
+	name_label.size = Vector2(panel.size.x - icon.size.x - 30, icon.size.y)
+	name_label.position.x = icon.size.x + 10
 	name_label.text = item_data.title
 	name_label.add_theme_font_size_override("font_size", font_size + 5)
 	name_label.add_theme_color_override("font_color", Main.theme_colors[0])
-	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	#name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title_root.add_child(name_label)
 	
@@ -153,10 +153,16 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	var hbox = HBoxContainer.new()
 	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	hbox_bg.add_child(hbox)
+	hbox.minimum_size_changed.connect(
+		func ():
+			hbox_bg.size = Vector2(panel.size.x, hbox.size.y)
+			hbox_bg.position.y = panel.size.y - hbox_bg.size.y
+			hbox.position = (hbox_bg.size - hbox.size) / 2.0
+	)
 	
 	var v_icon = TextureRect.new()
 	v_icon.texture = Images.voucher_icon_2
-	v_icon.position = Vector2.ZERO
+	v_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	hbox.add_child(v_icon)
 	
 	# 價格標籤
@@ -165,14 +171,6 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	price_label.add_theme_font_size_override("font_size", font_size + 15)
 	price_label.add_theme_color_override("font_color", Main.theme_colors[1])
 	hbox.add_child(price_label)
-	
-	hbox_bg.size = Vector2(panel.size.x, v_icon.size.y)
-	hbox_bg.position.y = panel.size.y - hbox_bg.size.y
-	
-	hbox.position = Vector2.ZERO
-	#hbox.position = Vector2((hbox_bg.size.x - hbox.size.x) / 2.0, hbox_bg.size.y - hbox.size.y)
-	
-	hbox.position = (hbox_bg.size - hbox.size) / 2.0
 	
 	return panel
 

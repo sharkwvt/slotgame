@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cionvlqbj2rde"
-path="res://.godot/imported/push_b.png-310d6928bd813202deb48d9741a447a2.ctex"
+uid="uid://1mt7n8klavbg"
+path="res://.godot/imported/sex_book_l.png-338e75ca75b936195b0255185a1cd7b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/slot/push_b.png"
-dest_files=["res://.godot/imported/push_b.png-310d6928bd813202deb48d9741a447a2.ctex"]
+source_file="res://image/book/sex_book_l.png"
+dest_files=["res://.godot/imported/sex_book_l.png-338e75ca75b936195b0255185a1cd7b8.ctex"]
 
 [params]
 

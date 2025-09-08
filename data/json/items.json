@@ -3,7 +3,7 @@
 	{
 	  "title": "假幣",
 	  "cost": 2,
-	  "description": "拉霸後觸發，10%機率，額外添加1次拉霸，當次幸運+4",
+	  "description": "轉動後10%機率額外添加1次轉動次數，當次轉動幸運+4",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 0
@@ -11,7 +11,7 @@
 	{
 	  "title": "馬蹄鐵",
 	  "cost": 3,
-	  "description": "隨機觸發道具機率加倍",
+	  "description": "機率型觸發道具機率加倍",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 1
@@ -19,7 +19,7 @@
 	{
 	  "title": "手套",
 	  "cost": 3,
-	  "description": "最後一轉幸運+7，可重新觸發",
+	  "description": "最後一轉幸運+7",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 2
@@ -35,8 +35,8 @@
 	{
 	  "title": "紅石",
 	  "cost": 1,
-	  "description": "使用後當次拉霸幸運+4",
-	  "remark":"每輪次數恢復1",
+	  "description": "使用後當次轉動幸運+4",
+	  "remark":"使用完拉霸後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 4
@@ -44,7 +44,7 @@
 	{
 	  "title": "塔羅牌",
 	  "cost": 1,
-	  "description": "有道具觸發，符號倍率+1，沒道具觸發重置",
+	  "description": "轉動時有道具觸發，符號倍率+1，沒道具觸發時重置",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 5
@@ -60,7 +60,7 @@
 	{
 	  "title": "五芒星",
 	  "cost": 3,
-	  "description": "符號倍率+1，當次拉霸觸發5次獎金，符號倍率再+1",
+	  "description": "符號倍率+1，單次轉動觸發5次以上獎金，符號倍率再+1",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 7
@@ -68,7 +68,7 @@
 	{
 	  "title": "貓糧",
 	  "cost": 4,
-	  "description": "每輪次數+2",
+	  "description": "轉動次數+2",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 8
@@ -76,7 +76,7 @@
 	{
 	  "title": "千紙鶴",
 	  "cost": 2,
-	  "description": "每5張幸運券，符號倍率+1",
+	  "description": "每擁有5張幸運券，符號倍率+1",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 9
@@ -84,7 +84,7 @@
 	{
 	  "title": "核按鈕",
 	  "cost": 3,
-	  "description": "紅色按鈕觸發道具，額外觸發1次，道具欄位-1",
+	  "description": "主動道具額外觸發1次，道具欄位-1",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 10
@@ -100,7 +100,7 @@
 	{
 	  "title": "玩具火車",
 	  "cost": 2,
-	  "description": "連續2次拉霸沒獎勵，下一次幸運+5",
+	  "description": "連續2次轉動沒獎勵，下一次幸運+5",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 12
@@ -116,7 +116,7 @@
 	{
 	  "title": "電池",
 	  "cost": 1,
-	  "description": "重置紅色按鈕可用次數",
+	  "description": "重置主動道具可用次數",
 	  "remark":"不佔欄位",
 	  "not_occupy": 1,
 	  "active_item": 0,
@@ -136,7 +136,7 @@
 	{
 	  "title": "加倍道具A",
 	  "cost": 3,
-	  "description": "使用後黃色符號觸發次數+1，檸檬鈴鐺金幣7",
+	  "description": "轉動次數用完前，檸檬、鈴鐺、BAR、7觸發次數+1",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 1.0,
@@ -145,7 +145,7 @@
 	{
 	  "title": "加倍道具B",
 	  "cost": 3,
-	  "description": "使用後非黃色符號觸發次數+1，櫻桃幸運草鑽石",
+	  "description": "轉動次數用完前，櫻桃、幸運草、鑽石觸發次數+1",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 1.0,
@@ -154,7 +154,7 @@
 	{
 	  "title": "公文包",
 	  "cost": 2,
-	  "description": "獲得當前債務30%",
+	  "description": "獲得目標金額30%",
 	  "remark":"不佔欄位",
 	  "not_occupy": 1,
 	  "active_item": 0,
@@ -172,7 +172,7 @@
 	{
 	  "title": "幻菇",
 	  "cost": 2,
-	  "description": "當次拉霸觸發3次獎金，該輪符號價值x2",
+	  "description": "當次轉動觸發3次獎金，轉動次數用完前符號價值x2",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 20
@@ -180,7 +180,7 @@
 	{
 	  "title": "筆記版",
 	  "cost": 1,
-	  "description": "當次拉霸觸發3次獎金，該輪圖案價值+1倍",
+	  "description": "當次拉霸觸發3次獎金，轉動次數用完前圖案價值+1倍",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 21
@@ -188,7 +188,7 @@
 	{
 	  "title": "紅辣椒",
 	  "cost": 1,
-	  "description": "拉霸後觸發，20%機率，當次幸運+5",
+	  "description": "轉動時觸發，20%機率當次幸運+5",
 	  "remark":"次數用完後銷毀",
 	  "active_item": 0,
 	  "usable_count": 12.0,
@@ -197,7 +197,7 @@
 	{
 	  "title": "青辣椒",
 	  "cost": 2,
-	  "description": "拉霸後觸發，15%機率，當次幸運+7",
+	  "description": "轉動時觸發，15%機率當次幸運+7",
 	  "remark":"次數用完後銷毀",
 	  "active_item": 0,
 	  "usable_count": 9.0,
@@ -214,7 +214,7 @@
 	{
 	  "title": "檸檬畫像",
 	  "cost": 4,
-	  "description": "使用後本輪檸檬出現機率+2",
+	  "description": "轉動次數用完前檸檬出現機率+2",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
@@ -223,7 +223,7 @@
 	{
 	  "title": "櫻桃畫像",
 	  "cost": 4,
-	  "description": "使用後本輪櫻桃出現機率+2",
+	  "description": "轉動次數用完前櫻桃出現機率+2",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
@@ -232,7 +232,7 @@
 	{
 	  "title": "幸運草畫像",
 	  "cost": 4,
-	  "description": "使用後本輪幸運草出現機率+2",
+	  "description": "轉動次數用完前幸運草出現機率+2",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
@@ -241,7 +241,7 @@
 	{
 	  "title": "鈴鐺畫像",
 	  "cost": 4,
-	  "description": "使用後本輪鈴鐺出現機率+2",
+	  "description": "轉動次數用完前鈴鐺出現機率+2",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
@@ -250,16 +250,16 @@
 	{
 	  "title": "鑽石畫像",
 	  "cost": 3,
-	  "description": "使用後本輪鑽石出現機率+2",
+	  "description": "轉動次數用完前鑽石出現機率+2",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 29
 	},
 	{
-	  "title": "金幣畫像",
+	  "title": "BAR畫像",
 	  "cost": 3,
-	  "description": "使用後本輪金幣出現機率+2",
+	  "description": "轉動次數用完前BAR出現機率+2",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
@@ -268,7 +268,7 @@
 	{
 	  "title": "7畫像",
 	  "cost": 3,
-	  "description": "使用後本輪7出現機率+2",
+	  "description": "轉動次數用完前7出現機率+2",
 	  "remark":"結算後次數恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
@@ -277,7 +277,7 @@
 	{
 	  "title": "黃金檸檬",
 	  "cost": 2,
-	  "description": "出現黃金標記機率+20%，符號價值永久+2",
+	  "description": "出現黃金標記機率+20%，標記觸發符號價值永久+2",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 32
@@ -285,7 +285,7 @@
 	{
 	  "title": "黃金櫻桃",
 	  "cost": 2,
-	  "description": "出現黃金標記機率+20%，符號價值永久+2",
+	  "description": "出現黃金標記機率+20%，標記觸發符號價值永久+2",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 33
@@ -293,7 +293,7 @@
 	{
 	  "title": "黃金幸運草",
 	  "cost": 2,
-	  "description": "出現黃金標記機率+20%，符號價值永久+3",
+	  "description": "出現黃金標記機率+20%，標記觸發符號價值永久+3",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 34
@@ -301,7 +301,7 @@
 	{
 	  "title": "黃金鈴鐺",
 	  "cost": 2,
-	  "description": "出現黃金標記機率+20%，符號價值永久+3",
+	  "description": "出現黃金標記機率+20%，標記觸發符號價值永久+3",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 35
@@ -309,15 +309,15 @@
 	{
 	  "title": "黃金鑽石",
 	  "cost": 3,
-	  "description": "出現黃金標記機率+20%，符號價值永久+5",
+	  "description": "出現黃金標記機率+20%，標記觸發符號價值永久+5",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 36
 	},
 	{
-	  "title": "黃金金幣",
+	  "title": "黃金BAR",
 	  "cost": 3,
-	  "description": "出現黃金標記機率+20%，符號價值永久+5",
+	  "description": "出現黃金標記機率+20%，標記觸發符號價值永久+5",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 37
@@ -325,7 +325,7 @@
 	{
 	  "title": "黃金7",
 	  "cost": 3,
-	  "description": "出現黃金標記機率+20%，符號價值永久+7",
+	  "description": "出現黃金標記機率+20%，標記觸發符號價值永久+7",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 38

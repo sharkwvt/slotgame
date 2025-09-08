@@ -15,7 +15,7 @@ var voucher_icon_2: Texture
 func _ready() -> void:
 	money_icon = load("res://image/slot/money.png")
 	voucher_icon = load("res://image/slot/money_3.png")
-	voucher_icon_2 = load("res://image/slot/money_3.png")
+	voucher_icon_2 = load("res://image/slot/money_4.png")
 	load_symbols_imgs()
 	load_pattern_imgs()
 

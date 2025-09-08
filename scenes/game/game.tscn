@@ -23,20 +23,20 @@
 [ext_resource type="PackedScene" uid="uid://c2hckrk53snne" path="res://common/btn/return/return_button.tscn" id="11_ftsea"]
 [ext_resource type="Texture2D" uid="uid://b6udh65ijprjm" path="res://image/slot/slot_bingo.png" id="11_otnwt"]
 [ext_resource type="Texture2D" uid="uid://dhac8pkp4th8t" path="res://image/scrollbar_button.png" id="12_6ehwc"]
-[ext_resource type="Texture2D" uid="uid://ddlmawdn7qc1a" path="res://image/slot/push_a.png" id="13_3jaai"]
 [ext_resource type="Texture2D" uid="uid://b11ieyxtcxqxy" path="res://image/scrollbar_a.png" id="13_tyhjx"]
 [ext_resource type="Texture2D" uid="uid://cf56efcp2a3ll" path="res://image/scrollbar_b.png" id="14_5q2xh"]
 [ext_resource type="Texture2D" uid="uid://c824p3xmlfgw1" path="res://image/slot/symbol_a.png" id="15_3xj4h"]
 [ext_resource type="AudioStream" uid="uid://c12134dx2n1k4" path="res://sound/maou_se_system47.mp3" id="15_sikks"]
 [ext_resource type="Texture2D" uid="uid://bdvm4v4okj208" path="res://image/slot/pattern_a.png" id="16_5v6r0"]
-[ext_resource type="Texture2D" uid="uid://x06u0enyxwke" path="res://image/slot/ues_ithem_n.png" id="16_wdnak"]
 [ext_resource type="Texture2D" uid="uid://c5yur1xob6seh" path="res://image/slot/ues_ithem_d.png" id="18_4vuph"]
 [ext_resource type="Texture2D" uid="uid://mkjtb01ihg8a" path="res://image/slot/symbol_bg.png" id="19_8b66f"]
-[ext_resource type="Texture2D" uid="uid://b38f2iosctec5" path="res://image/slot/money_bg.png" id="29_t5owt"]
+[ext_resource type="Texture2D" uid="uid://cbpaqvyy32o0t" path="res://image/slot/ues_ithem_l.png" id="23_b7fhm"]
+[ext_resource type="Texture2D" uid="uid://uqveir2hevy4" path="res://image/slot/ues_ithem_e.png" id="23_teoly"]
 [ext_resource type="Texture2D" uid="uid://c5io1ymc46q8i" path="res://image/slot/money_2.png" id="30_fba2n"]
 [ext_resource type="Texture2D" uid="uid://2bt48w2ryax5" path="res://image/slot/money_3.png" id="31_teoly"]
 [ext_resource type="SpineSkeletonDataResource" uid="uid://c1gnadbiohdgu" path="res://spine/button/btn.tres" id="33_b7fhm"]
 [ext_resource type="Script" uid="uid://74aly0fqsq5b" path="res://extends/spine_sprite_ex.gd" id="34_i600x"]
+[ext_resource type="Texture2D" uid="uid://1mt7n8klavbg" path="res://image/book/sex_book_l.png" id="34_teoly"]
 [ext_resource type="Shader" uid="uid://b2ajuns4yry8e" path="res://shaders/page_flip.gdshader" id="35_0gkf7"]
 [ext_resource type="Script" uid="uid://bnnn8vu33wexd" path="res://scenes/game/book_views.gd" id="35_6ehwc"]
 [ext_resource type="Texture2D" uid="uid://cgngijr2aspx3" path="res://image/book/sex_book.png" id="36_6ehwc"]
@@ -593,8 +593,8 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_87uf6")
 game_scene = NodePath("..")
-money_lbl = NodePath("../Shop/InfoBG/MoneyLabel")
-voucher_lbl = NodePath("../Shop/InfoBG/VoucherLabel")
+money_lbl = NodePath("../Shop/MoneyLabel")
+voucher_lbl = NodePath("../Shop/VoucherLabel")
 level_info_view = NodePath("../Menu/LevelInfo")
 wave_lbl = NodePath("../Menu/WaveLabel")
 
@@ -676,7 +676,8 @@ game_scene = NodePath("..")
 spin_spine = NodePath("../SlotImage/SpinSpine")
 item_btn_img = NodePath("../SlotImage/ItemBtnImg")
 item_btn_n = ExtResource("18_4vuph")
-item_btn_p = ExtResource("16_wdnak")
+item_btn_l = ExtResource("23_b7fhm")
+item_btn_p = ExtResource("23_teoly")
 use_item_btn = NodePath("使用道具")
 spin_btn = NodePath("SpinButton")
 slot_view = NodePath("Symbols/Mask/SlotView")
@@ -692,9 +693,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -14.0
-offset_top = -934.0
+offset_top = -927.0
 offset_right = 186.0
-offset_bottom = -856.0
+offset_bottom = -849.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
@@ -757,7 +758,6 @@ script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
 
 [node name="Menu" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -852,6 +852,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Shop" type="Control" parent="."]
+visible = false
 top_level = true
 layout_mode = 1
 anchors_preset = 15
@@ -861,91 +862,77 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ReturnButton" parent="Shop" instance=ExtResource("11_ftsea")]
-layout_mode = 1
-offset_left = 550.8
-offset_top = 289.2
-offset_right = 650.8
-offset_bottom = 389.2
-
-[node name="InfoBG" type="TextureRect" parent="Shop"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -218.0
-offset_top = 257.0
-offset_right = 218.0
-offset_bottom = 376.0
-grow_horizontal = 2
-texture = ExtResource("29_t5owt")
-
-[node name="MoneyIcon" type="TextureRect" parent="Shop/InfoBG"]
+[node name="MoneyIcon" type="TextureRect" parent="Shop"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 52.0
-offset_top = -29.5
-offset_right = 102.0
-offset_bottom = 20.5
+offset_left = 907.0
+offset_top = -214.0
+offset_right = 957.0
+offset_bottom = -164.0
 grow_vertical = 2
 texture = ExtResource("30_fba2n")
 
-[node name="MoneyLabel" type="Label" parent="Shop/InfoBG"]
+[node name="MoneyLabel" type="Label" parent="Shop"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -115.0
-offset_top = -25.5
-offset_right = 22.0
-offset_bottom = 16.5
+offset_left = -2.0
+offset_top = -210.0
+offset_right = 135.0
+offset_bottom = -168.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
 theme_override_font_sizes/font_size = 30
 text = "01234567"
-horizontal_alignment = 1
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
-[node name="VoucherIcon" type="TextureRect" parent="Shop/InfoBG"]
+[node name="VoucherIcon" type="TextureRect" parent="Shop"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 45.0
-offset_top = -29.5
-offset_right = 95.0
-offset_bottom = 20.5
+offset_left = 158.0
+offset_top = -214.0
+offset_right = 208.0
+offset_bottom = -164.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("31_teoly")
 
-[node name="VoucherLabel" type="Label" parent="Shop/InfoBG"]
+[node name="VoucherLabel" type="Label" parent="Shop"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -119.0
-offset_top = -85.0
-offset_right = -50.0
-offset_bottom = -43.0
+offset_left = -748.0
+offset_top = -750.0
+offset_right = -611.0
+offset_bottom = -708.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
 theme_override_font_sizes/font_size = 30
-text = "0123"
-horizontal_alignment = 1
+text = "01234567"
 script = ExtResource("4_lfrn8")
 metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
+
+[node name="ReturnButton" parent="Shop" instance=ExtResource("11_ftsea")]
+layout_mode = 1
+offset_left = 550.8
+offset_top = 289.2
+offset_right = 650.8
+offset_bottom = 389.2
 
 [node name="ZoomAnimView" type="Control" parent="."]
 layout_mode = 1
@@ -979,28 +966,12 @@ metadata/_custom_type_script = "uid://74aly0fqsq5b"
 
 [node name="ItemBtnImg" type="TextureRect" parent="SlotImage"]
 layout_mode = 0
-offset_left = 980.0
-offset_top = 164.0
-offset_right = 1116.0
-offset_bottom = 222.0
+offset_left = 968.0
+offset_top = 153.0
+offset_right = 1128.0
+offset_bottom = 235.0
 mouse_filter = 2
 texture = ExtResource("18_4vuph")
-
-[node name="SpinImg" type="TextureRect" parent="SlotImage"]
-visible = false
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -397.0
-offset_top = -212.0
-offset_right = 397.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-texture = ExtResource("13_3jaai")
 
 [node name="ItemView" type="Control" parent="SlotImage"]
 anchors_preset = 0
@@ -1025,8 +996,23 @@ offset_top = 308.0
 offset_right = 274.0
 offset_bottom = 534.0
 icon = ExtResource("36_6ehwc")
+flat = true
+icon_alignment = 1
 script = ExtResource("3_0sr1o")
 metadata/_custom_type_script = "uid://busxpt8b3jr3b"
+
+[node name="Light" type="TextureRect" parent="SlotImage/BookButton"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.15, 1.1)
+pivot_offset = Vector2(95, 115)
+texture = ExtResource("34_teoly")
+expand_mode = 1
 
 [node name="ReturnButton" parent="SlotImage" instance=ExtResource("11_ftsea")]
 layout_mode = 1
@@ -1343,12 +1329,3 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
-
-[node name="SpineSpriteEx" type="SpineSprite" parent="."]
-skeleton_data_res = ExtResource("46_b7fhm")
-preview_skin = "00"
-preview_animation = "-- Empty --"
-preview_frame = false
-preview_time = 0.0
-script = ExtResource("34_i600x")
-metadata/_custom_type_script = "uid://74aly0fqsq5b"

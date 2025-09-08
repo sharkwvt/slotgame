@@ -7,6 +7,7 @@ class_name SlotViews
 
 @export var item_btn_img: TextureRect
 @export var item_btn_n: Texture
+@export var item_btn_l: Texture
 @export var item_btn_p: Texture
 
 @export var use_item_btn: ButtonEx
@@ -19,13 +20,16 @@ class_name SlotViews
 var cumulative_amount = 0
 var btn_used = false
 var in_spin = false
-var btn_on_enter = false
+var item_btn_on_enter = false
+var spin_btn_on_enter = false
 
 var Anim_State = SlotView.Anim_State
 
 
 func _ready():
 	use_item_btn.pressed.connect(_on_item_btn_pressed)
+	use_item_btn.mouse_entered.connect(_on_item_btn_mouse_entered)
+	use_item_btn.mouse_exited.connect(_on_item_btn_mouse_exited)
 	spin_btn.pressed.connect(start_spin)
 	spin_btn.mouse_entered.connect(_on_spin_btn_mouse_entered)
 	spin_btn.mouse_exited.connect(_on_spin_btn_mouse_exited)
@@ -61,10 +65,16 @@ func start_spin():
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
 	in_spin = false
-	if btn_on_enter and can_spin():
-		spin_spine.set_skin("push_1")
 	game_scene.refresh_view()
 	_on_spin_finish()
+
+
+func can_spin() -> bool:
+	return !(in_spin or Slot.spin_times <= 0)
+
+func can_use_item()-> bool:
+	return not btn_used and can_spin()
+
 
 func refresh_info_label():
 	info_lbl_3d.text = "剩餘次數："
@@ -86,18 +96,6 @@ func reset():
 	refresh_view()
 
 
-func _on_item_btn_pressed():
-	if not btn_used and not in_spin:
-		item_btn_img.texture = item_btn_p
-		Slot.triggered_items.clear()
-		Slot.use_items()
-		btn_used = true
-		use_item_btn.disabled = true
-		game_scene.show_triggered_items()
-		await game_scene.triggered_anim_finish
-		game_scene.refresh_view()
-
-
 func _on_spin_finish():
 	btn_used = false
 	use_item_btn.disabled = false
@@ -110,6 +108,11 @@ func _on_spin_finish():
 	
 	#spin_img.texture = spin_n
 	item_btn_img.texture = item_btn_n
+	if can_spin():
+		if item_btn_on_enter:
+			item_btn_img.texture = item_btn_l
+		if spin_btn_on_enter:
+			spin_spine.set_skin("push_1")
 	game_scene.refresh_view()
 	
 	if Slot.spin_times <= 0:
@@ -120,16 +123,35 @@ func _on_spin_finish():
 			game_scene.switch_view(game_scene.VIEW_STATE.menu)
 			game_scene.refresh_view()
 
-func can_spin() -> bool:
-	return !(in_spin or Slot.spin_times <= 0)
+
+func _on_item_btn_pressed():
+	if can_use_item():
+		item_btn_img.texture = item_btn_p
+		Slot.triggered_items.clear()
+		Slot.use_items()
+		btn_used = true
+		use_item_btn.disabled = true
+		game_scene.show_triggered_items()
+		await game_scene.triggered_anim_finish
+		game_scene.refresh_view()
+
+func _on_item_btn_mouse_entered():
+	item_btn_on_enter = true
+	if can_use_item():
+		item_btn_img.texture = item_btn_l
+
+func _on_item_btn_mouse_exited():
+	item_btn_on_enter = false
+	if item_btn_img.texture == item_btn_l:
+		item_btn_img.texture = item_btn_n
 
 func _on_spin_btn_mouse_entered():
-	btn_on_enter = true
+	spin_btn_on_enter = true
 	if can_spin():
 		spin_spine.set_skin("push_1")
 
 func _on_spin_btn_mouse_exited():
-	btn_on_enter = false
+	spin_btn_on_enter = false
 	spin_spine.set_skin("push_0")
 
 func _input(event):

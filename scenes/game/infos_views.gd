@@ -23,7 +23,7 @@ func refresh_level_info_view():
 	
 	var temp_view = Control.new()
 	var offset_x = 0
-	var font_color = Color("5f5105")
+	var font_color = Main.theme_colors[0]
 	var font_size = 30
 	
 	var last_wave_string = str("剩餘機台使用次數: ", "%s" % game_scene.last_slot_times)

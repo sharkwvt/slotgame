@@ -157,6 +157,10 @@ func setup():
 	$Shop/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
 	$SelectSpinViews/ReturnButton.pressed.connect(switch_view.bind(VIEW_STATE.menu))
 	$SlotImage/ReturnButton.pressed.connect(_on_shutdown_btn_pressed)
+	var book_btn_light = $SlotImage/BookButton/Light
+	book_btn_light.visible = false
+	$SlotImage/BookButton.mouse_entered.connect(func ():book_btn_light.visible = true)
+	$SlotImage/BookButton.mouse_exited.connect(func ():book_btn_light.visible = false)
 	$SlotImage/BookButton.pressed.connect(
 		func ():
 			if slot_views.in_spin:
@@ -249,14 +253,13 @@ func switch_view(state: VIEW_STATE):
 			target_zoom = Vector2(2, 2)
 		VIEW_STATE.menu:
 			target_zoom = Vector2(2, 2)
-			slot_btn.visible = true
-			refresh_view()
 		VIEW_STATE.shop:
 			target_zoom = Vector2(2, 2)
 		VIEW_STATE.select_spin:
 			target_zoom = Vector2(2, 2)
 		VIEW_STATE.game:
 			target_zoom = Vector2(1, 1)
+			infos_views.wave_lbl.top_level = false
 			slot_views.cumulative_amount = 0
 			refresh_view()
 		VIEW_STATE.book:
@@ -272,6 +275,7 @@ func switch_view(state: VIEW_STATE):
 	menu_view.visible = state == VIEW_STATE.menu
 	items_views.visible = state == VIEW_STATE.menu
 	infos_views.visible = state == VIEW_STATE.menu
+	infos_views.wave_lbl.top_level = state == VIEW_STATE.menu
 	if state == VIEW_STATE.menu: result_check()
 	
 	shop_view.visible = state == VIEW_STATE.shop
