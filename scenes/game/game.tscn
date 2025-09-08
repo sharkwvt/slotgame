@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=59 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -45,6 +45,7 @@
 [ext_resource type="Texture2D" uid="uid://btdqgkrl0ds2j" path="res://image/book/left_image.png" id="39_sikks"]
 [ext_resource type="Texture2D" uid="uid://bs20gdscefdl8" path="res://image/book/right_image.png" id="40_ah1mj"]
 [ext_resource type="Texture2D" uid="uid://dmfj5o1t2vv0a" path="res://image/book/back_a02.png" id="41_ah1mj"]
+[ext_resource type="SpineSkeletonDataResource" uid="uid://bvh1q05hq7o5m" path="res://spine/number/number.tres" id="46_b7fhm"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_ah1mj"]
 
@@ -735,6 +736,7 @@ grow_vertical = 2
 script = ExtResource("5_lfrn8")
 mask = NodePath("..")
 bingo_img = ExtResource("11_otnwt")
+num_skeleton = ExtResource("46_b7fhm")
 
 [node name="SpinButton" type="Button" parent="SlotViews"]
 top_level = true
@@ -1341,3 +1343,12 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
+
+[node name="SpineSpriteEx" type="SpineSprite" parent="."]
+skeleton_data_res = ExtResource("46_b7fhm")
+preview_skin = "00"
+preview_animation = "-- Empty --"
+preview_frame = false
+preview_time = 0.0
+script = ExtResource("34_i600x")
+metadata/_custom_type_script = "uid://74aly0fqsq5b"

@@ -4,6 +4,8 @@ class_name SlotView
 @export var mask: Control
 @export var bingo_img: Texture
 
+@export var num_skeleton: SpineSkeletonDataResource
+
 var sym_panel: Control
 var anim_panel: Control
 
@@ -197,25 +199,23 @@ func show_reward_anim():
 	reward_anim_finished.emit()
 
 
-func show_reward_tip(msg: String, duration: float):
-	var lbl := Label.new()
-	lbl.add_theme_font_size_override("font_size", 100)
-	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	lbl.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	lbl.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	lbl.text = msg
-	lbl.position = Vector2.ZERO
-	lbl.position = (self.size - lbl.size) / 2.0
-	add_child(lbl)
-	var tween: Tween = lbl.create_tween()
-	#tween.set_parallel(true)
-	tween.tween_property(lbl, "position:y", lbl.position.y - 10, duration / 2.0)
-	tween.tween_property(lbl, "position:y", lbl.position.y + 10, duration / 2.0)
-	#tween.finished.connect(lbl.queue_free)
-	await tween.finished
-	lbl.queue_free()
-	tween.kill()
+func show_reward_tip(msg: String):
+	var offset = 100
+	var sps = []
+	for i in msg.length():
+		var num_str = msg[i]
+		var sp = SpineSpriteEx.new()
+		sp.skeleton_data_res = num_skeleton
+		sp.set_skin("0" + num_str)
+		sp.play_first_anim(false)
+		sp.position = self.size / 2.0
+		sp.position.x += offset * (i - (msg.length() - 1) / 2.0)
+		add_child(sp)
+		sps.append(sp)
+	
+	await get_tree().create_timer(2).timeout
+	for sp in sps:
+		sp.queue_free()
 
 func setup():
 	sym_panel = Control.new()

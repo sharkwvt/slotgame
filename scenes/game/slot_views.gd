@@ -103,7 +103,7 @@ func _on_spin_finish():
 	use_item_btn.disabled = false
 	if Slot.rewards.size() > 0:
 		var r = Slot.calculating_rewards()
-		slot_view.show_reward_tip(str(r), 1)
+		slot_view.show_reward_tip(str(r))
 		Logger.log(str("中了 ", r))
 		cumulative_amount += r
 		Slot.money += r
