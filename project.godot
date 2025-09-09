@@ -66,6 +66,10 @@ debug_tool={
 ]
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://csv/UI.en.translation", "res://csv/UI.zh.translation", "res://csv/UI.zhc.translation", "res://csv/game.en.translation", "res://csv/game.zh.translation", "res://csv/game.zhc.translation", "res://csv/tip.en.translation", "res://csv/tip.zh.translation", "res://csv/tip.zhc.translation")
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

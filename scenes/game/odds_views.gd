@@ -70,10 +70,13 @@ func refresh_symbols_odds():
 	odds_bg.color = Main.theme_colors[0]
 	odds_view.add_child(odds_bg)
 	
-	var odds_lbl = Label.new()
+	var odds_lbl = LabelEx.new()
 	odds_lbl.add_theme_font_size_override("font_size", 40)
+	odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	odds_lbl.text = "符號倍率:"
 	odds_lbl.position.x = offset
+	odds_lbl.max_size = Vector2(200, 50)
+	odds_lbl.size_to_fit = false
 	odds_bg.add_child(odds_lbl)
 	
 	var multiplier_lbl = Label.new()
@@ -97,6 +100,7 @@ func refresh_symbols_odds():
 	)
 	multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
 	money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
+	odds_lbl.max_size.x = money_icon.position.x - offset * 2
 
 
 func refresh_pattern_odds():
@@ -137,10 +141,13 @@ func refresh_pattern_odds():
 	odds_bg.color = Main.theme_colors[0]
 	odds_view.add_child(odds_bg)
 	
-	var odds_lbl = Label.new()
+	var odds_lbl = LabelEx.new()
 	odds_lbl.add_theme_font_size_override("font_size", 40)
+	odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	odds_lbl.text = "圖形倍率:"
 	odds_lbl.position.x = offset
+	odds_lbl.max_size = Vector2(200, 50)
+	odds_lbl.size_to_fit = false
 	odds_bg.add_child(odds_lbl)
 	
 	var multiplier_lbl = Label.new()
@@ -164,3 +171,4 @@ func refresh_pattern_odds():
 	)
 	multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
 	money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
+	odds_lbl.max_size.x = money_icon.position.x - offset * 2

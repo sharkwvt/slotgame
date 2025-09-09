@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://biyxikojjptyl"
+
+[deps]
+
+files=["res://csv/game.zhc.translation", "res://csv/game.zh.translation", "res://csv/game.en.translation"]
+
+source_file="res://csv/game.csv"
+dest_files=["res://csv/game.zhc.translation", "res://csv/game.zh.translation", "res://csv/game.en.translation"]
+
+[params]
+
+compress=true
+delimiter=0

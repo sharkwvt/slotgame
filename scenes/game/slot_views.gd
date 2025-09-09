@@ -77,11 +77,11 @@ func can_use_item()-> bool:
 
 
 func refresh_info_label():
-	info_lbl_3d.text = "剩餘次數："
-	info_lbl_3d.text += "\n%s" % Slot.spin_times
-	info_lbl_3d.text += "\n持有總額："
-	info_lbl_3d.text += "\n%s" % Slot.money
-	info_lbl_3d.text += "\n目標金額："
+	info_lbl_3d.text = tr("剩餘次數：")
+	info_lbl_3d.text += "\n%s\n" % Slot.spin_times
+	info_lbl_3d.text += tr("持有總額：")
+	info_lbl_3d.text += "\n%s\n" % Slot.money
+	info_lbl_3d.text += tr("目標金額：")
 	info_lbl_3d.text += "\n%s" % game_scene.target_money
 
 

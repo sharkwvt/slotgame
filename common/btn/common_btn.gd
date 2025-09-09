@@ -22,6 +22,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	org_size = get_theme_font_size("font_size")
+	size.x += 10
 	adjust_font_size_to_fit()
 
 
@@ -45,6 +46,8 @@ func adjust_font_size_to_fit():
 	
 	var font_size = org_size
 	var string_size = get_theme_font("font").get_string_size(tr(text), HORIZONTAL_ALIGNMENT_LEFT, -1, org_size)
-	if string_size.x > size.x:
-		font_size = org_size * (size.x / string_size.x)
+	var fix_size = self.size
+	fix_size.x -= 20
+	if string_size.x > fix_size.x:
+		font_size = org_size * (fix_size.x / string_size.x)
 	add_theme_font_size_override("font_size", font_size)

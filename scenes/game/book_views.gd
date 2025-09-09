@@ -33,7 +33,7 @@ func page_next():
 	if tween and tween.is_running():
 		return
 	if index >= int((max_img_count - 1) / 2.0):
-		Main.show_tip("到底了")
+		#Main.show_tip("到底了")
 		return
 	if int((Main.game_data.progress - 1) / 2.0) <= index:
 		Main.show_tip("未解鎖")

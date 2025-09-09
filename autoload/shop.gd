@@ -35,11 +35,11 @@ func refresh_items():
 			available_items.remove_at(random_index)
 	
 	if shop_view:
-		refresh_item_ui()
+		refresh_view()
 
 
-func refresh_item_ui():
-	refresh_button.text = "刷新商品 (%s$)" % get_refresh_item_cost()
+func refresh_view():
+	refresh_button.text = str(tr("刷新商品"), " (%s$)" % get_refresh_item_cost())
 	refresh_button.position = Vector2(
 		(Main.screen_size.x - refresh_button.size.x) / 2.0,
 		game_scene.slot_bg.position.y + game_scene.slot_bg.size.y - refresh_button.size.y - 40
@@ -57,7 +57,6 @@ func refresh_item_ui():
 			(Main.screen_size.y - item_panel.size.y) / 2.0 - 20
 		)
 		items_container.add_child(item_panel)
-		
 
 
 func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
@@ -205,7 +204,6 @@ func _on_item_purchased(item_data: ItemData, index: int):
 	current_items.remove_at(index)
 	if current_items.size() < 1:
 		refresh_items()
-	refresh_item_ui()
 	Main.current_scene.refresh_view()
 
 
@@ -225,4 +223,4 @@ func setup():
 	refresh_button.position = Vector2.ZERO
 	shop_view.add_child(refresh_button)
 
-	refresh_item_ui()
+	refresh_view()

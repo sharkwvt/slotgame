@@ -21,6 +21,8 @@ enum SCREEN_MODE {
 	全螢幕
 }
 
+signal lang_change
+
 func _init() -> void:
 	default_settings()
 	load_setting()
@@ -71,6 +73,7 @@ func reset_setting():
 func set_lang(value):
 	TranslationServer.set_locale(value)
 	set_setting(setting_lang_key, value)
+	lang_change.emit()
 
 
 func set_music_db(value):

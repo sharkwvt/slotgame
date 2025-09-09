@@ -24,8 +24,8 @@ const Item = Slot.Item
 # menu_view
 @export var shop_btn: CommonBtn
 @export var slot_btn: ButtonEx
-@export var spin_7_btn: ButtonEx
-@export var spin_3_btn: ButtonEx
+@export var spin_7_btn: CommonBtn
+@export var spin_3_btn: CommonBtn
 
 enum VIEW_STATE {
 	start,
@@ -51,6 +51,7 @@ var target_money = 0
 var now_interest = 0
 var triggered_item_tween: Tween
 var cam_tween: Tween
+var is_fail: bool
 
 var has_dialog: bool
 var dialog
@@ -78,6 +79,7 @@ func result_check() -> bool:
 		#)
 	if last_slot_times <= 0 and Slot.money < target_money:
 		has_result = true
+		is_fail = true
 		Main.show_talk_view("失敗了").finished.connect(
 			func ():
 				switch_view(VIEW_STATE.start)
@@ -142,6 +144,7 @@ func get_target_money() -> int:
 
 
 func setup():
+	Setting.lang_change.connect(refresh_view)
 	Main.instance_scenes[Main.SCENE.game] = self
 	Main.current_scene = self
 	Main.main_cam = $Camera2D
@@ -240,6 +243,7 @@ func refresh_view():
 	items_views.refresh_view()
 	infos_views.refresh_view()
 	slot_views.refresh_view()
+	Shop.refresh_view()
 
 
 func switch_view(state: VIEW_STATE):
@@ -337,6 +341,7 @@ func reset():
 	target_money = get_target_money()
 	last_slot_times = SLOT_TIMES
 	now_interest = INTEREST
+	is_fail = false
 	refresh_view()
 
 
@@ -387,7 +392,7 @@ func _on_select_slot_pressed(id: int):
 	switch_view(VIEW_STATE.game)
 
 func _on_shutdown_btn_pressed():
-	if has_dialog:
+	if has_dialog or is_fail:
 		return
 	has_dialog = true
 	dialog = Main.create_dialog_view()
@@ -402,7 +407,8 @@ func close_dialog():
 
 func _on_return_confirm():
 	close_dialog()
-	switch_view(VIEW_STATE.menu)
+	if !result_check():
+		switch_view(VIEW_STATE.menu)
 	
 func _on_dialog_cancel():
 	close_dialog()
