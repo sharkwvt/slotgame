@@ -1,0 +1,86 @@
+keys,zhc,zh,en
+假幣,假幣,假币,Counterfeit Coin
+轉動後10%機率額外添加1次轉動次數，當次轉動幸運+4,轉動後10%機率額外添加1次轉動次數，當次轉動幸運+4,转动后10%机率额外添加1次转动次数，当次转动幸运+4,10% chance to gain an extra spin after spinning. Luck +4 for that spin.
+馬蹄鐵,馬蹄鐵,马蹄铁,Horseshoe
+機率型觸發道具機率加倍,機率型觸發道具機率加倍,机率型触发道具机率加倍,Doubles the activation chance of probability-based items.
+手套,手套,手套,Glove
+最後一轉幸運+7,最後一轉幸運+7,最后一转幸运+7,Luck +7 on the final spin.
+招財貓,招財貓,招财猫,Lucky Cat
+當次拉霸觸發3次獎金，獲得利息,當次拉霸觸發3次獎金，獲得利息,当次拉霸触发3次奖金，获得利息,Gain interest when 3 prizes are triggered in a single spin.
+紅石,紅石,红石,Redstone
+使用後當次轉動幸運+4,使用後當次轉動幸運+4,使用后当次转动幸运+4,Luck +4 for the current spin after use.
+使用完拉霸後恢復1,使用完拉霸後恢復1,使用完拉霸后恢复1,Resets to 1 use after using the slot machine.
+塔羅牌,塔羅牌,塔罗牌,Tarot Card
+轉動時有道具觸發，符號倍率+1，沒道具觸發時重置,轉動時有道具觸發，符號倍率+1，沒道具觸發時重置,转动时有道具触发，符号倍率+1，没道具触发时重置,Symbol multiplier +1 if an item is triggered during a spin; resets if none are triggered.
+錢包,錢包,钱包,Wallet
+利息增加15%，每輪遞減3%，0%丟棄,利息增加15%，每輪遞減3%，0%丟棄,利息增加15%，每轮递减3%，0%丢弃,"Interest starts at +15%, decreases by 3% each round, discarded at 0%."
+五芒星,五芒星,五芒星,Pentagram
+符號倍率+1，單次轉動觸發5次以上獎金，符號倍率再+1,符號倍率+1，單次轉動觸發5次以上獎金，符號倍率再+1,符号倍率+1，单次转动触发5次以上奖金，符号倍率再+1,"Symbol multiplier +1. If 5+ prizes are triggered in one spin, gain an extra +1 multiplier."
+貓糧,貓糧,猫粮,Cat Food
+轉動次數+2,轉動次數+2,转动次数+2,+2 spins.
+千紙鶴,千紙鶴,千纸鹤,Paper Crane
+每擁有5張幸運券，符號倍率+1,每擁有5張幸運券，符號倍率+1,每拥有5张幸运券，符号倍率+1,Gain +1 symbol multiplier for every 5 Lucky Tickets owned.
+核按鈕,核按鈕,核按钮,Nuclear Button
+主動道具額外觸發1次，道具欄位-1,主動道具額外觸發1次，道具欄位-1,主动道具额外触发1次，道具栏位-1,Active item triggers one extra time but occupies one less slot.
+擴音器,擴音器,扩音器,Megaphone
+電話亭能力觸發2次，道具欄位-1,電話亭能力觸發2次，道具欄位-1,电话亭能力触发2次，道具栏位-1,Phone booth ability triggers twice but uses one less item slot.
+玩具火車,玩具火車,玩具火车,Toy Train
+連續2次轉動沒獎勵，下一次幸運+5,連續2次轉動沒獎勵，下一次幸運+5,连续2次转动没奖励，下一次幸运+5,"After 2 spins with no prize, next spin gets Luck +5."
+股票,股票,股票,Stock
+利息+5%,利息+5%,利息+5%,Interest +5%.
+電池,電池,电池,Battery
+重置主動道具可用次數,重置主動道具可用次數,重置主动道具可用次数,Resets the usage count of active items.
+不佔欄位,不佔欄位,不占栏位,Does not occupy an item slot.
+兌換券,兌換券,兑换券,Voucher
+兌換券+4,兌換券+4,兑换券+4,+4 Voucher.
+公文包,公文包,公文包,Briefcase
+獲得目標金額30%,獲得目標金額30%,获得目标金额30%,Gain 30% of the target amount.
+盆栽,盆栽,盆栽,Potted Plant
+每次清算，每擁有3張兌換券，額外獲得1張，最多10張,每次清算，每擁有3張兌換券，額外獲得1張，最多10張,每次清算，每拥有3张兑换券，额外获得1张，最多10张,"At each settlement, gain 1 extra Voucher per 3 owned, up to 10."
+幻菇,幻菇,幻菇,Phantom Mushroom
+當次轉動觸發3次獎金，轉動次數用完前符號價值x2,當次轉動觸發3次獎金，轉動次數用完前符號價值x2,当次转动触发3次奖金，转动次数用完前符号价值x2,"If 3 prizes are triggered in one spin, symbol values are doubled until spins are used up."
+筆記版,筆記版,笔记版,Notebook
+當次拉霸觸發3次獎金，轉動次數用完前圖案價值+1倍,當次拉霸觸發3次獎金，轉動次數用完前圖案價值+1倍,当次拉霸触发3次奖金，转动次数用完前图案价值+1倍,"If 3 prizes are triggered, symbol value is increased by 1x until spins are used up."
+紅辣椒,紅辣椒,红辣椒,Red Pepper
+轉動時觸發，20%機率當次幸運+5,轉動時觸發，20%機率當次幸運+5,转动时触发，20%机率当次幸运+5,20% chance to gain Luck +5 during a spin.
+次數用完後銷毀,次數用完後銷毀,次数用完后销毁,Destroyed after all uses are consumed.
+青辣椒,青辣椒,青辣椒,Green Pepper
+轉動時觸發，15%機率當次幸運+7,轉動時觸發，15%機率當次幸運+7,转动时触发，15%机率当次幸运+7,15% chance to gain Luck +7 during a spin.
+聖經,聖經,圣经,Bible
+出現666組合，轉化為普通符號，道具銷毀,出現666組合，轉化為普通符號，道具銷毀,出现666组合，转化为普通符号，道具销毁,"When 666 appears, converts to a normal symbol and item is destroyed."
+檸檬畫像,檸檬畫像,柠檬画像,Lemon Painting
+轉動次數用完前檸檬出現機率+2,轉動次數用完前檸檬出現機率+2,转动次数用完前柠檬出现机率+2,Lemon appearance chance +2 until spins are used up.
+結算後次數恢復1,結算後次數恢復1,结算后次数恢复1,Resets to 1 use after settlement.
+櫻桃畫像,櫻桃畫像,樱桃画像,Cherry Painting
+轉動次數用完前櫻桃出現機率+2,轉動次數用完前櫻桃出現機率+2,转动次数用完前樱桃出现机率+2,Cherry appearance chance +2 until spins are used up.
+幸運草畫像,幸運草畫像,幸运草画像,Clover Painting
+轉動次數用完前幸運草出現機率+2,轉動次數用完前幸運草出現機率+2,转动次数用完前幸运草出现机率+2,Clover appearance chance +2 until spins are used up.
+鈴鐺畫像,鈴鐺畫像,铃铛画像,Bell Painting
+轉動次數用完前鈴鐺出現機率+2,轉動次數用完前鈴鐺出現機率+2,转动次数用完前铃铛出现机率+2,Bell appearance chance +2 until spins are used up.
+鑽石畫像,鑽石畫像,钻石画像,Diamond Painting
+轉動次數用完前鑽石出現機率+2,轉動次數用完前鑽石出現機率+2,转动次数用完前钻石出现机率+2,Diamond appearance chance +2 until spins are used up.
+BAR畫像,BAR畫像,BAR画像,BAR Painting
+轉動次數用完前BAR出現機率+2,轉動次數用完前BAR出現機率+2,转动次数用完前BAR出现机率+2,BAR symbol appearance chance +2 until spins are used up.
+7畫像,7畫像,7画像,7 Painting
+轉動次數用完前7出現機率+2,轉動次數用完前7出現機率+2,转动次数用完前7出现机率+2,7 symbol appearance chance +2 until spins are used up.
+黃金檸檬,黃金檸檬,黄金柠檬,Golden Lemon
+出現黃金標記機率+20%，標記觸發符號價值永久+2,出現黃金標記機率+20%，標記觸發符號價值永久+2,出现黄金标记机率+20%，标记触发符号价值永久+2,+20% chance for golden marker. Triggered symbol value permanently +2.
+黃金櫻桃,黃金櫻桃,黄金樱桃,Golden Cherry
+出現黃金標記機率+20%，標記觸發符號價值永久+2,出現黃金標記機率+20%，標記觸發符號價值永久+2,出现黄金标记机率+20%，标记触发符号价值永久+2,+20% chance for golden marker. Triggered symbol value permanently +2.
+黃金幸運草,黃金幸運草,黄金幸运草,Golden Clover
+出現黃金標記機率+20%，標記觸發符號價值永久+3,出現黃金標記機率+20%，標記觸發符號價值永久+3,出现黄金标记机率+20%，标记触发符号价值永久+3,+20% chance for golden marker. Triggered symbol value permanently +3.
+黃金鈴鐺,黃金鈴鐺,黄金铃铛,Golden Bell
+出現黃金標記機率+20%，標記觸發符號價值永久+3,出現黃金標記機率+20%，標記觸發符號價值永久+3,出现黄金标记机率+20%，标记触发符号价值永久+3,+20% chance for golden marker. Triggered symbol value permanently +3.
+黃金鑽石,黃金鑽石,黄金钻石,Golden Diamond
+出現黃金標記機率+20%，標記觸發符號價值永久+5,出現黃金標記機率+20%，標記觸發符號價值永久+5,出现黄金标记机率+20%，标记触发符号价值永久+5,+20% chance for golden marker. Triggered symbol value permanently +5.
+黃金BAR,黃金BAR,黄金BAR,Golden BAR
+出現黃金標記機率+20%，標記觸發符號價值永久+5,出現黃金標記機率+20%，標記觸發符號價值永久+5,出现黄金标记机率+20%，标记触发符号价值永久+5,+20% chance for golden marker. Triggered symbol value permanently +5.
+黃金7,黃金7,黄金7,Golden 7
+出現黃金標記機率+20%，標記觸發符號價值永久+7,出現黃金標記機率+20%，標記觸發符號價值永久+7,出现黄金标记机率+20%，标记触发符号价值永久+7,+20% chance for golden marker. Triggered symbol value permanently +7.
+不倒翁,不倒翁,不倒翁,Weeble
+符號出現黃金標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券,符號出現黃金標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券,符号出现黄金标记提升2%，每购买一次道具提升1%(最高25%)，标记触发奖金+1兑换券,Golden marker chance +2%. +1% per item purchased (max 25%). Triggered marker grants +1 Voucher.
+加倍道具A,加倍道具A,加倍道具A,Double Booster A
+轉動次數用完前，檸檬、鈴鐺、BAR、7觸發次數+1,轉動次數用完前，檸檬、鈴鐺、BAR、7觸發次數+1,转动次数用完前，柠檬、铃铛、BAR、7触发次数+1,"Grants +1 trigger to Lemon, Bell, BAR, and 7 symbols until spins are depleted."
+加倍道具B,加倍道具B,加倍道具B,Double Booster B
+轉動次數用完前，櫻桃、幸運草、鑽石觸發次數+1,轉動次數用完前，櫻桃、幸運草、鑽石觸發次數+1,转动次数用完前，樱桃、幸运草、钻石触发次数+1,"Grants +1 trigger to Cherry, Clover, and Diamond symbols until spins are depleted."
+可用次數:,可用次數:,可用次数:,Available times:

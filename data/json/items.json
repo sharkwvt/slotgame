@@ -36,7 +36,7 @@
 	  "title": "紅石",
 	  "cost": 1,
 	  "description": "使用後當次轉動幸運+4",
-	  "remark":"使用完拉霸後次數恢復1",
+	  "remark":"使用完拉霸後恢復1",
 	  "active_item": 1.0,
 	  "usable_count": 3.0,
 	  "id": 4

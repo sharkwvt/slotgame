@@ -69,19 +69,14 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	panel.add_theme_stylebox_override("hover", load("res://styles/style_btn_h.tres"))
 	panel.add_theme_stylebox_override("pressed", load("res://styles/style_btn_h.tres"))
 	
-	# 創建垂直布局容器
-	var vbox = VBoxContainer.new()
-	vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	vbox.add_theme_constant_override("separation", 8)
-	panel.add_child(vbox)
-	
 	# 添加邊距
 	var margin = MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 10)
 	margin.add_theme_constant_override("margin_right", 10)
 	margin.add_theme_constant_override("margin_top", 10)
 	margin.add_theme_constant_override("margin_bottom", 10)
-	vbox.add_child(margin)
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.add_child(margin)
 	
 	var content_vbox = VBoxContainer.new()
 	content_vbox.add_theme_constant_override("separation", 5)
@@ -90,21 +85,16 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	var title_root = Control.new()
 	content_vbox.add_child(title_root)
 	
-	# 道具圖標（使用文字代替圖片）
+	# 道具圖標
 	var icon = TextureRect.new()
 	icon.texture = item_data.get_img()
 	title_root.add_child(icon)
 	icon.position = Vector2.ZERO
-	#var icon_label = Label.new()
-	#icon_label.text = get_item_emoji(item_data.name)
-	#icon_label.add_theme_font_size_override("font_size", 50)
-	#icon_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	#title_root.add_child(icon_label)
-	#icon_label.position = Vector2.ZERO
 	
 	# 道具名稱
 	var name_label = LabelEx.new()
 	name_label.size = Vector2(panel.size.x - icon.size.x - 30, icon.size.y)
+	name_label.autowrap = true
 	name_label.position.x = icon.size.x + 10
 	name_label.text = item_data.title
 	name_label.add_theme_font_size_override("font_size", font_size + 5)
@@ -121,16 +111,16 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	desc_label.text = item_data.description
 	desc_label.add_theme_font_size_override("font_size", font_size)
 	desc_label.add_theme_color_override("font_color", Main.theme_colors[0])
-	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	#desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	content_vbox.add_child(desc_label)
 	
 	if item_data.usable_count > 0:
 		var usable_label = Label.new()
-		usable_label.text = "可用次數: %s" % item_data.usable_count
+		usable_label.text = str(tr("可用次數:"), " ", item_data.usable_count)
 		usable_label.add_theme_font_size_override("font_size", font_size)
 		usable_label.add_theme_color_override("font_color", Main.theme_colors[0])
-		usable_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		#usable_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		usable_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		content_vbox.add_child(usable_label)
 		
@@ -139,10 +129,10 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 		remark_label.text = item_data.remark
 		remark_label.add_theme_font_size_override("font_size", font_size)
 		remark_label.add_theme_color_override("font_color", Main.theme_colors[0])
-		remark_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		#remark_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		remark_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		content_vbox.add_child(remark_label)
-		
+	
 	
 	# 價格和購買按鈕的水平布局
 	var hbox_bg = ColorRect.new()
@@ -170,6 +160,17 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	price_label.add_theme_font_size_override("font_size", font_size + 15)
 	price_label.add_theme_color_override("font_color", Main.theme_colors[1])
 	hbox.add_child(price_label)
+	
+	#desc_label.minimum_size_changed.connect(
+		#func ():
+			#var f = font_size
+			#print(desc_label.size.y, " ", panel.size.y, " ", hbox.size.y, " ", title_root.size.y)
+			#var target_y = panel.size.y - hbox.size.y - title_root.size.y - 20
+			#if desc_label.size.y > target_y:
+				#f = font_size * (target_y / desc_label.size.y)
+			#desc_label.add_theme_font_size_override("font_size", f)
+	#)
+	
 	
 	return panel
 
