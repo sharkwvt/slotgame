@@ -61,6 +61,8 @@ func refresh_view():
 
 func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	var font_size = 15
+	var margin_size = 10
+	
 	# 創建主面板
 	var panel = ButtonEx.new()
 	panel.size = Vector2(170, 250)
@@ -71,15 +73,15 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	
 	# 添加邊距
 	var margin = MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 10)
-	margin.add_theme_constant_override("margin_right", 10)
-	margin.add_theme_constant_override("margin_top", 10)
-	margin.add_theme_constant_override("margin_bottom", 10)
+	margin.add_theme_constant_override("margin_left", margin_size)
+	margin.add_theme_constant_override("margin_right", margin_size)
+	margin.add_theme_constant_override("margin_top", margin_size)
+	margin.add_theme_constant_override("margin_bottom", margin_size)
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.add_child(margin)
 	
 	var content_vbox = VBoxContainer.new()
-	content_vbox.add_theme_constant_override("separation", 5)
+	#content_vbox.add_theme_constant_override("separation", 0)
 	margin.add_child(content_vbox)
 	
 	var title_root = Control.new()
@@ -93,9 +95,9 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	
 	# 道具名稱
 	var name_label = LabelEx.new()
-	name_label.size = Vector2(panel.size.x - icon.size.x - 30, icon.size.y)
-	name_label.autowrap = true
-	name_label.position.x = icon.size.x + 10
+	name_label.set_max_size(Vector2(panel.size.x - icon.size.x - margin_size * 3, icon.size.y))
+	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	name_label.position.x = icon.size.x + margin_size
 	name_label.text = item_data.title
 	name_label.add_theme_font_size_override("font_size", font_size + 5)
 	name_label.add_theme_color_override("font_color", Main.theme_colors[0])
@@ -107,31 +109,36 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	
 	
 	# 道具描述
-	var desc_label = Label.new()
+	var desc_label_size = Vector2(panel.size.x - margin_size * 2, panel.size.y - margin_size * 2 - icon.size.y)
+	var desc_label = LabelEx.new()
+	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	desc_label.text = item_data.description
 	desc_label.add_theme_font_size_override("font_size", font_size)
 	desc_label.add_theme_color_override("font_color", Main.theme_colors[0])
 	#desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	content_vbox.add_child(desc_label)
 	
 	if item_data.usable_count > 0:
-		var usable_label = Label.new()
+		var usable_label = LabelEx.new()
+		usable_label.set_max_size(Vector2(panel.size.x - margin_size * 2, font_size))
 		usable_label.text = str(tr("可用次數:"), " ", item_data.usable_count)
 		usable_label.add_theme_font_size_override("font_size", font_size)
 		usable_label.add_theme_color_override("font_color", Main.theme_colors[0])
 		#usable_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		usable_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		content_vbox.add_child(usable_label)
+		desc_label_size.y -= usable_label.size.y
 		
 	if item_data.remark:
-		var remark_label = Label.new()
+		var remark_label = LabelEx.new()
+		remark_label.set_max_size(Vector2(panel.size.x - margin_size * 2, font_size * 2 + margin_size))
+		remark_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 		remark_label.text = item_data.remark
 		remark_label.add_theme_font_size_override("font_size", font_size)
 		remark_label.add_theme_color_override("font_color", Main.theme_colors[0])
 		#remark_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		remark_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		#remark_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		content_vbox.add_child(remark_label)
+		desc_label_size.y -= remark_label.size.y
 	
 	
 	# 價格和購買按鈕的水平布局
@@ -152,7 +159,10 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	var v_icon = TextureRect.new()
 	v_icon.texture = Images.voucher_icon_2
 	v_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	v_icon.position = Vector2.ZERO
 	hbox.add_child(v_icon)
+	
+	desc_label_size.y -= v_icon.size.y
 	
 	# 價格標籤
 	var price_label = Label.new()
@@ -161,16 +171,7 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	price_label.add_theme_color_override("font_color", Main.theme_colors[1])
 	hbox.add_child(price_label)
 	
-	#desc_label.minimum_size_changed.connect(
-		#func ():
-			#var f = font_size
-			#print(desc_label.size.y, " ", panel.size.y, " ", hbox.size.y, " ", title_root.size.y)
-			#var target_y = panel.size.y - hbox.size.y - title_root.size.y - 20
-			#if desc_label.size.y > target_y:
-				#f = font_size * (target_y / desc_label.size.y)
-			#desc_label.add_theme_font_size_override("font_size", f)
-	#)
-	
+	desc_label.set_max_size(desc_label_size)
 	
 	return panel
 

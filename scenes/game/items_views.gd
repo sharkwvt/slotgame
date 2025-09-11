@@ -97,7 +97,7 @@ func show_item_info_view(item: Item):
 	window.add_child(bg)
 	
 	var title_lbl = Label.new()
-	title_lbl.add_theme_font_size_override("font_size", font_size)
+	title_lbl.add_theme_font_size_override("font_size", font_size + 5)
 	title_lbl.text = item_data.title
 	title_lbl.position = Vector2(offset, offset)
 	bg.add_child(title_lbl)
@@ -118,7 +118,7 @@ func show_item_info_view(item: Item):
 	if item in Slot.items_usable.keys():
 		var usable_lbl = Label.new()
 		usable_lbl.add_theme_font_size_override("font_size", font_size)
-		usable_lbl.text = "剩餘次數: %s" % Slot.items_usable[item]
+		usable_lbl.text = str(tr("剩餘次數:"), " %s" % Slot.items_usable[item])
 		usable_lbl.position = Vector2(
 			offset,
 			temp_view.position.y + temp_view.size.y + offset
@@ -128,6 +128,8 @@ func show_item_info_view(item: Item):
 	
 	if item_data.remark:
 		var remark_lbl = Label.new()
+		remark_lbl.size = Vector2(250, 30) if Main.in_zoom else Vector2(500, 60)
+		remark_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		remark_lbl.add_theme_font_size_override("font_size", font_size)
 		remark_lbl.text = item_data.remark
 		remark_lbl.position = Vector2(
@@ -140,21 +142,21 @@ func show_item_info_view(item: Item):
 	var development_buffs = [Item.道具6, Item.道具8, Item.道具10, Item.道具20, Item.道具21, Item.道具22, Item.道具40]
 	if Slot.get_buff(item) and item in development_buffs:
 		var buff = Slot.get_buff(item)
-		var value_txt: String
+		var value_txt = tr("當前增幅:") + " "
 		if item in [Item.道具6, Item.道具8, Item.道具10, Item.道具22]:
-			value_txt = str("當前增幅：", buff.value)
+			value_txt += str(buff.value)
 		if item == Item.道具20:
 			var get_voucher = int(Slot.voucher/3.0)
 			if get_voucher > 10:
 				get_voucher = 10
-			value_txt = str("當前增幅：", get_voucher)
+			value_txt += str(get_voucher)
 		if item == Item.道具21:
 			var v = 0
 			for b: Slot.Buff in Slot.get_buffs(item):
 				v *= b.value
-			value_txt = str("當前增幅：", v)
+			value_txt += str(v)
 		if item == Item.道具40:
-			value_txt = str("當前增幅：%s" % int(buff.value * 100), "%")
+			value_txt += str("%s" % int(buff.value * 100), "%")
 		
 		var value_lbl = Label.new()
 		value_lbl.add_theme_font_size_override("font_size", font_size)
