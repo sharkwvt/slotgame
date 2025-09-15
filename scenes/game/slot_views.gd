@@ -2,15 +2,10 @@ extends Control
 class_name SlotViews
 
 @export var game_scene: GameScene
+@export var items_views: ItemsViews
 
 @export var spin_spine: SpineSpriteEx
 
-@export var item_btn_img: TextureRect
-@export var item_btn_n: Texture
-@export var item_btn_l: Texture
-@export var item_btn_p: Texture
-
-@export var use_item_btn: ButtonEx
 @export var spin_btn: ButtonEx
 @export var slot_view: SlotView
 @export var symbols_panel: Control
@@ -18,7 +13,6 @@ class_name SlotViews
 @export var info_lbl_3d: Label3D
 
 var cumulative_amount = 0
-var btn_used = false
 var in_spin = false
 var item_btn_on_enter = false
 var spin_btn_on_enter = false
@@ -27,9 +21,6 @@ var Anim_State = SlotView.Anim_State
 
 
 func _ready():
-	use_item_btn.pressed.connect(_on_item_btn_pressed)
-	use_item_btn.mouse_entered.connect(_on_item_btn_mouse_entered)
-	use_item_btn.mouse_exited.connect(_on_item_btn_mouse_exited)
 	spin_btn.pressed.connect(start_spin)
 	spin_btn.mouse_entered.connect(_on_spin_btn_mouse_entered)
 	spin_btn.mouse_exited.connect(_on_spin_btn_mouse_exited)
@@ -64,7 +55,6 @@ func start_spin():
 	Slot.effect_after_spin()
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
-	in_spin = false
 	game_scene.refresh_view()
 	_on_spin_finish()
 
@@ -72,17 +62,11 @@ func start_spin():
 func can_spin() -> bool:
 	return !(in_spin or Slot.spin_times <= 0)
 
-func can_use_item()-> bool:
-	return not btn_used and can_spin()
-
 
 func refresh_info_label():
-	info_lbl_3d.text = tr("剩餘次數：")
-	info_lbl_3d.text += "\n%s\n" % Slot.spin_times
-	info_lbl_3d.text += tr("持有總額：")
-	info_lbl_3d.text += "\n%s\n" % Slot.money
-	info_lbl_3d.text += tr("目標金額：")
-	info_lbl_3d.text += "\n%s" % game_scene.target_money
+	info_lbl_3d.text = "%s\n" % Slot.spin_times
+	info_lbl_3d.text += "%s\n" % Slot.money
+	info_lbl_3d.text += "%s" % game_scene.target_money
 
 
 func refresh_view():
@@ -90,27 +74,25 @@ func refresh_view():
 	refresh_info_label()
 
 func reset():
-	btn_used = false
-	use_item_btn.disabled = false
 	slot_view.reset()
 	refresh_view()
 
 
 func _on_spin_finish():
-	btn_used = false
-	use_item_btn.disabled = false
 	if Slot.rewards.size() > 0:
 		var r = Slot.calculating_rewards()
 		slot_view.show_reward_tip(str(r))
 		Logger.log(str("中了 ", r))
 		cumulative_amount += r
 		Slot.money += r
+		await slot_view.reward_tip_finished
+	
+	Slot.used_items.clear()
+	in_spin = false
 	
 	#spin_img.texture = spin_n
-	item_btn_img.texture = item_btn_n
+	#item_btn_img.texture = item_btn_n
 	if can_spin():
-		if item_btn_on_enter:
-			item_btn_img.texture = item_btn_l
 		if spin_btn_on_enter:
 			spin_spine.set_skin("push_1")
 	game_scene.refresh_view()
@@ -122,28 +104,6 @@ func _on_spin_finish():
 		if !game_scene.result_check():
 			game_scene.switch_view(game_scene.VIEW_STATE.menu)
 			game_scene.refresh_view()
-
-
-func _on_item_btn_pressed():
-	if can_use_item():
-		item_btn_img.texture = item_btn_p
-		Slot.triggered_items.clear()
-		Slot.use_items()
-		btn_used = true
-		use_item_btn.disabled = true
-		game_scene.show_triggered_items()
-		await game_scene.triggered_anim_finish
-		game_scene.refresh_view()
-
-func _on_item_btn_mouse_entered():
-	item_btn_on_enter = true
-	if can_use_item():
-		item_btn_img.texture = item_btn_l
-
-func _on_item_btn_mouse_exited():
-	item_btn_on_enter = false
-	if item_btn_img.texture == item_btn_l:
-		item_btn_img.texture = item_btn_n
 
 func _on_spin_btn_mouse_entered():
 	spin_btn_on_enter = true

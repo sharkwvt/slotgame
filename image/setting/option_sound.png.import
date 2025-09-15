@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxk6kpy0n3i4o"
-path="res://.godot/imported/rain_drop_2x64.png-3125fdc402f04ee4c865dd7b54ebc97c.ctex"
+uid="uid://boxgprotuquhw"
+path="res://.godot/imported/option_sound.png-569d44935389ddf4170591958166e38f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/particle/rain_drop_2x64.png"
-dest_files=["res://.godot/imported/rain_drop_2x64.png-3125fdc402f04ee4c865dd7b54ebc97c.ctex"]
+source_file="res://image/setting/option_sound.png"
+dest_files=["res://.godot/imported/option_sound.png-569d44935389ddf4170591958166e38f.ctex"]
 
 [params]
 

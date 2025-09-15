@@ -3,6 +3,7 @@ class_name SlotView
 
 @export var mask: Control
 @export var bingo_img: Texture
+@export var tip_bg_img: Texture
 
 @export var num_skeleton: SpineSkeletonDataResource
 
@@ -31,6 +32,7 @@ var old_grid: Array
 
 signal spin_anim_finished
 signal reward_anim_finished
+signal reward_tip_finished
 
 
 func _ready():
@@ -202,6 +204,13 @@ func show_reward_anim():
 func show_reward_tip(msg: String):
 	var offset = 100
 	var sps = []
+	
+	var tip_bg = TextureRect.new()
+	tip_bg.texture = tip_bg_img
+	tip_bg.position = Vector2.ZERO
+	tip_bg.position = -tip_bg.size / 2.0
+	add_child(tip_bg)
+	
 	for i in msg.length():
 		var num_str = msg[i]
 		var sp = SpineSpriteEx.new()
@@ -213,9 +222,12 @@ func show_reward_tip(msg: String):
 		add_child(sp)
 		sps.append(sp)
 	
-	await get_tree().create_timer(2).timeout
+	var timer_value = 2 + 0.5 * msg.length()
+	await get_tree().create_timer(timer_value).timeout
 	for sp in sps:
 		sp.queue_free()
+	tip_bg.queue_free()
+	reward_tip_finished.emit()
 
 func setup():
 	sym_panel = Control.new()

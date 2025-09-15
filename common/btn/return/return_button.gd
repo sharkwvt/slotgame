@@ -11,7 +11,10 @@ func _ready() -> void:
 func setup():
 	if type == 1:
 		remove_theme_color_override("icon_pressed_color")
-		button_up.connect(_on_button_up)
+		#button_up.connect(_on_button_up)
+		if type == 1:
+			mouse_entered.connect(func (): icon = img_s)
+			mouse_exited.connect(func (): icon = img_n)
 		icon = img_n
 
 func _on_button_down() -> void:

@@ -8,7 +8,9 @@ const Item = Slot.Item
 @export var items_view: Panel
 @export var items_view_slot: Control
 @export var item_bg: Texture
+@export var item_l: Texture
 
+var current_info: Control
 var item_views = []
 
 func refresh_view():
@@ -53,17 +55,30 @@ func refresh_slot_items_view():
 		var item_bg_view = TextureRect.new()
 		item_bg_view.texture = item_bg 
 		item_bg_view.position = Vector2.ZERO
-		var offset_x = item_bg_view.size.x + 1
+		var offset_x = item_bg_view.size.x + 20
 		item_bg_view.position = Vector2(i * offset_x + 10, -item_bg_view.size.y / 2.0)
 		items_view_slot.add_child(item_bg_view)
 		if i < Slot.items.size():
-			var item_icon = TextureRect.new()
 			var item: Item = Slot.items[i]
+			if Slot.is_can_use(item):
+				var item_l_view = TextureRect.new()
+				item_l_view.texture = item_l
+				item_bg_view.add_child(item_l_view)
+				item_l_view.position = Vector2.ZERO
+				item_l_view.position = (item_bg_view.size - item_l_view.size) / 2.0
+			var item_icon = TextureRect.new()
 			item_icon.texture = Main.item_datas[Slot.items[i]].get_img()
 			item_icon.gui_input.connect(
 				func (event: InputEvent):
 					if event.is_pressed():
-						show_item_info_view(item)
+						#show_item_info_view(item)
+						use_item(item)
+			)
+			item_icon.mouse_entered.connect(show_item_info_view.bind(item))
+			item_icon.mouse_exited.connect(
+				func ():
+					if current_info:
+						current_info.queue_free()
 			)
 			item_bg_view.add_child(item_icon)
 			item_views.append(item_icon)
@@ -73,6 +88,14 @@ func get_item_view(item_id: int) -> TextureRect:
 		if Slot.items[i] == item_id:
 			return item_views[i]
 	return
+
+func use_item(item: Item):
+	if !Slot.is_can_use(item):
+		return
+	Slot.use_item(item)
+	game_scene.show_triggered_items()
+	game_scene.refresh_view()
+
 
 func show_item_info_view(item: Item):
 	var item_data: ItemData = Main.item_datas[item]
@@ -91,6 +114,9 @@ func show_item_info_view(item: Item):
 				window.queue_free()
 	)
 	game_scene.add_child(window)
+	current_info = window
+	if !Main.in_zoom:
+		window.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	var bg = ColorRect.new()
 	bg.color = Color(Color.BLACK)

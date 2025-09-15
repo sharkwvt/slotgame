@@ -8,19 +8,24 @@ class_name OddsViews
 @export var pattern_odds_view: Control
 @export var symbols_btn: ButtonEx
 @export var bg_switch: TextureRect
+@export var symbols_img: Texture
+@export var pattern_img: Texture
+@export var symbols_multiplier_lbl: LabelEx
+@export var pattern_multiplier_lbl: LabelEx
 
 func _ready() -> void:
+	bg_switch.texture = symbols_img
 	pattern_btn.pressed.connect(
 		func ():
 			pattern_odds_view.visible = true
 			symbols_odds_view.visible = false
-			bg_switch.visible = false
+			bg_switch.texture = pattern_img
 	)
 	symbols_btn.pressed.connect(
 		func ():
 			pattern_odds_view.visible = false
 			symbols_odds_view.visible = true
-			bg_switch.visible = true
+			bg_switch.texture = symbols_img
 	)
 
 func refresh_view():
@@ -65,42 +70,45 @@ func refresh_symbols_odds():
 		gc.add_child(probability_lbl)
 	gc.position = Vector2.ZERO
 	gc.position = (odds_view.size - gc.size) / 2.0
-	gc.position.y = 50
-	var odds_bg = ColorRect.new()
-	odds_bg.color = Main.theme_colors[0]
-	odds_view.add_child(odds_bg)
+	#gc.position.y = 50
 	
-	var odds_lbl = LabelEx.new()
-	odds_lbl.add_theme_font_size_override("font_size", 40)
-	odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	odds_lbl.text = "符號倍率:"
-	odds_lbl.position.x = offset
-	odds_lbl.max_size = Vector2(200, 50)
-	odds_lbl.size_to_fit = false
-	odds_bg.add_child(odds_lbl)
+	symbols_multiplier_lbl.text = "x%s" % int(Slot.symbols_multiplier)
 	
-	var multiplier_lbl = Label.new()
-	multiplier_lbl.add_theme_font_size_override("font_size", 40)
-	multiplier_lbl.text = "x%s" % int(Slot.symbols_multiplier)
-	multiplier_lbl.position = Vector2.ZERO
-	odds_bg.add_child(multiplier_lbl)
+	#var odds_bg = ColorRect.new()
+	#odds_bg.color = Main.theme_colors[0]
+	#odds_view.add_child(odds_bg)
 	
-	var money_icon = TextureRect.new()
-	money_icon.texture = Images.money_icon
-	odds_bg.add_child(money_icon)
+	#var odds_lbl = LabelEx.new()
+	#odds_lbl.add_theme_font_size_override("font_size", 40)
+	#odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	#odds_lbl.text = "符號倍率:"
+	#odds_lbl.position.x = offset
+	#odds_lbl.max_size = Vector2(200, 50)
+	#odds_lbl.size_to_fit = false
+	#odds_bg.add_child(odds_lbl)
+	#
+	#var multiplier_lbl = Label.new()
+	#multiplier_lbl.add_theme_font_size_override("font_size", 40)
+	#multiplier_lbl.text = "x%s" % int(Slot.symbols_multiplier)
+	#multiplier_lbl.position = Vector2.ZERO
+	#odds_bg.add_child(multiplier_lbl)
+	#
+	#var money_icon = TextureRect.new()
+	#money_icon.texture = Images.money_icon
+	#odds_bg.add_child(money_icon)
 	
 	# 定位
-	odds_bg.size = Vector2(
-		symbols_odds_view.size.x - offset * 2,
-		odds_lbl.size.y
-	)
-	odds_bg.position = Vector2(
-		offset,
-		odds_view.size.y - odds_bg.size.y
-	)
-	multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
-	money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
-	odds_lbl.max_size.x = money_icon.position.x - offset * 2
+	#odds_bg.size = Vector2(
+		#symbols_odds_view.size.x - offset * 2,
+		#odds_lbl.size.y
+	#)
+	#odds_bg.position = Vector2(
+		#offset,
+		#odds_view.size.y - odds_bg.size.y
+	#)
+	#multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
+	#money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
+	#odds_lbl.max_size.x = money_icon.position.x - offset * 2
 
 
 func refresh_pattern_odds():
@@ -112,7 +120,7 @@ func refresh_pattern_odds():
 	var offset = 20
 	var gc = GridContainer.new()
 	gc.columns = 4
-	#gc.add_theme_constant_override("v_separation", 1)
+	gc.add_theme_constant_override("v_separation", 5)
 	odds_view.add_child(gc)
 	for i in Slot.Pattern.size():
 		var icon = TextureRect.new()
@@ -120,7 +128,7 @@ func refresh_pattern_odds():
 		gc.add_child(icon)
 		
 		var spacer = Control.new()
-		spacer.custom_minimum_size.x = offset * 3
+		spacer.custom_minimum_size.x = offset * 1
 		gc.add_child(spacer)
 		
 		var icon_money = TextureRect.new()
@@ -132,43 +140,46 @@ func refresh_pattern_odds():
 		
 		var money_lbl = Label.new()
 		money_lbl.text = "x%s" % (Slot.pattern_odds[i])
-		money_lbl.add_theme_font_size_override("font_size", 30)
+		money_lbl.add_theme_font_size_override("font_size", 35)
 		gc.add_child(money_lbl)
 	gc.position = Vector2.ZERO
 	gc.position = (odds_view.size - gc.size) / 2.0
-	gc.position.y = offset
-	var odds_bg = ColorRect.new()
-	odds_bg.color = Main.theme_colors[0]
-	odds_view.add_child(odds_bg)
+	#gc.position.y = offset
 	
-	var odds_lbl = LabelEx.new()
-	odds_lbl.add_theme_font_size_override("font_size", 40)
-	odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	odds_lbl.text = "圖形倍率:"
-	odds_lbl.position.x = offset
-	odds_lbl.max_size = Vector2(200, 50)
-	odds_lbl.size_to_fit = false
-	odds_bg.add_child(odds_lbl)
+	pattern_multiplier_lbl.text = "x%s" % int(Slot.pattern_multiplier)
 	
-	var multiplier_lbl = Label.new()
-	multiplier_lbl.add_theme_font_size_override("font_size", 40)
-	multiplier_lbl.text = "x%s" % int(Slot.pattern_multiplier)
-	multiplier_lbl.position = Vector2.ZERO
-	odds_bg.add_child(multiplier_lbl)
-	
-	var money_icon = TextureRect.new()
-	money_icon.texture = Images.money_icon
-	odds_bg.add_child(money_icon)
-	
-	# 定位
-	odds_bg.size = Vector2(
-		odds_view.size.x - offset * 2,
-		odds_lbl.size.y
-	)
-	odds_bg.position = Vector2(
-		offset,
-		odds_view.size.y - odds_bg.size.y
-	)
-	multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
-	money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
-	odds_lbl.max_size.x = money_icon.position.x - offset * 2
+	#var odds_bg = ColorRect.new()
+	#odds_bg.color = Main.theme_colors[0]
+	#odds_view.add_child(odds_bg)
+	#
+	#var odds_lbl = LabelEx.new()
+	#odds_lbl.add_theme_font_size_override("font_size", 40)
+	#odds_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	#odds_lbl.text = "圖形倍率:"
+	#odds_lbl.position.x = offset
+	#odds_lbl.max_size = Vector2(200, 50)
+	#odds_lbl.size_to_fit = false
+	#odds_bg.add_child(odds_lbl)
+	#
+	#var multiplier_lbl = Label.new()
+	#multiplier_lbl.add_theme_font_size_override("font_size", 40)
+	#multiplier_lbl.text = "x%s" % int(Slot.pattern_multiplier)
+	#multiplier_lbl.position = Vector2.ZERO
+	#odds_bg.add_child(multiplier_lbl)
+	#
+	#var money_icon = TextureRect.new()
+	#money_icon.texture = Images.money_icon
+	#odds_bg.add_child(money_icon)
+	#
+	## 定位
+	#odds_bg.size = Vector2(
+		#odds_view.size.x - offset * 2,
+		#odds_lbl.size.y
+	#)
+	#odds_bg.position = Vector2(
+		#offset,
+		#odds_view.size.y - odds_bg.size.y
+	#)
+	#multiplier_lbl.position.x = odds_bg.size.x - offset - multiplier_lbl.size.x
+	#money_icon.position.x = multiplier_lbl.position.x - money_icon.size.x
+	#odds_lbl.max_size.x = money_icon.position.x - offset * 2

@@ -131,6 +131,7 @@ var rewards = []
 var rewards_waves = []
 var events = []
 var items = []
+var used_items = []
 var items_usable = {}
 var max_item_size = 7
 var buffs = []
@@ -431,13 +432,28 @@ func calculating_reward(data: RewardData) -> int:
 
 #endregion
 
+func is_can_use(item: Item) -> bool:
+	if item in used_items:
+		return false
+	var data: ItemData = Main.item_datas[item]
+	if data.usable_count > 0 and data.active_item:
+		if items_usable[item] > 0:
+			return true
+	return false
+
+func use_item(item: Item):
+	if !is_can_use(item):
+		return
+	var data: ItemData = Main.item_datas[item]
+	if data.active_item:
+		add_buff(item)
+		if Item.道具11 in items:
+			add_buff(item)
+	used_items.append(item)
+	
 func use_items():
 	for item: Item in items:
-		var data: ItemData = Main.item_datas[item]
-		if data.active_item:
-			add_buff(item)
-			if Item.道具11 in items:
-				add_buff(item)
+		use_item(item)
 	refresh_state()
 
 
@@ -604,7 +620,7 @@ func get_buff(from: Item) -> Buff:
 			temp_buff = buff
 	return temp_buff
 
-func get_buffs(from: Item) -> Array[Buff]:
+func get_buffs(from: Item) -> Array:
 	return buffs.filter(func(buff: Buff): return buff.from == from)
 
 func remove_buff(from: Item):

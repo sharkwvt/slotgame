@@ -1,11 +1,10 @@
 extends Control
 
-var lang_lbl: Label
-var display_lbl: Label
-var music_lbl: Label
-var sound_lbl: Label
-var lang_option: OptionButton
-var display_option: OptionButton
+@export var lang_option: OptionButton
+@export var display_option: OptionButton
+@export var music_slider: Slider
+@export var sound_slider: Slider
+@export var audio_player: AudioStreamPlayer
 var option_btns = []
 
 # Called when the node enters the scene tree for the first time.
@@ -21,15 +20,8 @@ func _ready() -> void:
 
 
 func setup():
-	lang_lbl = $SettingBG/LangLabel
-	lang_lbl = $SettingBG/LangLabel
-	display_lbl = $SettingBG/DisplayLabel
-	music_lbl = $SettingBG/MusicLabel
-	sound_lbl = $SettingBG/SoundLabel
-	lang_option = $SettingBG/LangLabel/OptionButton
 	lang_option.pressed.connect(_on_option_button_pressed)
 	lang_option.item_selected.connect(_on_lang_option_item_selected)
-	display_option = $SettingBG/DisplayLabel/OptionButton
 	display_option.pressed.connect(_on_option_button_pressed)
 	display_option.item_selected.connect(_on_display_option_item_selected)
 	option_btns.append(lang_option)
@@ -40,8 +32,8 @@ func setup():
 func refresh():
 	var music_db = Setting.setting_data[Setting.setting_music_key]
 	var sound_db = Setting.setting_data[Setting.setting_sfx_key]
-	$SettingBG/MusicLabel/MusicSlider.value = music_db
-	$SettingBG/SoundLabel/SoundSlider.value = sound_db
+	music_slider.value = music_db
+	sound_slider.value = sound_db
 	lang_option.selected = Setting.langs.find(Setting.setting_data[Setting.setting_lang_key])
 	display_option.selected = Setting.setting_data[Setting.setting_screen_key]
 	for op_btn: OptionButton in option_btns:
@@ -66,7 +58,7 @@ func _on_sound_slider_value_changed(value: float) -> void:
 
 
 func _on_sound_slider_drag_ended(_value_changed: bool) -> void:
-	$SettingBG/SoundLabel/SoundSlider/AudioStreamPlayer.play()
+	audio_player.play()
 
 
 func _on_close_button_pressed() -> void:
