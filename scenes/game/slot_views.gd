@@ -43,6 +43,7 @@ func start_spin():
 	Slot.effect_before_spin()
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
+	Slot.destroy_item_check()
 	# 轉動
 	Slot.start_spin()
 	game_scene.refresh_view()

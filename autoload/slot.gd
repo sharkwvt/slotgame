@@ -432,31 +432,6 @@ func calculating_reward(data: RewardData) -> int:
 
 #endregion
 
-func is_can_use(item: Item) -> bool:
-	if item in used_items:
-		return false
-	var data: ItemData = Main.item_datas[item]
-	if data.usable_count > 0 and data.active_item:
-		if items_usable[item] > 0:
-			return true
-	return false
-
-func use_item(item: Item):
-	if !is_can_use(item):
-		return
-	var data: ItemData = Main.item_datas[item]
-	if data.active_item:
-		add_buff(item)
-		if Item.道具11 in items:
-			add_buff(item)
-	used_items.append(item)
-	
-func use_items():
-	for item: Item in items:
-		use_item(item)
-	refresh_state()
-
-
 func add_item(item: Item):
 	var data: ItemData = Main.item_datas[item]
 	match item:
@@ -483,6 +458,40 @@ func remove_item(item: Item):
 	items.erase(item)
 	remove_buff(item)
 	refresh_state()
+
+#region use item
+func is_can_use(item: Item) -> bool:
+	return item not in used_items and Main.item_datas[item].active_item and has_usable(item)
+
+func use_item(item: Item):
+	if !is_can_use(item):
+		return
+	var data: ItemData = Main.item_datas[item]
+	if data.active_item:
+		add_buff(item)
+		if Item.道具11 in items:
+			add_buff(item)
+	used_items.append(item)
+
+func use_items():
+	for item: Item in items:
+		use_item(item)
+	refresh_state()
+#endregion
+
+func has_usable(item: Item) -> bool:
+	var data: ItemData = Main.item_datas[item]
+	if data.usable_count > 0:
+		if items_usable[item] > 0:
+			return true
+	return false
+
+func destroy_item_check():
+	var destroy_items = [Item.道具23, Item.道具24]
+	for item: Item in destroy_items:
+		if item in items:
+			if !has_usable(item):
+				remove_item(item)
 
 
 # 轉時效果
@@ -547,14 +556,6 @@ func effect_after_spin():
 				add_buff(Item.道具22)
 				trigger_count += 1
 		
-		if Item.道具23 in items:
-			if items_usable[Item.道具23] <= 0:
-				remove_item(Item.道具23)
-		
-		if Item.道具24 in items:
-			if items_usable[Item.道具24] <= 0:
-				remove_item(Item.道具24)
-		
 		if Item.道具6 in items:
 			if trigger_count > 0:
 				for i in trigger_count:
@@ -577,11 +578,10 @@ func effect_after_spin():
 func add_buff(from: Item):
 	# 次數判定
 	var data: ItemData = Main.item_datas[from]
-	if data.usable_count > 0:
-		if items_usable[from] > 0:
-			items_usable[from] -= 1
-		else:
-			return
+	if has_usable(from):
+		items_usable[from] -= 1
+	else:
+		return
 	
 	triggered_items.append(from)
 	

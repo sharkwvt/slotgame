@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=70 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -50,6 +50,7 @@
 [ext_resource type="Texture2D" uid="uid://c436dokfrpksg" path="res://image/slot/target.png" id="39_3322e"]
 [ext_resource type="Texture2D" uid="uid://btdqgkrl0ds2j" path="res://image/book/left_image.png" id="39_sikks"]
 [ext_resource type="Texture2D" uid="uid://bs20gdscefdl8" path="res://image/book/right_image.png" id="40_ah1mj"]
+[ext_resource type="Texture2D" uid="uid://dmnlpgomsbqkf" path="res://image/return.png" id="40_jiu3o"]
 [ext_resource type="Texture2D" uid="uid://dmfj5o1t2vv0a" path="res://image/book/back_a02.png" id="41_ah1mj"]
 [ext_resource type="Texture2D" uid="uid://dv2m3l3oucivu" path="res://image/slot/symbol_b.png" id="42_3322e"]
 [ext_resource type="Texture2D" uid="uid://b8tpme2v0ej8j" path="res://image/slot/pattern_b.png" id="43_mge0u"]
@@ -990,10 +991,11 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 71.0
-offset_top = 47.0
-offset_right = 171.0
-offset_bottom = 147.0
+offset_left = 13.0
+offset_top = 1.0
+offset_right = 179.0
+offset_bottom = 167.0
+icon = ExtResource("40_jiu3o")
 type = 1
 
 [node name="SlotIcon" type="TextureRect" parent="SlotImage"]
