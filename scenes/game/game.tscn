@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=72 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -55,6 +55,8 @@
 [ext_resource type="Texture2D" uid="uid://dv2m3l3oucivu" path="res://image/slot/symbol_b.png" id="42_3322e"]
 [ext_resource type="Texture2D" uid="uid://b8tpme2v0ej8j" path="res://image/slot/pattern_b.png" id="43_mge0u"]
 [ext_resource type="SpineSkeletonDataResource" uid="uid://bvh1q05hq7o5m" path="res://spine/number/number.tres" id="46_b7fhm"]
+[ext_resource type="Texture2D" uid="uid://comu7ypi36yyr" path="res://image/book/left_image_l.png" id="52_twah4"]
+[ext_resource type="Texture2D" uid="uid://m84wyb5urh78" path="res://image/book/right_image_l.png" id="54_qn4tv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vbi6r"]
 
@@ -312,6 +314,7 @@ grow_vertical = 2
 texture = ExtResource("8_ye7x0")
 
 [node name="SettingViews" type="Control" parent="." node_paths=PackedStringArray("lang_option", "display_option", "music_slider", "sound_slider", "audio_player")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1183,7 +1186,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
 
 [node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "browse_view_bg", "browse_view", "btn_l", "btn_r", "next_btn", "back_btn", "return_btn")]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1203,6 +1205,10 @@ btn_l = NodePath("BackL/ButtonL")
 btn_r = NodePath("BackR/ButtonR")
 next_btn = NodePath("NextBtn")
 back_btn = NodePath("BackBtn")
+l_img_n = ExtResource("39_sikks")
+l_img_l = ExtResource("52_twah4")
+r_img_n = ExtResource("40_ah1mj")
+r_img_l = ExtResource("54_qn4tv")
 return_btn = NodePath("ReturnButton")
 
 [node name="BG" type="TextureRect" parent="BookViews"]

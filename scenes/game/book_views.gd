@@ -15,6 +15,10 @@ var book_img_path = "res://image/book/content"
 @export var btn_r: ButtonEx
 @export var next_btn: ButtonEx
 @export var back_btn: ButtonEx
+@export var l_img_n: Texture
+@export var l_img_l: Texture
+@export var r_img_n: Texture
+@export var r_img_l: Texture
 @export var return_btn: ButtonEx
 
 var index: int
@@ -136,7 +140,11 @@ func set_shader_material(value: float, sm: ShaderMaterial, param: String):
 
 func setup():
 	next_btn.pressed.connect(page_next)
+	next_btn.mouse_entered.connect(func (): next_btn.icon = r_img_l)
+	next_btn.mouse_exited.connect(func (): next_btn.icon = r_img_n)
 	back_btn.pressed.connect(page_back)
+	back_btn.mouse_entered.connect(func (): back_btn.icon = l_img_l)
+	back_btn.mouse_exited.connect(func (): back_btn.icon = l_img_n)
 	return_btn.pressed.connect(game_scene.return_scene)
 	btn_l.pressed.connect(show_browse.bind(true))
 	btn_r.pressed.connect(show_browse.bind(false))
