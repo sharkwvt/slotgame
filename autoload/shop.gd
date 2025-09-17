@@ -200,9 +200,9 @@ func _on_item_purchased(item_data: ItemData, index: int):
 		Main.show_tip("兌換券不夠")
 		return
 	Slot.voucher -= item_data.cost
-	Slot.add_item(item_data.id)
 	if Slot.get_buff(Slot.Item.道具40):
 		Slot.add_buff(Slot.Item.道具40)
+	Slot.add_item(item_data.id)
 	current_items.remove_at(index)
 	if current_items.size() < 1:
 		refresh_items()

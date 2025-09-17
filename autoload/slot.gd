@@ -578,10 +578,11 @@ func effect_after_spin():
 func add_buff(from: Item):
 	# 次數判定
 	var data: ItemData = Main.item_datas[from]
-	if has_usable(from):
-		items_usable[from] -= 1
-	else:
-		return
+	if data.usable_count > 0:
+		if items_usable[from] > 0:
+			items_usable[from] -= 1
+		else:
+			return
 	
 	triggered_items.append(from)
 	

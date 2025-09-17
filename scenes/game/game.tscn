@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=73 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -37,6 +37,7 @@
 [ext_resource type="Script" uid="uid://c1nsqe74dk0j0" path="res://common/btn/common_btn.gd" id="30_35t1a"]
 [ext_resource type="Texture2D" uid="uid://c5io1ymc46q8i" path="res://image/slot/money_2.png" id="30_fba2n"]
 [ext_resource type="Texture2D" uid="uid://bxboj04llu5wf" path="res://image/slot/slot_game_bg2.png" id="30_oepbe"]
+[ext_resource type="PackedScene" uid="uid://csg0iwlafowkh" path="res://particles/reward_effect/reward_effect.tscn" id="31_qn4tv"]
 [ext_resource type="Texture2D" uid="uid://2bt48w2ryax5" path="res://image/slot/money_3.png" id="31_teoly"]
 [ext_resource type="SpineSkeletonDataResource" uid="uid://c1gnadbiohdgu" path="res://spine/button/btn.tres" id="33_b7fhm"]
 [ext_resource type="Script" uid="uid://74aly0fqsq5b" path="res://extends/spine_sprite_ex.gd" id="34_i600x"]
@@ -714,6 +715,7 @@ script = ExtResource("5_lfrn8")
 mask = NodePath("..")
 bingo_img = ExtResource("11_otnwt")
 tip_bg_img = ExtResource("30_oepbe")
+reward_effect_obj = ExtResource("31_qn4tv")
 num_skeleton = ExtResource("46_b7fhm")
 
 [node name="SpinButton" type="Button" parent="SlotViews"]
@@ -1186,6 +1188,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
 
 [node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "browse_view_bg", "browse_view", "btn_l", "btn_r", "next_btn", "back_btn", "return_btn")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

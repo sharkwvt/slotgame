@@ -4,6 +4,7 @@ class_name SlotView
 @export var mask: Control
 @export var bingo_img: Texture
 @export var tip_bg_img: Texture
+@export var reward_effect_obj: PackedScene
 
 @export var num_skeleton: SpineSkeletonDataResource
 
@@ -205,11 +206,19 @@ func show_reward_tip(msg: String):
 	var offset = 100
 	var sps = []
 	
+	var root = Control.new()
+	add_child(root)
+	
 	var tip_bg = TextureRect.new()
 	tip_bg.texture = tip_bg_img
 	tip_bg.position = Vector2.ZERO
 	tip_bg.position = -tip_bg.size / 2.0
-	add_child(tip_bg)
+	root.add_child(tip_bg)
+	
+	var reward_effect: GPUParticles2D = reward_effect_obj.instantiate()
+	reward_effect.amount *= msg.length()
+	reward_effect.lifetime += 0.2 * msg.length()
+	root.add_child(reward_effect)
 	
 	for i in msg.length():
 		var num_str = msg[i]
@@ -219,14 +228,12 @@ func show_reward_tip(msg: String):
 		sp.play_first_anim(false)
 		sp.position = self.size / 2.0
 		sp.position.x += offset * (i - (msg.length() - 1) / 2.0)
-		add_child(sp)
+		root.add_child(sp)
 		sps.append(sp)
 	
 	var timer_value = 2 + 0.5 * msg.length()
 	await get_tree().create_timer(timer_value).timeout
-	for sp in sps:
-		sp.queue_free()
-	tip_bg.queue_free()
+	root.queue_free()
 	reward_tip_finished.emit()
 
 func setup():
