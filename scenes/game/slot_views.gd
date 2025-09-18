@@ -2,7 +2,6 @@ extends Control
 class_name SlotViews
 
 @export var game_scene: GameScene
-@export var items_views: ItemsViews
 
 @export var spin_spine: SpineSpriteEx
 
