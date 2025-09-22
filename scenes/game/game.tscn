@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=74 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
@@ -31,6 +31,8 @@
 [ext_resource type="Texture2D" uid="uid://mkjtb01ihg8a" path="res://image/slot/symbol_bg.png" id="19_8b66f"]
 [ext_resource type="Texture2D" uid="uid://boxgprotuquhw" path="res://image/setting/option_sound.png" id="19_qn4tv"]
 [ext_resource type="Texture2D" uid="uid://b87qj00x63oxt" path="res://image/slot/item/ithem_l.png" id="20_3322e"]
+[ext_resource type="Texture2D" uid="uid://bsu1hxk55os5f" path="res://image/slot/gold_mark_2.png" id="28_e3lpd"]
+[ext_resource type="Texture2D" uid="uid://b66ilx3gkfyvw" path="res://image/slot/gold_mark.png" id="29_au6n5"]
 [ext_resource type="Texture2D" uid="uid://fl5sew672gvb" path="res://image/slot/shop_1.png" id="29_i600x"]
 [ext_resource type="Script" uid="uid://c1nsqe74dk0j0" path="res://common/btn/common_btn.gd" id="30_35t1a"]
 [ext_resource type="Texture2D" uid="uid://c5io1ymc46q8i" path="res://image/slot/money_2.png" id="30_fba2n"]
@@ -284,6 +286,7 @@ grow_vertical = 2
 texture = ExtResource("8_ye7x0")
 
 [node name="SettingViews" type="Control" parent="." node_paths=PackedStringArray("lang_option", "display_option", "display_apply_btn", "music_slider", "sound_slider", "audio_player")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -689,6 +692,8 @@ grow_vertical = 2
 script = ExtResource("5_lfrn8")
 mask = NodePath("..")
 bingo_img = ExtResource("11_otnwt")
+gold_mark_img = ExtResource("28_e3lpd")
+gold_mark_icon_img = ExtResource("29_au6n5")
 tip_bg_img = ExtResource("30_oepbe")
 reward_effect_obj = ExtResource("31_qn4tv")
 reward_effect_2_obj = ExtResource("32_e3lpd")
@@ -1119,6 +1124,7 @@ offset_bottom = 839.0
 grow_horizontal = 0
 
 [node name="SymbolsMulLbl" type="Label" parent="OddsViews"]
+layout_mode = 0
 offset_left = 1576.0
 offset_top = 169.0
 offset_right = 1675.0
@@ -1163,7 +1169,7 @@ line_spacing = 20.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1200)
 fov = 20.0
 
-[node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "browse_view_bg", "browse_view", "btn_l", "btn_r", "next_btn", "back_btn", "return_btn")]
+[node name="BookViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "forward_view_l", "back_view_l", "forward_view_r", "back_view_r", "browse_view_bg", "browse_view", "btn_l", "btn_r", "next_btn", "back_btn", "return_btn", "index_lbl")]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -1189,6 +1195,7 @@ l_img_l = ExtResource("52_twah4")
 r_img_n = ExtResource("40_ah1mj")
 r_img_l = ExtResource("54_qn4tv")
 return_btn = NodePath("ReturnButton")
+index_lbl = NodePath("BG/LabelEx")
 
 [node name="BG" type="TextureRect" parent="BookViews"]
 layout_mode = 1
@@ -1200,6 +1207,17 @@ grow_vertical = 2
 texture = ExtResource("37_5q2xh")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="LabelEx" type="Label" parent="BookViews/BG"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 824.0
+offset_right = 209.0
+offset_bottom = 907.0
+theme_override_font_sizes/font_size = 60
+text = "00/00"
+script = ExtResource("4_lfrn8")
+metadata/_custom_type_script = "uid://b7a8k4lq1idu8"
 
 [node name="BackL" type="TextureRect" parent="BookViews"]
 layout_mode = 1

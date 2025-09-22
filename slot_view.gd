@@ -3,6 +3,8 @@ class_name SlotView
 
 @export var mask: Control
 @export var bingo_img: Texture
+@export var gold_mark_img: Texture
+@export var gold_mark_icon_img: Texture
 @export var tip_bg_img: Texture
 @export var reward_effect_obj: PackedScene
 @export var reward_effect_2_obj: PackedScene
@@ -79,10 +81,12 @@ func set_symbol_view(node:Node, grid_info: GridInfo):
 	view.texture = Images.symbols_imgs[grid_info.symbol]
 	node.add_child(view)
 	if grid_info.is_golden_modifiers:
-		var gm_icon = ColorRect.new()
-		gm_icon.color = Color.YELLOW
-		gm_icon.size = Vector2(10, 10)
-		gm_icon.position = Vector2(10, 10)
+		#var gm_icon = ColorRect.new()
+		#gm_icon.color = Color.YELLOW
+		#gm_icon.size = Vector2(10, 10)
+		#gm_icon.position = Vector2(10, 10)
+		var gm_icon = TextureRect.new()
+		gm_icon.texture = gold_mark_icon_img
 		node.add_child(gm_icon)
 
 
@@ -182,13 +186,24 @@ func show_reward_anim():
 				#tween.tween_property(target, "color", Color.YELLOW, duration)
 				#g_tween = tween
 			#tween.tween_property(target, "color", org_color, duration)
-			tween.tween_property(bingo_view, "modulate:a", 1.0, duration)
 			if Slot.grid[pos.x][pos.y].is_golden_modifiers:
-				for j in 2:
-					tween.tween_property(bingo_view, "modulate:a", 0.0, duration/3)
-					tween.tween_property(bingo_view, "modulate:a", 1.0, duration/3)
+				#for j in 2:
+					#tween.tween_property(bingo_view, "modulate:a", 0.0, duration/3)
+					#tween.tween_property(bingo_view, "modulate:a", 1.0, duration/3)
+				tween.tween_property(bingo_view, "modulate:a", 1.0, duration/2)
+				tween.tween_property(bingo_view, "modulate:a", 0.0, duration/2)
+				var gold_view = TextureRect.new()
+				gold_view.texture = gold_mark_img
+				gold_view.position = Vector2.ZERO
+				gold_view.position = (target.size - gold_view.size) / 2.0
+				gold_view.modulate.a = 0.0
+				target.add_child(gold_view)
+				tween.tween_property(gold_view, "modulate:a", 1.0, duration/2)
+				tween.tween_property(gold_view, "modulate:a", 0.0, duration/2)
 				g_tween = tween
-			tween.tween_property(bingo_view, "modulate:a", 0.0, duration)
+			else:
+				tween.tween_property(bingo_view, "modulate:a", 1.0, duration)
+				tween.tween_property(bingo_view, "modulate:a", 0.0, duration)
 			tween.tween_callback(tween.kill)
 			temp_tween = tween
 		if g_tween:
@@ -222,7 +237,7 @@ func show_reward_tip(msg: String):
 	var reward_effect: GPUParticles2D = reward_effect_obj.instantiate()
 	reward_effect.amount *= msg.length()
 	reward_effect.lifetime += 0.2 * msg.length()
-	effect_root.add_child(reward_effect)
+	root.add_child(reward_effect)
 	
 	var tween = effect_root.create_tween()
 	for i in msg.length():
@@ -231,7 +246,7 @@ func show_reward_tip(msg: String):
 			func ():
 				var reward_effect_2: GPUParticles2D = reward_effect_2_obj.instantiate()
 				reward_effect_2.emitting = true
-				effect_root.add_child(reward_effect_2)
+				root.add_child(reward_effect_2)
 		)
 	tween.finished.connect(tween.kill)
 	

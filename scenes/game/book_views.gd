@@ -20,13 +20,14 @@ var book_img_path = "res://image/book/content"
 @export var r_img_n: Texture
 @export var r_img_l: Texture
 @export var return_btn: ButtonEx
+@export var index_lbl: LabelEx
 
 var index: int
 var book_imgs = []
 var return_view: GameScene.VIEW_STATE
 var tween: Tween
 
-var max_img_count = 50
+var max_img_count = 30
 var duration = 0.5
 
 func _ready() -> void:
@@ -46,6 +47,7 @@ func page_next():
 	forward_view_r.texture = load_book_imgs(index * 2 + 1)
 	set_shader_material(0.0, forward_view_r.material, "progress")
 	index += 1
+	refresh_index_lbl()
 	forward_view_l.texture = load_book_imgs(index * 2)
 	back_view_r.texture = load_book_imgs(index * 2 + 1)
 	set_shader_material(1.0, forward_view_l.material, "progress")
@@ -73,6 +75,7 @@ func page_back():
 	back_view_r.texture = load_book_imgs(index * 2 + 1)
 	set_shader_material(0.0, forward_view_l.material, "progress")
 	index -= 1
+	refresh_index_lbl()
 	back_view_l.texture = load_book_imgs(index * 2)
 	forward_view_r.texture = load_book_imgs(index * 2 + 1)
 	set_shader_material(1.0, forward_view_r.material, "progress")
@@ -137,6 +140,8 @@ func set_index(value: int):
 func set_shader_material(value: float, sm: ShaderMaterial, param: String):
 	sm.set_shader_parameter(param, value)
 
+func refresh_index_lbl():
+	index_lbl.text = str(index + 1, "/", int(max_img_count / 2.0))
 
 func setup():
 	next_btn.pressed.connect(page_next)
@@ -155,6 +160,7 @@ func refresh_view():
 	set_shader_material(1.0, forward_view_r.material, "progress")
 	back_view_l.texture = load_book_imgs(index * 2)
 	back_view_r.texture = load_book_imgs(index * 2 + 1)
+	refresh_index_lbl()
 
 
 func show_anim():
