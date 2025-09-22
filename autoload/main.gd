@@ -22,7 +22,7 @@ var dialog_view = preload("res://common/dialog/dialog.tscn")
 var music_1 = preload("res://sound/maou_bgm_acoustic50.mp3")
 var btn_sfx = preload("res://sound/maou_se_system47.mp3")
 
-var mouse_click_effect = preload("res://common/mouse_click_effect.tscn")
+var mouse_click_effect = preload("res://particles/mouse_click_effect/mouse_click_effect.tscn")
 var mouse_trail_effect: GPUParticles2D
 
 var packed_scenes = []
@@ -294,6 +294,10 @@ func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		var click_effect: GPUParticles2D = mouse_click_effect.instantiate()
 		click_effect.emitting = true
+		var ppm: ParticleProcessMaterial = click_effect.process_material
+		ppm.scale_max = 0.5
+		if in_zoom:
+			ppm.scale_max /= 2.0
 		#click_effect.position = Vector2(event.position.x+0,event.position.y+0)
 		click_effect.position = current_scene.get_global_mouse_position()
 		get_tree().root.add_child(click_effect)

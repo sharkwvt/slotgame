@@ -52,7 +52,6 @@ func load_setting():
 	for key in setting_data.keys():
 		if config.has_section_key(setting_section, key):
 			setting_data[key] = config.get_value(setting_section, key)
-	
 	set_music_db(setting_data[setting_music_key])
 	set_sound_db(setting_data[setting_sfx_key])
 	set_screen_mode(setting_data[setting_screen_key])

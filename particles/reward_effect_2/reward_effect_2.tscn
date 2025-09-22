@@ -1,0 +1,34 @@
+[gd_scene load_steps=12 format=3 uid="uid://blrk582w4vukg"]
+
+[ext_resource type="Script" uid="uid://sgsmi6gjjcqw" path="res://particles/mouse_click_effect/mouse_click_effect.gd" id="2_nkn0g"]
+[ext_resource type="Texture2D" uid="uid://un0higelo1kb" path="res://image/symbols/s/7️⃣.png" id="3_1xj02"]
+[ext_resource type="Texture2D" uid="uid://c66bpfpw7qr3h" path="res://image/symbols/s/🍀.png" id="4_qlfuc"]
+[ext_resource type="Texture2D" uid="uid://cgguqshuug3at" path="res://image/symbols/s/🍋.png" id="5_ei0nn"]
+[ext_resource type="Texture2D" uid="uid://bcwt8hednvi6t" path="res://image/symbols/s/🍒.png" id="6_frusk"]
+[ext_resource type="Texture2D" uid="uid://b27qduyoqufqd" path="res://image/symbols/s/💎.png" id="7_bfwha"]
+[ext_resource type="Texture2D" uid="uid://dmyselyvr0f5m" path="res://image/symbols/s/💰.png" id="8_x4sda"]
+[ext_resource type="Texture2D" uid="uid://c8pfgg44uy4a6" path="res://image/symbols/s/🔔.png" id="9_iybf2"]
+
+[sub_resource type="Curve" id="Curve_y2tw5"]
+_data = [Vector2(0, 0), 0.0, 3.64534, 0, 0, Vector2(1, 0), -4.38286, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jsi08"]
+curve = SubResource("Curve_y2tw5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_74k8t"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 180.0
+initial_velocity_max = 296.92
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_jsi08")
+
+[node name="RewardEffect2" type="GPUParticles2D"]
+emitting = false
+texture = ExtResource("3_1xj02")
+one_shot = true
+explosiveness = 0.5
+process_material = SubResource("ParticleProcessMaterial_74k8t")
+script = ExtResource("2_nkn0g")
+imgs = Array[Texture]([ExtResource("3_1xj02"), ExtResource("4_qlfuc"), ExtResource("5_ei0nn"), ExtResource("6_frusk"), ExtResource("7_bfwha"), ExtResource("8_x4sda"), ExtResource("9_iybf2")])

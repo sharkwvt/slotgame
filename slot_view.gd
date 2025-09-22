@@ -5,6 +5,7 @@ class_name SlotView
 @export var bingo_img: Texture
 @export var tip_bg_img: Texture
 @export var reward_effect_obj: PackedScene
+@export var reward_effect_2_obj: PackedScene
 
 @export var num_skeleton: SpineSkeletonDataResource
 
@@ -215,10 +216,24 @@ func show_reward_tip(msg: String):
 	tip_bg.position = -tip_bg.size / 2.0
 	root.add_child(tip_bg)
 	
+	var effect_root = Control.new()
+	root.add_child(effect_root)
+	
 	var reward_effect: GPUParticles2D = reward_effect_obj.instantiate()
 	reward_effect.amount *= msg.length()
 	reward_effect.lifetime += 0.2 * msg.length()
-	root.add_child(reward_effect)
+	effect_root.add_child(reward_effect)
+	
+	var tween = effect_root.create_tween()
+	for i in msg.length():
+		tween.tween_interval(1 + 0.5 * i)
+		tween.tween_callback(
+			func ():
+				var reward_effect_2: GPUParticles2D = reward_effect_2_obj.instantiate()
+				reward_effect_2.emitting = true
+				effect_root.add_child(reward_effect_2)
+		)
+	tween.finished.connect(tween.kill)
 	
 	for i in msg.length():
 		var num_str = msg[i]

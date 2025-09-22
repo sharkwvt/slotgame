@@ -2,6 +2,7 @@ extends Control
 
 @export var lang_option: OptionButton
 @export var display_option: OptionButton
+@export var display_apply_btn: CommonBtn
 @export var music_slider: Slider
 @export var sound_slider: Slider
 @export var audio_player: AudioStreamPlayer
@@ -14,16 +15,20 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(_delta: float) -> void:
-	#if Input.is_action_pressed("ui_cancel"):
-		#queue_free()
+func _process(_delta: float) -> void:
+	display_apply_btn.visible = display_option.selected != Setting.setting_data[Setting.setting_screen_key]
 
 
 func setup():
-	lang_option.pressed.connect(_on_option_button_pressed)
+	lang_option.pressed.connect(_on_lang_option_button_pressed)
 	lang_option.item_selected.connect(_on_lang_option_item_selected)
-	display_option.pressed.connect(_on_option_button_pressed)
+	display_option.pressed.connect(_on_display_option_button_pressed)
 	display_option.item_selected.connect(_on_display_option_item_selected)
+	display_option.minimum_size_changed.connect(_on_display_option_minimum_size_changed)
+	display_apply_btn.pressed.connect(_on_disply_apply)
+	music_slider.value_changed.connect(_on_music_slider_value_changed)
+	sound_slider.value_changed.connect(_on_sound_slider_value_changed)
+	sound_slider.drag_ended.connect(_on_sound_slider_drag_ended)
 	option_btns.append(lang_option)
 	option_btns.append(display_option)
 	$ReturnButton.pressed.connect(_on_close_button_pressed)
@@ -75,5 +80,25 @@ func _on_display_option_item_selected(index: int) -> void:
 	Main.play_btn_sfx()
 	Setting.set_screen_mode(index)
 
-func _on_option_button_pressed() -> void:
+func _on_lang_option_button_pressed() -> void:
 	Main.play_btn_sfx()
+	var index = Setting.langs.find(TranslationServer.get_locale()) + 1
+	if index >= Setting.langs.size():
+		index = 0
+	Setting.set_lang(Setting.langs[index])
+	lang_option.selected = index
+	lang_option.get_popup().hide()
+
+func _on_display_option_button_pressed() -> void:
+	Main.play_btn_sfx()
+	var index = display_option.selected + 1
+	if index >= Setting.SCREEN_MODE.size():
+		index = 0
+	display_option.selected = index
+	display_option.get_popup().hide()
+
+func _on_disply_apply():
+	Setting.set_screen_mode(display_option.selected)
+
+func _on_display_option_minimum_size_changed():
+	display_apply_btn.position.x = display_option.size.x + 10
