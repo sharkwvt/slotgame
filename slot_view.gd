@@ -243,15 +243,6 @@ func show_reward_tip(msg: String):
 	var interval_time = 0.5
 	var timer_value = 1.5 + interval_time * msg.length()
 	
-	var s = []
-	for i in Slot.rewards.size():
-		var data: Slot.RewardData = Slot.rewards[i]
-		if data.symbol not in s:
-			s.append(data.symbol)
-	for i in Slot.SYMBOLS.size():
-		if i not in s:
-			s.append(i)
-	
 	var create_reward_effect = func (index, amount):
 		var reward_effect_2: GPUParticles2D = reward_effect_2_obj.instantiate()
 		reward_effect_2.one_shot = true
@@ -259,11 +250,8 @@ func show_reward_tip(msg: String):
 		reward_effect_2.texture = reward_effect_2.imgs[index]
 		effect_root.add_child(reward_effect_2)
 	var tween = effect_root.create_tween()
-	#for i in int((timer_value - 1) / interval_time):
 	for i in Slot.SYMBOLS.size():
-		var s_index = s[i] if i < s.size() else s.pick_random()
-		#tween.tween_interval(interval_time)
-		tween.tween_callback(create_reward_effect.bind(s_index, msg.length()))
+		tween.tween_callback(create_reward_effect.bind(i, msg.length()))
 	tween.finished.connect(tween.kill)
 	
 	for i in msg.length():
