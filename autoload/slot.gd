@@ -466,6 +466,7 @@ func is_can_use(item: Item) -> bool:
 func use_item(item: Item):
 	if !is_can_use(item):
 		return
+	triggered_items.clear()
 	var data: ItemData = Main.item_datas[item]
 	if data.active_item:
 		add_buff(item)

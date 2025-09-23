@@ -1,6 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://blrk582w4vukg"]
+[gd_scene load_steps=12 format=3 uid="uid://b7wulabrxwij2"]
 
-[ext_resource type="Script" uid="uid://sgsmi6gjjcqw" path="res://particles/mouse_click_effect/mouse_click_effect.gd" id="2_nkn0g"]
+[ext_resource type="Script" uid="uid://bk3pd88im57ch" path="res://particles/reward_effect_2/reward_effect_2.gd" id="2_42hbq"]
 [ext_resource type="Texture2D" uid="uid://un0higelo1kb" path="res://image/symbols/s/7️⃣.png" id="3_1xj02"]
 [ext_resource type="Texture2D" uid="uid://c66bpfpw7qr3h" path="res://image/symbols/s/🍀.png" id="4_qlfuc"]
 [ext_resource type="Texture2D" uid="uid://cgguqshuug3at" path="res://image/symbols/s/🍋.png" id="5_ei0nn"]
@@ -19,16 +19,15 @@ curve = SubResource("Curve_y2tw5")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_74k8t"]
 particle_flag_disable_z = true
 spread = 180.0
-initial_velocity_min = 180.0
-initial_velocity_max = 296.92
+initial_velocity_min = 200.0
+initial_velocity_max = 300.0
 gravity = Vector3(0, 0, 0)
 alpha_curve = SubResource("CurveTexture_jsi08")
 
 [node name="RewardEffect2" type="GPUParticles2D"]
-emitting = false
+amount = 1
 texture = ExtResource("3_1xj02")
-one_shot = true
 explosiveness = 0.5
 process_material = SubResource("ParticleProcessMaterial_74k8t")
-script = ExtResource("2_nkn0g")
-imgs = Array[Texture]([ExtResource("3_1xj02"), ExtResource("4_qlfuc"), ExtResource("5_ei0nn"), ExtResource("6_frusk"), ExtResource("7_bfwha"), ExtResource("8_x4sda"), ExtResource("9_iybf2")])
+script = ExtResource("2_42hbq")
+imgs = Array[Texture]([ExtResource("5_ei0nn"), ExtResource("6_frusk"), ExtResource("4_qlfuc"), ExtResource("9_iybf2"), ExtResource("7_bfwha"), ExtResource("8_x4sda"), ExtResource("3_1xj02")])

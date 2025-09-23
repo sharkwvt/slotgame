@@ -292,15 +292,22 @@ func _on_music_finished():
 func _input(event):
 	# 滑鼠任何鍵
 	if event is InputEventMouseButton and event.pressed:
-		var click_effect: GPUParticles2D = mouse_click_effect.instantiate()
-		click_effect.emitting = true
-		var ppm: ParticleProcessMaterial = click_effect.process_material
+		var ppm: ParticleProcessMaterial
+		for i in Slot.SYMBOLS.size():
+			var click_effect: GPUParticles2D = mouse_click_effect.instantiate()
+			click_effect.one_shot = true
+			click_effect.texture = click_effect.imgs[i]
+			ppm = click_effect.process_material
+			#click_effect.position = Vector2(event.position.x+0,event.position.y+0)
+			click_effect.position = current_scene.get_global_mouse_position()
+			get_tree().root.add_child(click_effect)
 		ppm.scale_max = 0.5
+		ppm.initial_velocity_min = 100
+		ppm.initial_velocity_max = 200
 		if in_zoom:
 			ppm.scale_max /= 2.0
-		#click_effect.position = Vector2(event.position.x+0,event.position.y+0)
-		click_effect.position = current_scene.get_global_mouse_position()
-		get_tree().root.add_child(click_effect)
+			ppm.initial_velocity_min /= 2.0
+			ppm.initial_velocity_max /= 2.0
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if debug:

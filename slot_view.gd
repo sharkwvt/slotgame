@@ -87,6 +87,7 @@ func set_symbol_view(node:Node, grid_info: GridInfo):
 		#gm_icon.position = Vector2(10, 10)
 		var gm_icon = TextureRect.new()
 		gm_icon.texture = gold_mark_icon_img
+		gm_icon.position = Vector2(-10, -10)
 		node.add_child(gm_icon)
 
 
@@ -237,17 +238,32 @@ func show_reward_tip(msg: String):
 	var reward_effect: GPUParticles2D = reward_effect_obj.instantiate()
 	reward_effect.amount *= msg.length()
 	reward_effect.lifetime += 0.2 * msg.length()
-	root.add_child(reward_effect)
+	effect_root.add_child(reward_effect)
 	
+	var interval_time = 0.5
+	var timer_value = 1.5 + interval_time * msg.length()
+	
+	var s = []
+	for i in Slot.rewards.size():
+		var data: Slot.RewardData = Slot.rewards[i]
+		if data.symbol not in s:
+			s.append(data.symbol)
+	for i in Slot.SYMBOLS.size():
+		if i not in s:
+			s.append(i)
+	
+	var create_reward_effect = func (index, amount):
+		var reward_effect_2: GPUParticles2D = reward_effect_2_obj.instantiate()
+		reward_effect_2.one_shot = true
+		reward_effect_2.amount = amount
+		reward_effect_2.texture = reward_effect_2.imgs[index]
+		effect_root.add_child(reward_effect_2)
 	var tween = effect_root.create_tween()
-	for i in msg.length():
-		tween.tween_interval(1 + 0.5 * i)
-		tween.tween_callback(
-			func ():
-				var reward_effect_2: GPUParticles2D = reward_effect_2_obj.instantiate()
-				reward_effect_2.emitting = true
-				root.add_child(reward_effect_2)
-		)
+	#for i in int((timer_value - 1) / interval_time):
+	for i in Slot.SYMBOLS.size():
+		var s_index = s[i] if i < s.size() else s.pick_random()
+		#tween.tween_interval(interval_time)
+		tween.tween_callback(create_reward_effect.bind(s_index, msg.length()))
 	tween.finished.connect(tween.kill)
 	
 	for i in msg.length():
@@ -261,7 +277,6 @@ func show_reward_tip(msg: String):
 		root.add_child(sp)
 		sps.append(sp)
 	
-	var timer_value = 2 + 0.5 * msg.length()
 	await get_tree().create_timer(timer_value).timeout
 	root.queue_free()
 	reward_tip_finished.emit()

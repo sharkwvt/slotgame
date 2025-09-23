@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cn5qct58mryrh" path="res://image/option_bg.png" id="1_ge262"]
 [ext_resource type="Script" uid="uid://bbe3m4ag456yt" path="res://common/dialog/dialog.gd" id="1_oqa2m"]
-[ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="2_1ufeq"]
+[ext_resource type="Script" uid="uid://c1nsqe74dk0j0" path="res://common/btn/common_btn.gd" id="3_uwdfn"]
 
 [node name="Dialog" type="ColorRect" node_paths=PackedStringArray("bg", "title", "msg", "confirm_btn", "cancel_btn")]
 anchors_preset = 15
@@ -44,11 +44,15 @@ anchor_left = 0.33
 anchor_top = 0.9
 anchor_right = 0.33
 anchor_bottom = 0.9
+offset_left = -54.0
+offset_top = -78.0
+offset_right = 54.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "確認"
-script = ExtResource("2_1ufeq")
+script = ExtResource("3_uwdfn")
+metadata/_custom_type_script = "uid://c1nsqe74dk0j0"
 
 [node name="CancelButton" type="Button" parent="BG"]
 layout_mode = 1
@@ -57,11 +61,15 @@ anchor_left = 0.66
 anchor_top = 0.9
 anchor_right = 0.66
 anchor_bottom = 0.9
+offset_left = -54.0
+offset_top = -78.0
+offset_right = 54.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "取消"
-script = ExtResource("2_1ufeq")
+script = ExtResource("3_uwdfn")
+metadata/_custom_type_script = "uid://c1nsqe74dk0j0"
 
 [node name="TitleLabel" type="Label" parent="BG"]
 layout_mode = 1
@@ -73,6 +81,7 @@ anchor_bottom = 0.1
 offset_left = -0.5
 offset_right = 0.5
 grow_horizontal = 2
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 
@@ -89,6 +98,7 @@ offset_right = 0.5
 offset_bottom = 34.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0.372549, 0.317647, 0.0196078, 1)
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 vertical_alignment = 1

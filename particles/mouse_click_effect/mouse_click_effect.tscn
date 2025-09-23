@@ -25,11 +25,9 @@ gravity = Vector3(0, 0, 0)
 alpha_curve = SubResource("CurveTexture_jsi08")
 
 [node name="MouseClickEffect" type="GPUParticles2D"]
-emitting = false
-amount = 4
+amount = 1
 texture = ExtResource("3_1xj02")
 lifetime = 0.3
-one_shot = true
 explosiveness = 0.5
 trail_lifetime = 0.7
 process_material = SubResource("ParticleProcessMaterial_74k8t")

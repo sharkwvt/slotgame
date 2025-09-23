@@ -39,7 +39,7 @@
 [ext_resource type="Texture2D" uid="uid://bxboj04llu5wf" path="res://image/slot/slot_game_bg2.png" id="30_oepbe"]
 [ext_resource type="PackedScene" uid="uid://csg0iwlafowkh" path="res://particles/reward_effect/reward_effect.tscn" id="31_qn4tv"]
 [ext_resource type="Texture2D" uid="uid://2bt48w2ryax5" path="res://image/slot/money_3.png" id="31_teoly"]
-[ext_resource type="PackedScene" uid="uid://blrk582w4vukg" path="res://particles/reward_effect_2/reward_effect_2.tscn" id="32_e3lpd"]
+[ext_resource type="PackedScene" uid="uid://b7wulabrxwij2" path="res://particles/reward_effect_2/reward_effect_2.tscn" id="32_e3lpd"]
 [ext_resource type="SpineSkeletonDataResource" uid="uid://c1gnadbiohdgu" path="res://spine/button/btn.tres" id="33_b7fhm"]
 [ext_resource type="Script" uid="uid://74aly0fqsq5b" path="res://extends/spine_sprite_ex.gd" id="34_i600x"]
 [ext_resource type="Texture2D" uid="uid://1mt7n8klavbg" path="res://image/book/sex_book_l.png" id="34_teoly"]
