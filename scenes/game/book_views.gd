@@ -96,8 +96,11 @@ func page_back():
 
 func new_page_anim():
 	var progress = Main.game_data.progress
-	index = int((progress - 1) / 2.0)
-	refresh_view()
+	set_index(int((progress - 1) / 2.0))
+	if progress > max_img_count:
+		Main.show_talk_view("已全解鎖")
+		return
+	Main.show_talk_view("成功解鎖")
 	
 	var flip_page: TextureRect
 	if (progress - 1) % 2 > 0:
@@ -133,7 +136,7 @@ func hide_browse(event: InputEvent):
 
 
 func set_index(value: int):
-	var max_index = int(max_img_count / 2.0)
+	var max_index = int((max_img_count - 1) / 2.0)
 	index = value if value < max_index else max_index
 	refresh_view()
 

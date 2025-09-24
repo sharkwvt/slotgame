@@ -243,17 +243,6 @@ func show_reward_tip(msg: String):
 	var interval_time = 0.5
 	var timer_value = 1.5 + interval_time * msg.length()
 	
-	var create_reward_effect = func (index, amount):
-		var reward_effect_2: GPUParticles2D = reward_effect_2_obj.instantiate()
-		reward_effect_2.one_shot = true
-		reward_effect_2.amount = amount
-		reward_effect_2.texture = reward_effect_2.imgs[index]
-		effect_root.add_child(reward_effect_2)
-	var tween = effect_root.create_tween()
-	for i in Slot.SYMBOLS.size():
-		tween.tween_callback(create_reward_effect.bind(i, msg.length()))
-	tween.finished.connect(tween.kill)
-	
 	for i in msg.length():
 		var num_str = msg[i]
 		var sp = SpineSpriteEx.new()
@@ -264,6 +253,18 @@ func show_reward_tip(msg: String):
 		sp.position.x += offset * (i - (msg.length() - 1) / 2.0)
 		root.add_child(sp)
 		sps.append(sp)
+	
+	await get_tree().create_timer(0.7).timeout
+	var create_reward_effect = func (index, amount):
+		var reward_effect_2: GPUParticles2D = reward_effect_2_obj.instantiate()
+		reward_effect_2.one_shot = true
+		reward_effect_2.amount = amount
+		reward_effect_2.texture = reward_effect_2.imgs[index]
+		effect_root.add_child(reward_effect_2)
+	var tween = effect_root.create_tween()
+	for i in Slot.SYMBOLS.size():
+		tween.tween_callback(create_reward_effect.bind(i, msg.length()))
+	tween.finished.connect(tween.kill)
 	
 	await get_tree().create_timer(timer_value).timeout
 	root.queue_free()

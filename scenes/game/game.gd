@@ -67,6 +67,7 @@ func _ready() -> void:
 
 func slot_end():
 	#Slot.money += int(put_in_money * now_interest)
+	Slot.slot_end()
 	refresh_view()
 
 func result_check() -> bool:
@@ -180,13 +181,7 @@ func show_result_scene():
 	book_views.return_view = VIEW_STATE.start
 	switch_view(VIEW_STATE.book)
 	await zoomed
-	if Main.game_data.progress <= book_views.max_img_count:
-		Main.show_talk_view("成功解鎖")
-		#await get_tree().create_timer(0.5).timeout
-		book_views.new_page_anim()
-	else:
-		book_views.set_index(int((Main.game_data.progress - 1)/ 2.0))
-		Main.show_talk_view("已全解鎖")
+	book_views.new_page_anim()
 
 
 func show_triggered_items():
@@ -407,8 +402,10 @@ func close_dialog():
 
 func _on_return_confirm():
 	close_dialog()
+	slot_end()
 	if !result_check():
 		switch_view(VIEW_STATE.menu)
+		refresh_view()
 	
 func _on_dialog_cancel():
 	close_dialog()

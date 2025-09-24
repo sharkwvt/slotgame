@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b7wulabrxwij2"]
+[gd_scene load_steps=14 format=3 uid="uid://b7wulabrxwij2"]
 
 [ext_resource type="Script" uid="uid://bk3pd88im57ch" path="res://particles/reward_effect_2/reward_effect_2.gd" id="2_42hbq"]
 [ext_resource type="Texture2D" uid="uid://un0higelo1kb" path="res://image/symbols/s/7️⃣.png" id="3_1xj02"]
@@ -10,17 +10,27 @@
 [ext_resource type="Texture2D" uid="uid://c8pfgg44uy4a6" path="res://image/symbols/s/🔔.png" id="9_iybf2"]
 
 [sub_resource type="Curve" id="Curve_y2tw5"]
-_data = [Vector2(0, 0), 0.0, 3.64534, 0, 0, Vector2(1, 0), -4.38286, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), -7.67, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_jsi08"]
 curve = SubResource("Curve_y2tw5")
 
+[sub_resource type="Curve" id="Curve_dncf0"]
+_data = [Vector2(0.00903615, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0825083), -1.21746, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fett2"]
+curve = SubResource("Curve_dncf0")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_74k8t"]
 particle_flag_disable_z = true
 spread = 180.0
-initial_velocity_min = 200.0
-initial_velocity_max = 300.0
+angular_velocity_min = 200.0
+angular_velocity_max = 500.0
+radial_velocity_min = 500.0
+radial_velocity_max = 700.0
+radial_velocity_curve = SubResource("CurveTexture_fett2")
 gravity = Vector3(0, 0, 0)
 alpha_curve = SubResource("CurveTexture_jsi08")
 

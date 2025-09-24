@@ -99,7 +99,6 @@ func _on_spin_finish():
 	
 	if Slot.spin_times <= 0:
 		await Main.show_talk_view("拉霸次數用完了").finished
-		Slot.slot_end()
 		game_scene.slot_end()
 		if !game_scene.result_check():
 			game_scene.switch_view(game_scene.VIEW_STATE.menu)
