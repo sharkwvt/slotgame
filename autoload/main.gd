@@ -70,7 +70,7 @@ func _ready() -> void:
 	instance_scenes.resize(SCENE.size())
 	game_data = GameData.new()
 	reload_data()
-	#Input.set_custom_mouse_cursor(load("res://image/mouse.png"),Input.CURSOR_ARROW)
+	Input.set_custom_mouse_cursor(load("res://image/mouse.png"),Input.CURSOR_ARROW)
 	#Input.set_custom_mouse_cursor(load("res://image/mouse2.png"),Input.CURSOR_POINTING_HAND)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
