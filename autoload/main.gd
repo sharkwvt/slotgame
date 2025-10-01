@@ -296,12 +296,13 @@ func _input(event):
 		for i in Slot.SYMBOLS.size():
 			var click_effect: GPUParticles2D = mouse_click_effect.instantiate()
 			click_effect.one_shot = true
-			click_effect.texture = click_effect.imgs[i]
+			click_effect.texture = click_effect.imgs[i % click_effect.imgs.size()]
 			ppm = click_effect.process_material
 			#click_effect.position = Vector2(event.position.x+0,event.position.y+0)
 			click_effect.position = current_scene.get_global_mouse_position()
 			get_tree().root.add_child(click_effect)
-		ppm.scale_max = 0.5
+		ppm.scale_max = 1
+		ppm.scale_min = 1
 		ppm.initial_velocity_min = 100
 		ppm.initial_velocity_max = 200
 		if in_zoom:

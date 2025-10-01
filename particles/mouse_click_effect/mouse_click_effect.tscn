@@ -1,13 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://blrk582w4vukg"]
+[gd_scene load_steps=7 format=3 uid="uid://blrk582w4vukg"]
 
+[ext_resource type="Texture2D" uid="uid://d2tyb26b8k4ka" path="res://image/water.png" id="1_ychxu"]
 [ext_resource type="Script" uid="uid://sgsmi6gjjcqw" path="res://particles/mouse_click_effect/mouse_click_effect.gd" id="2_nkn0g"]
-[ext_resource type="Texture2D" uid="uid://un0higelo1kb" path="res://image/symbols/s/7️⃣.png" id="3_1xj02"]
-[ext_resource type="Texture2D" uid="uid://c66bpfpw7qr3h" path="res://image/symbols/s/🍀.png" id="4_qlfuc"]
-[ext_resource type="Texture2D" uid="uid://cgguqshuug3at" path="res://image/symbols/s/🍋.png" id="5_ei0nn"]
-[ext_resource type="Texture2D" uid="uid://bcwt8hednvi6t" path="res://image/symbols/s/🍒.png" id="6_frusk"]
-[ext_resource type="Texture2D" uid="uid://b27qduyoqufqd" path="res://image/symbols/s/💎.png" id="7_bfwha"]
-[ext_resource type="Texture2D" uid="uid://dmyselyvr0f5m" path="res://image/symbols/s/💰.png" id="8_x4sda"]
-[ext_resource type="Texture2D" uid="uid://c8pfgg44uy4a6" path="res://image/symbols/s/🔔.png" id="9_iybf2"]
+[ext_resource type="Texture2D" uid="uid://blhwdr60ow5tw" path="res://image/water2.png" id="3_2a7l1"]
 
 [sub_resource type="Curve" id="Curve_y2tw5"]
 _data = [Vector2(0, 1), 0.0, -3.16538, 0, 0, Vector2(1, 0), -0.415216, 0.0, 0, 0]
@@ -25,11 +20,11 @@ gravity = Vector3(0, 0, 0)
 alpha_curve = SubResource("CurveTexture_jsi08")
 
 [node name="MouseClickEffect" type="GPUParticles2D"]
-amount = 1
-texture = ExtResource("3_1xj02")
+amount = 2
+texture = ExtResource("1_ychxu")
 lifetime = 0.3
 explosiveness = 0.5
 trail_lifetime = 0.7
 process_material = SubResource("ParticleProcessMaterial_74k8t")
 script = ExtResource("2_nkn0g")
-imgs = Array[Texture]([ExtResource("3_1xj02"), ExtResource("4_qlfuc"), ExtResource("5_ei0nn"), ExtResource("6_frusk"), ExtResource("7_bfwha"), ExtResource("8_x4sda"), ExtResource("9_iybf2")])
+imgs = Array[Texture]([ExtResource("1_ychxu"), ExtResource("3_2a7l1")])
