@@ -108,6 +108,7 @@ func show_item_info_view(item: Item):
 	var window = ColorRect.new()
 	window.size = Main.screen_size
 	window.color = Color(Color.WHITE, 0)
+	window.top_level = true
 	window.gui_input.connect(
 		func (event: InputEvent):
 			if event.is_pressed():

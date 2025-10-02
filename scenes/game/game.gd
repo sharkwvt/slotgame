@@ -274,7 +274,7 @@ func switch_view(state: VIEW_STATE):
 	menu_view.visible = state == VIEW_STATE.menu
 	items_views.visible = state == VIEW_STATE.menu
 	infos_views.visible = state == VIEW_STATE.menu
-	#infos_views.wave_lbl.top_level = state == VIEW_STATE.menu
+	infos_views.wave_lbl.top_level = state == VIEW_STATE.menu
 	if state == VIEW_STATE.menu: result_check()
 	
 	shop_view.visible = state == VIEW_STATE.shop
