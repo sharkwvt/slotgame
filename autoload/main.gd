@@ -3,7 +3,7 @@ extends Node
 var screen_size = Vector2i(1920, 1080)
 var theme_colors = [Color("5f5105"), Color("b9a865")]
 
-var debug = true
+var debug = false
 var skip_anim = false
 
 var scenes_path = "res://scenes"
@@ -11,7 +11,7 @@ var characters_json_path = "res://data/json/characters.json"
 var items_json_path = "res://data/json/items.json"
 var events_json_path = "res://data/json/events.json"
 var talk_json_path = "res://data/json/talk.json"
-var game_save_path = "user://moragame.sav"
+var game_save_path = "user://slotgame.sav"
 var csv_path = "res://categorys/%s/csv"
 
 # 視窗
