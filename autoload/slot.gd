@@ -424,6 +424,8 @@ func calculating_rewards() -> int:
 	var total_reward = 0
 	for data: RewardData in rewards:
 		total_reward += calculating_reward(data)
+		if data.type == Pattern.滿版:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_11)
 	return total_reward
 
 func calculating_reward(data: RewardData) -> int:
@@ -466,6 +468,9 @@ func is_can_use(item: Item) -> bool:
 func use_item(item: Item):
 	if !is_can_use(item):
 		return
+	
+	Steamworks.set_achievement(Steamworks.ACHIEVEMENT_1)
+	
 	triggered_items.clear()
 	var data: ItemData = Main.item_datas[item]
 	if data.active_item:

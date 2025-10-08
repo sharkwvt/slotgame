@@ -1,6 +1,6 @@
 extends Node
 
-var steam_appid: int = 3668520
+var steam_appid: int = 4077790
 #var steam_appid: int = 480 # 測試用
 #var steam_appid: int = 3681730 # playtest
 var steam_id: int = 0
@@ -9,37 +9,31 @@ var steam_name: String = "You"
 var img_path = "res://image/steam/%s"
 var spine_path = "res://spine/dlc/%s.tres"
 
-const ACHV_Win = "ACHIEVEMENT_1"
-const ACHV_InToilet = "ACHIEVEMENT_2"
-const ACHV_InToilet2 = "ACHIEVEMENT_3"
-const ACHV_Paper = "ACHIEVEMENT_4"
-const ACHV_Rock = "ACHIEVEMENT_5"
-const ACHV_Scissor = "ACHIEVEMENT_6"
-const ACHV_InBuilding = "ACHIEVEMENT_7"
-const ACHV_Fail = "ACHIEVEMENT_8"
-const ACHV_Draw = "ACHIEVEMENT_9"
-const ACHV_Fail2 = "ACHIEVEMENT_10"
-const ACHV_Draw2 = "ACHIEVEMENT_11"
-const ACHV_Win2 = "ACHIEVEMENT_12"
-const ACHV_Play30 = "ACHIEVEMENT_13"
-const ACHV_Play60 = "ACHIEVEMENT_14"
-const ACHV_Review = "ACHIEVEMENT_15"
+const ACHIEVEMENT_1 = "ACHIEVEMENT_1" # 第一次遊戲
+const ACHIEVEMENT_2 = "ACHIEVEMENT_2" # 第一次道具
+const ACHIEVEMENT_3 = "ACHIEVEMENT_3" # 100
+const ACHIEVEMENT_4 = "ACHIEVEMENT_4" # 300
+const ACHIEVEMENT_5 = "ACHIEVEMENT_5" # 500
+const ACHIEVEMENT_6 = "ACHIEVEMENT_6" # 1000
+const ACHIEVEMENT_7 = "ACHIEVEMENT_7" # 1張圖
+const ACHIEVEMENT_8 = "ACHIEVEMENT_8" # 10張圖
+const ACHIEVEMENT_9 = "ACHIEVEMENT_9" # 20張圖
+const ACHIEVEMENT_10 = "ACHIEVEMENT_10" # 全圖
+const ACHIEVEMENT_11 = "ACHIEVEMENT_11" # 滿版
+const ACHIEVEMENT_12 = "ACHIEVEMENT_12" # 第一連線
 var achievements: Dictionary = {
-	ACHV_Win: false, # 首勝
-	ACHV_InToilet: false, # 進廁所
-	ACHV_InToilet2: false, # 進階廁所
-	ACHV_Paper: false, # 布
-	ACHV_Rock: false, # 石頭
-	ACHV_Scissor: false, # 剪刀
-	ACHV_InBuilding: false, # 進建築
-	ACHV_Fail: false, # 輸
-	ACHV_Draw: false, # 平手
-	ACHV_Fail2: false, # 輸3
-	ACHV_Draw2: false, # 平手3
-	ACHV_Win2: false, # 贏3
-	ACHV_Play30: false, # 30分鐘
-	ACHV_Play60: false, # 60分鐘
-	ACHV_Review: false # 回想
+	ACHIEVEMENT_1: false,
+	ACHIEVEMENT_2: false,
+	ACHIEVEMENT_3: false,
+	ACHIEVEMENT_4: false,
+	ACHIEVEMENT_5: false,
+	ACHIEVEMENT_6: false,
+	ACHIEVEMENT_7: false,
+	ACHIEVEMENT_8: false,
+	ACHIEVEMENT_9: false,
+	ACHIEVEMENT_10: false,
+	ACHIEVEMENT_11: false,
+	ACHIEVEMENT_12: false
 }
 
 var dlc_data: Array

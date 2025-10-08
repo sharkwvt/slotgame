@@ -85,6 +85,15 @@ func _on_spin_finish():
 		Logger.log(str("中了 ", r))
 		cumulative_amount += r
 		Slot.money += r
+		Steamworks.set_achievement(Steamworks.ACHIEVEMENT_12)
+		if r >= 100:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_3)
+		if r >= 300:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_4)
+		if r >= 500:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_5)
+		if r >= 1000:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_6)
 		await slot_view.reward_tip_finished
 	
 	Slot.used_items.clear()

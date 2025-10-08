@@ -63,6 +63,7 @@ func _ready() -> void:
 	setup()
 	switch_view(VIEW_STATE.start)
 	reset()
+	Steamworks.set_achievement(Steamworks.ACHIEVEMENT_1)
 
 
 func slot_end():
@@ -102,6 +103,15 @@ func to_next_level():
 	if now_level >= MAX_LEVEL:
 		Main.game_data.progress += 1
 		Main.save_game()
+		
+		Steamworks.set_achievement(Steamworks.ACHIEVEMENT_7)
+		if Main.game_data.progress >= 10:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_8)
+		if Main.game_data.progress >= 20:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_9)
+		if Main.game_data.progress >= book_views.max_img_count:
+			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_10)
+			
 		if cam_tween and cam_tween.is_running():
 			await cam_tween.finished
 			show_result_scene()
