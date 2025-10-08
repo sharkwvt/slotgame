@@ -97,21 +97,24 @@ func _on_spin_finish():
 		await slot_view.reward_tip_finished
 	
 	Slot.used_items.clear()
-	in_spin = false
+	
+	game_scene.refresh_view()
 	
 	#spin_img.texture = spin_n
 	#item_btn_img.texture = item_btn_n
-	if can_spin():
-		if spin_btn_on_enter:
-			spin_spine.set_skin("push_1")
-	game_scene.refresh_view()
 	
 	if Slot.spin_times <= 0:
 		await Main.show_talk_view("拉霸次數用完了").finished
 		game_scene.slot_end()
 		if !game_scene.result_check():
 			game_scene.switch_view(game_scene.VIEW_STATE.menu)
-			game_scene.refresh_view()
+			await game_scene.zoomed
+	
+	in_spin = false
+	if can_spin():
+		if spin_btn_on_enter:
+			spin_spine.set_skin("push_1")
+	game_scene.refresh_view()
 
 func _on_spin_btn_mouse_entered():
 	spin_btn_on_enter = true

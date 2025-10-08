@@ -144,7 +144,10 @@ func set_shader_material(value: float, sm: ShaderMaterial, param: String):
 	sm.set_shader_parameter(param, value)
 
 func refresh_index_lbl():
-	index_lbl.text = str(index + 1, "/", int(max_img_count / 2.0))
+	var i = (index + 1) * 2
+	if i > Main.game_data.progress:
+		i = Main.game_data.progress
+	index_lbl.text = str(i, "/", max_img_count)
 
 func setup():
 	next_btn.pressed.connect(page_next)

@@ -187,10 +187,10 @@ func setup():
 
 
 func show_result_scene():
-	reset()
 	book_views.return_view = VIEW_STATE.start
 	switch_view(VIEW_STATE.book)
 	await zoomed
+	reset()
 	book_views.new_page_anim()
 
 
