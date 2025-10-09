@@ -193,21 +193,23 @@ func show_item_info_view(item: Item):
 		bg.add_child(value_lbl)
 		temp_view = value_lbl
 	
-	var remove_btn = ButtonEx.new()
-	remove_btn.add_theme_font_size_override("font_size", font_size)
-	remove_btn.text = "銷毀"
-	remove_btn.position = Vector2(
-		offset,
-		temp_view.position.y + temp_view.size.y + offset
-	)
-	remove_btn.pressed.connect(
-		func ():
-			Slot.remove_item(item)
-			window.queue_free()
-			game_scene.refresh_view()
-	)
-	bg.add_child(remove_btn)
-	temp_view = remove_btn
+	if Main.in_zoom:
+		var remove_btn = ButtonEx.new()
+		remove_btn.add_theme_font_size_override("font_size", font_size)
+		remove_btn.add_theme_color_override("font_color", Color.RED)
+		remove_btn.text = "銷毀"
+		remove_btn.position = Vector2(
+			offset,
+			temp_view.position.y + temp_view.size.y + offset
+		)
+		remove_btn.pressed.connect(
+			func ():
+				Slot.remove_item(item)
+				window.queue_free()
+				game_scene.refresh_view()
+		)
+		bg.add_child(remove_btn)
+		temp_view = remove_btn
 	
 	bg.size = Vector2(
 		max(title_lbl.size.x, description_lbl.size.x) + offset * 2.0,

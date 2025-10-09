@@ -478,11 +478,11 @@ func use_item(item: Item):
 		if Item.道具11 in items:
 			add_buff(item)
 	used_items.append(item)
+	refresh_state()
 
 func use_items():
 	for item: Item in items:
 		use_item(item)
-	refresh_state()
 #endregion
 
 func has_usable(item: Item) -> bool:
