@@ -178,10 +178,8 @@ func show_item_info_view(item: Item):
 				get_voucher = 10
 			value_txt += str(get_voucher)
 		if item == Item.道具21:
-			var v = 0
-			for b: Slot.Buff in Slot.get_buffs(item):
-				v *= b.value
-			value_txt += str(v)
+			var v = pow(2, Slot.get_buffs(item).size())
+			value_txt += str(int(v))
 		if item == Item.道具40:
 			value_txt += str("%s" % int(buff.value * 100), "%")
 		

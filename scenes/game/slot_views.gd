@@ -11,6 +11,8 @@ class_name SlotViews
 
 @export var info_lbl_3d: Label3D
 
+@export var slot_end_sfx: AudioStreamMP3
+
 var cumulative_amount = 0
 var in_spin = false
 var item_btn_on_enter = false
@@ -104,6 +106,7 @@ func _on_spin_finish():
 	#item_btn_img.texture = item_btn_n
 	
 	if Slot.spin_times <= 0:
+		Main.play_sfx(slot_end_sfx)
 		await Main.show_talk_view("拉霸次數用完了").finished
 		game_scene.slot_end()
 		if !game_scene.result_check():

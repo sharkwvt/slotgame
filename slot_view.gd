@@ -8,6 +8,11 @@ class_name SlotView
 @export var tip_bg_img: Texture
 @export var reward_effect_obj: PackedScene
 @export var reward_effect_2_obj: PackedScene
+@export var spin_sfx: AudioStreamMP3
+@export var spin_end_sfx: AudioStreamMP3
+@export var reward_line_sfx: AudioStreamMP3
+@export var mark_sfx: AudioStreamMP3
+@export var reward_sfx: Array[AudioStreamMP3]
 
 @export var num_skeleton: SpineSkeletonDataResource
 
@@ -111,16 +116,19 @@ func play_spin_anim():
 	for node in anim_panel.get_children():
 		node.queue_free()
 	anim_grid_views = []
+	
+	Main.play_sfx(spin_sfx)
+	
 	# 創建
 	var rotate_times = 3
 	var anim_duration: float = 1
 	new_rows = ROWS * (rotate_times + 1)
+	var temp_duration = 0 # 計算時長
 	var last_tween: Tween
 	for col in COLUMNS:
 		var view_column = []
 		var rotation_duration = anim_duration - randf() * 0.5
 		var interval_duration = randf() * 0.5
-		var temp_duration = 0 # 計算時長
 		for row in new_rows:
 			var offset_x = (anim_panel.size.x - get_slot_size().x)/2.0
 			var offset_y = (anim_panel.size.y - get_slot_size().y)/2.0 - SYMBOL_SIZE.y * (new_rows - ROWS)
@@ -144,6 +152,7 @@ func play_spin_anim():
 			tween.tween_property(unit, "position:y", unit.position.y + (SYMBOL_SIZE.y * (new_rows - ROWS)), rotation_duration)
 			#if col == COLUMNS-1 and row == new_rows -1:
 				#last_tween = tween
+			#tween.tween_callback(func (): Main.play_sfx(spin_end_sfx))
 			if rotation_duration + interval_duration > temp_duration:
 				temp_duration = rotation_duration + interval_duration
 				last_tween = tween
@@ -166,6 +175,7 @@ func show_reward_anim():
 	var org_duration = 0.5
 	var temp_tween: Tween
 	for i in Slot.rewards.size():
+		Main.play_sfx(reward_line_sfx)
 		var data: Slot.RewardData = Slot.rewards[i]
 		var duration = org_duration / ceil((i + 1) / 2.0)
 		var g_tween: Tween
@@ -208,6 +218,7 @@ func show_reward_anim():
 			tween.tween_callback(tween.kill)
 			temp_tween = tween
 		if g_tween:
+			Main.play_sfx(mark_sfx)
 			temp_tween = g_tween
 		
 		await temp_tween.finished
@@ -222,6 +233,11 @@ func show_reward_anim():
 func show_reward_tip(msg: String):
 	var offset = 100
 	var sps = []
+	
+	var sfx_index = msg.length() - 1
+	if sfx_index >= reward_sfx.size():
+		sfx_index = reward_sfx.size() - 1
+	Main.play_sfx(reward_sfx[sfx_index])
 	
 	var root = Control.new()
 	add_child(root)

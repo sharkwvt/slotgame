@@ -1,6 +1,7 @@
-[gd_scene load_steps=74 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=83 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
+[ext_resource type="AudioStream" uid="uid://y76i6gocixa1" path="res://sound/maou_se_onepoint23.mp3" id="2_1s0gc"]
 [ext_resource type="Texture2D" uid="uid://bjs6jogi40rn4" path="res://image/slot/slot_bg.png" id="2_5jirj"]
 [ext_resource type="Texture2D" uid="uid://bui7tow0ulnum" path="res://image/slot/slot_game_bg.png" id="2_kp23o"]
 [ext_resource type="Script" uid="uid://dtshx36t0vcu0" path="res://scenes/game/items_views.gd" id="2_lfrn8"]
@@ -40,14 +41,22 @@
 [ext_resource type="PackedScene" uid="uid://csg0iwlafowkh" path="res://particles/reward_effect/reward_effect.tscn" id="31_qn4tv"]
 [ext_resource type="Texture2D" uid="uid://2bt48w2ryax5" path="res://image/slot/money_3.png" id="31_teoly"]
 [ext_resource type="PackedScene" uid="uid://b7wulabrxwij2" path="res://particles/reward_effect_2/reward_effect_2.tscn" id="32_e3lpd"]
+[ext_resource type="AudioStream" uid="uid://b2yp7gykm0rjy" path="res://sound/maou_se_system27 (mp3cut.net).mp3" id="33_0bk81"]
 [ext_resource type="SpineSkeletonDataResource" uid="uid://c1gnadbiohdgu" path="res://spine/button/btn.tres" id="33_b7fhm"]
+[ext_resource type="AudioStream" uid="uid://xcirb3gpnasi" path="res://sound/maou_se_jingle12.mp3" id="33_rnb85"]
+[ext_resource type="AudioStream" uid="uid://bj2euwqhtg4be" path="res://sound/maou_game_jingle06.mp3" id="33_yy23q"]
+[ext_resource type="AudioStream" uid="uid://dyu57jtqid4yf" path="res://sound/maou_game_jingle02.mp3" id="34_0bk81"]
 [ext_resource type="Script" uid="uid://74aly0fqsq5b" path="res://extends/spine_sprite_ex.gd" id="34_i600x"]
+[ext_resource type="AudioStream" uid="uid://cd6pks27iuqv3" path="res://sound/maou_se_onepoint17.mp3" id="34_q8d8h"]
 [ext_resource type="Texture2D" uid="uid://1mt7n8klavbg" path="res://image/book/sex_book_l.png" id="34_teoly"]
 [ext_resource type="Shader" uid="uid://b2ajuns4yry8e" path="res://shaders/page_flip.gdshader" id="35_0gkf7"]
 [ext_resource type="Script" uid="uid://bnnn8vu33wexd" path="res://scenes/game/book_views.gd" id="35_6ehwc"]
+[ext_resource type="AudioStream" uid="uid://ckp74kgwyj5b6" path="res://sound/maou_se_onepoint28.mp3" id="35_6o42e"]
+[ext_resource type="AudioStream" uid="uid://wnt7wvwb8ko0" path="res://sound/maou_game_jingle04.mp3" id="35_q8d8h"]
 [ext_resource type="Texture2D" uid="uid://cgngijr2aspx3" path="res://image/book/sex_book.png" id="36_6ehwc"]
 [ext_resource type="Texture2D" uid="uid://qhqpvoji8uts" path="res://image/book/content/sex_image_0.jpg" id="36_tyhjx"]
 [ext_resource type="Texture2D" uid="uid://c6wmpxuw5b5c0" path="res://image/book/sex_image_bg.png" id="37_5q2xh"]
+[ext_resource type="AudioStream" uid="uid://cd8e2c8kfi7kr" path="res://sound/maou_se_onepoint16.mp3" id="37_7dxef"]
 [ext_resource type="Texture2D" uid="uid://mqqvr3x3rcxe" path="res://image/slot/target_slot.png" id="38_oepbe"]
 [ext_resource type="Texture2D" uid="uid://c436dokfrpksg" path="res://image/slot/target.png" id="39_3322e"]
 [ext_resource type="Texture2D" uid="uid://btdqgkrl0ds2j" path="res://image/book/left_image.png" id="39_sikks"]
@@ -136,6 +145,7 @@ shop_btn = NodePath("Menu/ShopButton")
 slot_btn = NodePath("Menu/SlotButton")
 spin_7_btn = NodePath("SelectSpinViews/7Btn")
 spin_3_btn = NodePath("SelectSpinViews/3Btn")
+item_trigger_sfx = ExtResource("2_1s0gc")
 metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -657,6 +667,7 @@ spin_btn = NodePath("SpinButton")
 slot_view = NodePath("Symbols/Mask/SlotView")
 symbols_panel = NodePath("Symbols")
 info_lbl_3d = NodePath("../3DSubViewport/Label3D")
+slot_end_sfx = ExtResource("35_6o42e")
 
 [node name="BG" type="TextureRect" parent="SlotViews"]
 layout_mode = 1
@@ -697,6 +708,11 @@ gold_mark_icon_img = ExtResource("29_au6n5")
 tip_bg_img = ExtResource("30_oepbe")
 reward_effect_obj = ExtResource("31_qn4tv")
 reward_effect_2_obj = ExtResource("32_e3lpd")
+spin_sfx = ExtResource("33_rnb85")
+spin_end_sfx = ExtResource("33_0bk81")
+reward_line_sfx = ExtResource("34_q8d8h")
+mark_sfx = ExtResource("37_7dxef")
+reward_sfx = Array[AudioStreamMP3]([ExtResource("33_yy23q"), ExtResource("34_0bk81"), ExtResource("35_q8d8h")])
 num_skeleton = ExtResource("46_b7fhm")
 
 [node name="SpinButton" type="Button" parent="SlotViews"]

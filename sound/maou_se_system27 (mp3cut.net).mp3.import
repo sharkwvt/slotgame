@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b2yp7gykm0rjy"
+path="res://.godot/imported/maou_se_system27 (mp3cut.net).mp3-24357bed1f44bd294d6c2da218ad0c78.mp3str"
+
+[deps]
+
+source_file="res://sound/maou_se_system27 (mp3cut.net).mp3"
+dest_files=["res://.godot/imported/maou_se_system27 (mp3cut.net).mp3-24357bed1f44bd294d6c2da218ad0c78.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

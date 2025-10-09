@@ -27,6 +27,8 @@ const Item = Slot.Item
 @export var spin_7_btn: CommonBtn
 @export var spin_3_btn: CommonBtn
 
+@export var item_trigger_sfx: AudioStreamMP3
+
 enum VIEW_STATE {
 	start,
 	setting,
@@ -202,6 +204,7 @@ func show_triggered_items():
 	var items = Slot.triggered_items.filter(func (item): return item not in skip_items)
 	
 	if items.size() > 0:
+		Main.play_sfx(item_trigger_sfx)
 		var last_tween: Tween
 		#var offset = 50
 		for i in items.size():

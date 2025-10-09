@@ -19,8 +19,8 @@ var setting_view = preload("res://common/setting/setting_view.tscn")
 var talk_view = preload("res://common/talk/talk.tscn")
 var dialog_view = preload("res://common/dialog/dialog.tscn")
 
-var music_1 = preload("res://sound/maou_bgm_acoustic50.mp3")
-var btn_sfx = preload("res://sound/maou_se_system47.mp3")
+var music_1 = preload("res://sound/maou_bgm_8bit29.mp3")
+var btn_sfx = preload("res://sound/maou_se_system47 (mp3cut.net).mp3")
 
 var mouse_click_effect = preload("res://particles/mouse_click_effect/mouse_click_effect.tscn")
 var mouse_trail_effect: GPUParticles2D
@@ -68,6 +68,7 @@ var in_zoom: bool
 func _ready() -> void:
 	packed_scenes.resize(SCENE.size())
 	instance_scenes.resize(SCENE.size())
+	Main.play_music(Main.music_1)
 	game_data = GameData.new()
 	reload_data()
 	Input.set_custom_mouse_cursor(load("res://image/mouse.png"),Input.CURSOR_ARROW)
