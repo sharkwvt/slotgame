@@ -98,7 +98,6 @@ func _on_spin_finish():
 			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_6)
 		await slot_view.reward_tip_finished
 	
-	Slot.used_items.clear()
 	
 	game_scene.refresh_view()
 	
@@ -113,6 +112,7 @@ func _on_spin_finish():
 			game_scene.switch_view(game_scene.VIEW_STATE.menu)
 			await game_scene.zoomed
 	
+	Slot.used_items.clear()
 	in_spin = false
 	if can_spin():
 		if spin_btn_on_enter:

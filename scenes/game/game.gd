@@ -28,6 +28,7 @@ const Item = Slot.Item
 @export var spin_3_btn: CommonBtn
 
 @export var item_trigger_sfx: AudioStreamMP3
+@export var result_sfx: AudioStreamMP3
 
 enum VIEW_STATE {
 	start,
@@ -192,6 +193,7 @@ func show_result_scene():
 	book_views.return_view = VIEW_STATE.start
 	switch_view(VIEW_STATE.book)
 	await zoomed
+	Main.play_sfx(result_sfx)
 	reset()
 	book_views.new_page_anim()
 

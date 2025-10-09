@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://dm3lxxqs82b5f"]
+[gd_scene load_steps=84 format=3 uid="uid://dm3lxxqs82b5f"]
 
 [ext_resource type="Script" uid="uid://cg62w0tnstw88" path="res://scenes/game/game.gd" id="1_sul5r"]
 [ext_resource type="AudioStream" uid="uid://y76i6gocixa1" path="res://sound/maou_se_onepoint23.mp3" id="2_1s0gc"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bui7tow0ulnum" path="res://image/slot/slot_game_bg.png" id="2_kp23o"]
 [ext_resource type="Script" uid="uid://dtshx36t0vcu0" path="res://scenes/game/items_views.gd" id="2_lfrn8"]
 [ext_resource type="Script" uid="uid://busxpt8b3jr3b" path="res://extends/button_ex.gd" id="3_0sr1o"]
+[ext_resource type="AudioStream" uid="uid://dq8so0sds2oga" path="res://sound/maou_game_jingle09.mp3" id="3_84b8o"]
 [ext_resource type="Script" uid="uid://b1qv01mbj1lv0" path="res://scenes/game/odds_views.gd" id="4_5i0tg"]
 [ext_resource type="StyleBox" uid="uid://b0nvqttgbtith" path="res://styles/style_btn_h.tres" id="4_gc57s"]
 [ext_resource type="Script" uid="uid://b7a8k4lq1idu8" path="res://extends/label_ex.gd" id="4_lfrn8"]
@@ -146,6 +147,7 @@ slot_btn = NodePath("Menu/SlotButton")
 spin_7_btn = NodePath("SelectSpinViews/7Btn")
 spin_3_btn = NodePath("SelectSpinViews/3Btn")
 item_trigger_sfx = ExtResource("2_1s0gc")
+result_sfx = ExtResource("3_84b8o")
 metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
 
 [node name="Camera2D" type="Camera2D" parent="."]
