@@ -64,9 +64,9 @@ signal zoomed
 
 func _ready() -> void:
 	setup()
-	switch_view(VIEW_STATE.start)
 	reset()
 	Steamworks.set_achievement(Steamworks.ACHIEVEMENT_1)
+	switch_view(VIEW_STATE.start)
 
 
 func slot_end():

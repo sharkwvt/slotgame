@@ -152,7 +152,6 @@ metadata/_custom_type_script = "uid://dkr0dnlc1waxl"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(960, 540)
-zoom = Vector2(2, 2)
 
 [node name="SlotBG" type="TextureRect" parent="."]
 layout_mode = 1
@@ -170,8 +169,7 @@ grow_vertical = 2
 texture = ExtResource("2_5jirj")
 expand_mode = 1
 
-[node name="StartViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "start_btn", "gallery_btn", "setting_btn", "exit_btn")]
-visible = false
+[node name="StartViews" type="Control" parent="." node_paths=PackedStringArray("game_scene", "start_btn", "gallery_btn", "setting_btn", "exit_btn", "logo_view")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -185,6 +183,7 @@ start_btn = NodePath("StartButton")
 gallery_btn = NodePath("GalleryButton")
 setting_btn = NodePath("SettingButton")
 exit_btn = NodePath("ExitButton")
+logo_view = NodePath("Logo")
 
 [node name="StartButton" type="Button" parent="StartViews"]
 layout_mode = 1
