@@ -19,7 +19,7 @@ func _ready() -> void:
 		if max_size:
 			self.minimum_size_changed.connect(_on_size_changed)
 		else:
-			Logger.log(self.name + " autowrap必須設定max_size")
+			LogList.log(self.name + " autowrap必須設定max_size")
 	else:
 		adjust_font_size_to_fit()
 	#if is_autowrap:
@@ -28,7 +28,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if temp_txt != tr(text):
 		if is_autowrap:
-			_on_size_changed()
+			add_theme_font_size_override("font_size", org_font_size)
+			#_on_size_changed()
 		else:
 			adjust_font_size_to_fit()
 		temp_txt = tr(text)

@@ -24,7 +24,7 @@ func get_img() -> Texture:
 	return img
 
 func get_buff() -> Slot.Buff:
-	Logger.log("觸發 " + title)
+	LogList.log("觸發 " + title)
 	var buff = Slot.Buff.new()
 	buff.from = id
 	var Item = Slot.Item

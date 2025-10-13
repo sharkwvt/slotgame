@@ -84,7 +84,7 @@ func _on_spin_finish():
 	if Slot.rewards.size() > 0:
 		var r = Slot.calculating_rewards()
 		slot_view.show_reward_tip(str(r))
-		Logger.log(str("中了 ", r))
+		LogList.log(str("中了 ", r))
 		cumulative_amount += r
 		Slot.money += r
 		Steamworks.set_achievement(Steamworks.ACHIEVEMENT_12)

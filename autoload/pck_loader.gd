@@ -27,11 +27,11 @@ func load_dlc_pck(dlc_id: int):
 	
 	if FileAccess.file_exists(pck_path):
 		if ProjectSettings.load_resource_pack(pck_path):
-			Logger.log("DLC成功載入: %s" % pck_name)
+			LogList.log("DLC成功載入: %s" % pck_name)
 		else:
-			Logger.log("DLC載入失敗: %s" % pck_name)
+			LogList.log("DLC載入失敗: %s" % pck_name)
 	else:
-		Logger.log("pck不存在: %s" % pck_path)
+		LogList.log("pck不存在: %s" % pck_path)
 
 
 func get_dlc_base_path() -> String:

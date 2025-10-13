@@ -22,7 +22,7 @@ buses/default_bus_layout="uid://dafe2pe023mwf"
 
 [autoload]
 
-Logger="*res://autoload/logger.gd"
+LogList="*res://autoload/log_list.gd"
 PckLoader="*res://autoload/pck_loader.gd"
 Slot="*res://autoload/slot.gd"
 Main="*res://autoload/main.gd"
@@ -70,6 +70,7 @@ debug_tool={
 [internationalization]
 
 locale/translations=PackedStringArray("res://csv/UI.en.translation", "res://csv/UI.zh.translation", "res://csv/UI.zhc.translation", "res://csv/game.en.translation", "res://csv/game.zh.translation", "res://csv/game.zhc.translation", "res://csv/tip.en.translation", "res://csv/tip.zh.translation", "res://csv/tip.zhc.translation", "res://csv/item.en.translation", "res://csv/item.zh.translation", "res://csv/item.zhc.translation")
+locale/include_text_server_data=true
 
 [rendering]
 

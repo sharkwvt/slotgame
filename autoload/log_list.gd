@@ -61,7 +61,7 @@ func close():
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("show_log"):
-		Logger.show_log()
+		LogList.show_log()
 	
 	if event.is_action_pressed("ui_cancel"):
 		close()

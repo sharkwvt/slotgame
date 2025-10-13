@@ -72,17 +72,17 @@ func initialize_steam() -> void:
 	if Engine.has_singleton("Steam"):
 		var initialized: Dictionary = Steam.steamInitEx(steam_appid, true)
 		
-		Logger.log("[STEAM] 初始化: %s" % initialized)
+		LogList.log("[STEAM] 初始化: %s" % initialized)
 		
 		if initialized['status'] != Steam.STEAM_API_INIT_RESULT_OK:
-			Logger.log("Steam初始化失敗, 停用功能: %s" % initialized)
+			LogList.log("Steam初始化失敗, 停用功能: %s" % initialized)
 			return
 		
 		Main.this_platform = "steam"
 		steam_id = Steam.getSteamID()
 		steam_name = Steam.getPersonaName()
-		Logger.log("steam_id " + str(steam_id))
-		Logger.log("steam_name " + steam_name)
+		LogList.log("steam_id " + str(steam_id))
+		LogList.log("steam_name " + steam_name)
 		
 		connect_steam_callbacks()
 		dlc_check()
@@ -96,23 +96,23 @@ func connect_steam_callbacks() -> void:
 
 func dlc_check():
 	dlc_data = Steam.getDLCData()
-	#Logger.log("dlc_data: %s" % str(dlc_data))
+	#LogList.log("dlc_data: %s" % str(dlc_data))
 	for dic: Dictionary in dlc_data:
 		if Steam.isDLCInstalled(dic["id"]):
-			Logger.log("isDLCInstalled: %s" % str(dic["id"]))
+			LogList.log("isDLCInstalled: %s" % str(dic["id"]))
 			PckLoader.load_dlc_pck(dic["id"])
 
 
 func _on_steam_stats_ready(this_game: int, this_result: int, this_user: int) -> void:
-	Logger.log("開始接收Steam數據和成就: %s / %s / %s" % [this_user, this_result, this_game])
+	LogList.log("開始接收Steam數據和成就: %s / %s / %s" % [this_user, this_result, this_game])
 	if this_user != steam_id:
-		Logger.log("玩家不符, 本地:%s Steam:%s" % [steam_id, this_user])
+		LogList.log("玩家不符, 本地:%s Steam:%s" % [steam_id, this_user])
 		return
 	if this_game != steam_appid:
-		Logger.log("App ID 不符, 本地:%s Steam:%s" % [steam_appid, this_game])
+		LogList.log("App ID 不符, 本地:%s Steam:%s" % [steam_appid, this_game])
 		return
 	if this_result != Steam.RESULT_OK:
-		Logger.log("Steam數據和成就接收失敗:%s" % this_result)
+		LogList.log("Steam數據和成就接收失敗:%s" % this_result)
 		return
 	load_steam_stats()
 	load_steam_achievements()
@@ -124,81 +124,81 @@ func load_steam_stats() -> void:
 	for this_stat in statistics.keys():
 		var steam_stat: int = Steam.getStatInt(this_stat)
 		if statistics[this_stat] != steam_stat:
-			Logger.log("數據 %s 數值不同, 取最大, 本地:%s Steam:%s" % [this_stat, statistics[this_stat], steam_stat])
+			LogList.log("數據 %s 數值不同, 取最大, 本地:%s Steam:%s" % [this_stat, statistics[this_stat], steam_stat])
 			set_statistic(this_stat, statistics[this_stat] if statistics[this_stat] > steam_stat else steam_stat)
 		else:
-			Logger.log("數據 %s 數值相同" % this_stat)
-	Logger.log("Steam數據讀取完成")
+			LogList.log("數據 %s 數值相同" % this_stat)
+	LogList.log("Steam數據讀取完成")
 
 
 # 讀取成就
 func load_steam_achievements() -> void:
-	Logger.log(str("成就資料: ", achievements))
+	LogList.log(str("成就資料: ", achievements))
 	for this_achievement in achievements.keys():
 		var steam_achievement: Dictionary = Steam.getAchievement(this_achievement)
 		
 		if not steam_achievement['ret']:
-			Logger.log("Steam不存在 %s 成就" % this_achievement)
+			LogList.log("Steam不存在 %s 成就" % this_achievement)
 			break
 		if achievements[this_achievement] == steam_achievement['achieved']:
-			Logger.log("成就 %s 狀態相同, 不需更改" % this_achievement)
+			LogList.log("成就 %s 狀態相同, 不需更改" % this_achievement)
 			break
 		
 		set_achievement(this_achievement)
 	
-	Logger.log("Steam成就讀取完成")
+	LogList.log("Steam成就讀取完成")
 
 
 # 設定數據
 func set_statistic(this_stat: String, new_value: int = 0) -> void:
 	var statistics := Main.statistics
 	if not statistics.has(this_stat):
-		Logger.log("數據 %s 不存在" % this_stat)
+		LogList.log("數據 %s 不存在" % this_stat)
 		return
 	
 	statistics[this_stat] = new_value
 	
 	if not Steam.setStatInt(this_stat, new_value):
-		Logger.log("數據 %s 設定成 %s 失敗" % [this_stat, new_value])
+		LogList.log("數據 %s 設定成 %s 失敗" % [this_stat, new_value])
 		return
 		
-	Logger.log("數據 %s 設定 %s 成功" % [this_stat, new_value])
+	LogList.log("數據 %s 設定 %s 成功" % [this_stat, new_value])
 	
 	if not Steam.storeStats():
-		Logger.log("數據觸發失敗")
+		LogList.log("數據觸發失敗")
 		return
 	
-	Logger.log("數據傳送完成")
+	LogList.log("數據傳送完成")
 
 
 # 設定成就
 func set_achievement(this_achievement: String) -> void:
 	if !Steamworks.is_steam_enabled():
-		Logger.log("Steam未啟動")
+		LogList.log("Steam未啟動")
 		return
 	
 	if not achievements.has(this_achievement):
-		Logger.log("成就不存在: %s" % this_achievement)
+		LogList.log("成就不存在: %s" % this_achievement)
 		return
 	
 	achievements[this_achievement] = true
 	Main.save_game()
 	
 	if not Steam.setAchievement(this_achievement):
-		Logger.log("成就設定失敗: %s" % this_achievement)
+		LogList.log("成就設定失敗: %s" % this_achievement)
 		return
 	
-	Logger.log("設定成就: %s" % this_achievement)
+	LogList.log("設定成就: %s" % this_achievement)
 	
 	if not Steam.storeStats():
-		Logger.log("觸發成就失敗")
+		LogList.log("觸發成就失敗")
 		return
 	
-	Logger.log("成就設定完成")
+	LogList.log("成就設定完成")
 
 
 func show_DLC_tip(id: int = steam_appid):
-	Logger.log(str("show_DLC_tip: ", id))
+	LogList.log(str("show_DLC_tip: ", id))
 	
 	if dlc_tip:
 		dlc_tip.queue_free()
@@ -294,5 +294,5 @@ func show_DLC_tip(id: int = steam_appid):
 
 
 func _on_dlc_installed(dlc_id: int):
-	Logger.log("DLC安裝完成：%s" % dlc_id)
+	LogList.log("DLC安裝完成：%s" % dlc_id)
 	PckLoader.load_dlc_pck(dlc_id)

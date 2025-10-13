@@ -34,14 +34,14 @@ func _process(_delta: float) -> void:
 
 func adjust_font_size_to_fit():
 	if not has_theme_font("font"):
-		Logger.log("%s 必須指定 font 才能自動縮放！" % name)
+		LogList.log("%s 必須指定 font 才能自動縮放！" % name)
 		return
 
 	var base_font: Font = get_theme_font("font")
 	var font_data = base_font.get_data()
 	
 	if font_data == null:
-		Logger.log("%s Font 沒有 data" % name)
+		LogList.log("%s Font 沒有 data" % name)
 		return
 	
 	var font_size = org_size

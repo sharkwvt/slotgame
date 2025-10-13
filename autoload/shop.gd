@@ -115,6 +115,7 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	desc_label.text = item_data.description
 	desc_label.add_theme_font_size_override("font_size", font_size)
 	desc_label.add_theme_color_override("font_color", Main.theme_colors[0])
+	#desc_label.add_theme_color_override("default_color", Main.theme_colors[0])
 	#desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	content_vbox.add_child(desc_label)
 	

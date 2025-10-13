@@ -130,7 +130,7 @@ func to_scene(scene: SCENE, anim_type = 0):
 
 #region Save and load
 func reload_data():
-	Logger.log("platform: " + Main.this_platform)
+	LogList.log("platform: " + Main.this_platform)
 	load_item_data()
 	load_event_data()
 	load_game_save()
