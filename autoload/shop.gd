@@ -39,11 +39,8 @@ func refresh_items():
 
 
 func refresh_view():
-	refresh_button.text = str(tr("刷新商品"), " (%s$)" % get_refresh_item_cost())
-	refresh_button.position = Vector2(
-		(Main.screen_size.x - refresh_button.size.x) / 2.0,
-		game_scene.slot_bg.position.y + game_scene.slot_bg.size.y - refresh_button.size.y - 40
-	)
+	refresh_button.text = str(tr("刷新商品"), "  ", "%s" % get_refresh_item_cost())
+	
 	# 清除現有道具UI
 	for child in items_container.get_children():
 		child.queue_free()
@@ -176,13 +173,8 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	
 	return panel
 
-func get_item_emoji(item_name: String) -> String:
-	match item_name:
-		_: return "📦"
-
 func get_refresh_item_cost() -> int:
 	return refresh_item_times * refresh_item_times
-
 
 func _on_refresh_button_pressed():
 	if Slot.money >= get_refresh_item_cost():
@@ -218,11 +210,24 @@ func setup():
 	
 	# 刷新按鈕
 	refresh_button = CommonBtn.new()
+	refresh_button.size_to_fit = false
 	refresh_button.name = "RefreshButton"
 	refresh_button.text = "刷新商品"
-	refresh_button.add_theme_font_size_override("font_size", 35)
+	refresh_button.icon = Images.money_icon_2
+	refresh_button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	refresh_button.expand_icon = true
+	var font_size = 35
+	refresh_button.add_theme_font_size_override("font_size", font_size)
 	refresh_button.pressed.connect(_on_refresh_button_pressed)
-	refresh_button.size = Vector2(250, 50)
+	refresh_button.minimum_size_changed.connect(
+		func ():
+			var string_size = refresh_button.get_theme_font("font").get_string_size(tr(refresh_button.text), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+			refresh_button.size = Vector2(string_size.x + 50, 50)
+			refresh_button.position = Vector2(
+				(Main.screen_size.x - refresh_button.size.x) / 2.0,
+				game_scene.slot_bg.position.y + game_scene.slot_bg.size.y - refresh_button.size.y - 40
+			)
+	)
 	refresh_button.position = Vector2.ZERO
 	shop_view.add_child(refresh_button)
 
