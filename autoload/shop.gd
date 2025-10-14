@@ -82,6 +82,7 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	margin.add_child(content_vbox)
 	
 	var title_root = Control.new()
+	title_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content_vbox.add_child(title_root)
 	
 	# 道具圖標
@@ -142,6 +143,7 @@ func create_item_panel(item_data: ItemData, index: int) -> ButtonEx:
 	# 價格和購買按鈕的水平布局
 	var hbox_bg = ColorRect.new()
 	hbox_bg.color = Main.theme_colors[0]
+	hbox_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.add_child(hbox_bg)
 	
 	var hbox = HBoxContainer.new()

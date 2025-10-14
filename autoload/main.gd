@@ -296,7 +296,8 @@ func _input(event):
 		var ppm: ParticleProcessMaterial
 		for i in Slot.SYMBOLS.size():
 			var click_effect: GPUParticles2D = mouse_click_effect.instantiate()
-			click_effect.one_shot = true
+			#click_effect.one_shot = true
+			click_effect.emitting = true
 			click_effect.texture = click_effect.imgs[i % click_effect.imgs.size()]
 			ppm = click_effect.process_material
 			#click_effect.position = Vector2(event.position.x+0,event.position.y+0)

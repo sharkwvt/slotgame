@@ -6,6 +6,8 @@ var lbl: RichTextLabel
 var to_close: bool
 
 func show_log():
+	if !Main.debug:
+		return
 	if log_window:
 		return
 	log_window = Window.new()

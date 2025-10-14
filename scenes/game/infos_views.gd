@@ -87,24 +87,37 @@ func refresh_level_info_view():
 	bonus_lbl.max_size = Vector2(150, font_size + 10)
 	bonus_lbl.size_to_fit = false
 	level_info_view.add_child(bonus_lbl)
-	var voucher_count = Label.new()
-	voucher_count.add_theme_color_override("font_color", font_color)
-	voucher_count.add_theme_font_size_override("font_size", font_size)
-	voucher_count.text = str(game_scene.get_bonus_voucher())
-	level_info_view.add_child(voucher_count)
-	var voucher_icon = TextureRect.new()
-	voucher_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	voucher_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	voucher_icon.texture = Images.voucher_icon
-	voucher_icon.size = Vector2(bonus_lbl.size.y, bonus_lbl.size.y)
-	level_info_view.add_child(voucher_icon)
-	var set_voucher_view = func ():
-		voucher_count.position = bonus_lbl.position
-		voucher_count.position.x += bonus_lbl.size.x * bonus_lbl.scale.x
-		voucher_icon.position = voucher_count.position
-		voucher_icon.position.x += voucher_count.size.x
-	set_voucher_view.call()
-	bonus_lbl.minimum_size_changed.connect(set_voucher_view)
+	if game_scene.now_level == game_scene.MAX_LEVEL:
+		var photo_icon = TextureRect.new()
+		photo_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		photo_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		photo_icon.texture = Images.voucher_icon
+		photo_icon.size = Vector2(bonus_lbl.size.y, bonus_lbl.size.y)
+		level_info_view.add_child(photo_icon)
+		var set_voucher_view = func ():
+			photo_icon.position = bonus_lbl.position
+			photo_icon.position.x += bonus_lbl.size.x * bonus_lbl.scale.x
+		set_voucher_view.call()
+		bonus_lbl.minimum_size_changed.connect(set_voucher_view)
+	else:
+		var voucher_count = Label.new()
+		voucher_count.add_theme_color_override("font_color", font_color)
+		voucher_count.add_theme_font_size_override("font_size", font_size)
+		voucher_count.text = str(game_scene.get_bonus_voucher())
+		level_info_view.add_child(voucher_count)
+		var voucher_icon = TextureRect.new()
+		voucher_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		voucher_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		voucher_icon.texture = Images.voucher_icon
+		voucher_icon.size = Vector2(bonus_lbl.size.y, bonus_lbl.size.y)
+		level_info_view.add_child(voucher_icon)
+		var set_voucher_view = func ():
+			voucher_count.position = bonus_lbl.position
+			voucher_count.position.x += bonus_lbl.size.x * bonus_lbl.scale.x
+			voucher_icon.position = voucher_count.position
+			voucher_icon.position.x += voucher_count.size.x
+		set_voucher_view.call()
+		bonus_lbl.minimum_size_changed.connect(set_voucher_view)
 	
 	temp_view = bonus_lbl
 	
