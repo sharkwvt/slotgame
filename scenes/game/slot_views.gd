@@ -37,6 +37,7 @@ func start_spin():
 	spin_spine.set_skin("push_0")
 	spin_spine.play_first_anim(false)
 	slot_view.old_grid = Slot.grid.duplicate(true)
+	game_scene.refresh_view()
 	
 	Slot.triggered_items.clear()
 	Slot.trigger_count = 0
@@ -85,6 +86,9 @@ func _on_spin_finish():
 		var r = Slot.calculating_rewards()
 		slot_view.show_reward_tip(str(r))
 		LogList.log(str("中了 ", r))
+		for data: Slot.RewardData in Slot.rewards:
+			if data.type == Slot.Pattern.滿版:
+				Steamworks.set_achievement(Steamworks.ACHIEVEMENT_11)
 		cumulative_amount += r
 		Slot.money += r
 		Steamworks.set_achievement(Steamworks.ACHIEVEMENT_12)

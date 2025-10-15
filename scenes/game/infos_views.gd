@@ -91,7 +91,7 @@ func refresh_level_info_view():
 		var photo_icon = TextureRect.new()
 		photo_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		photo_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		photo_icon.texture = Images.voucher_icon
+		photo_icon.texture = Images.book_icon
 		photo_icon.size = Vector2(bonus_lbl.size.y, bonus_lbl.size.y)
 		level_info_view.add_child(photo_icon)
 		var set_voucher_view = func ():

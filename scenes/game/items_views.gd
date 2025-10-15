@@ -60,7 +60,7 @@ func refresh_slot_items_view():
 		items_view_slot.add_child(item_bg_view)
 		if i < Slot.items.size():
 			var item: Item = Slot.items[i]
-			if Slot.is_can_use(item):
+			if Slot.is_can_use(item) and !game_scene.slot_views.in_spin:
 				var item_l_view = TextureRect.new()
 				item_l_view.texture = item_l
 				item_bg_view.add_child(item_l_view)
@@ -91,6 +91,8 @@ func get_item_view(item_id: int) -> TextureRect:
 
 func use_item(item: Item):
 	if !Slot.is_can_use(item):
+		return
+	if game_scene.slot_views.in_spin:
 		return
 	Slot.use_item(item)
 	game_scene.show_triggered_items()

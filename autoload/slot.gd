@@ -424,8 +424,6 @@ func calculating_rewards() -> int:
 	var total_reward = 0
 	for data: RewardData in rewards:
 		total_reward += calculating_reward(data)
-		if data.type == Pattern.滿版:
-			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_11)
 	return total_reward
 
 func calculating_reward(data: RewardData) -> int:
