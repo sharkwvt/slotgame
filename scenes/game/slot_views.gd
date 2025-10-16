@@ -54,12 +54,17 @@ func start_spin():
 		await slot_view.spin_anim_finished
 		slot_view.show_reward_anim()
 		await slot_view.reward_anim_finished
+	
+	# 計算獎勵
+	_on_spin_finish()
+	if Slot.rewards.size() > 0:
+		await slot_view.reward_tip_finished
+	
 	# 轉後效果
 	Slot.effect_after_spin()
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
 	game_scene.refresh_view()
-	_on_spin_finish()
 
 
 func can_spin() -> bool:
