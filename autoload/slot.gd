@@ -440,22 +440,49 @@ func start_spin():
 		grid = temp_grid.duplicate(true) 
 		rewards = temp_rewards.duplicate(true)
 	
-	var luck_p = luck/(luck+10)*100
+	var luck_real = luck - 1
+	var luck_p = (luck_real+0.0)/(luck_real+10.0) * 100
 	var bonus_p = randi() % 100 + 1
-	var bonus_panel=[];
-	if bonus_p >= luck_p :
-		for r in BONUS_PATTERN.keys():
-			if luck > r :
-				bonus_panel.append(BONUS_PATTERN[r])
-	
-	var panel_r = randi() % bonus_panel.size()
-	var final_panel = bonus_panel[panel_r]
-	
-	var rand_fruit = randi() % SYMBOLS.size()
-	for i in final_panel.size():
-		for j in final_panel[i].size():
-			if final_panel[i][j] == 1:
-				grid[i][j] = rand_fruit			
+	var bonus_panel=[];	
+	print("幸運值版面  luck_p : ",luck_p)
+	print("幸運值版面  bonus_p : ",bonus_p)
+	if luck_real > 0 :		
+		if luck_p >= bonus_p :			
+			for r in BONUS_PATTERN.keys():
+				var tmp_panel=[]
+				if luck_real > r :				
+					tmp_panel.append(BONUS_PATTERN[r])
+				for op in (r-1) :
+					bonus_panel.append_array(tmp_panel)
+		for ppp in bonus_panel.size():
+			var view_panel = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
+			var final_panel = bonus_panel[ppp]
+			for aa in 5:
+				for bb in 3:					
+					view_panel[bb][aa]=final_panel[aa][bb]
+					
+			print(view_panel[0])
+			print(view_panel[1])
+			print(view_panel[2])
+			print("")
+			
+		if bonus_panel.size() > 0:
+			print("幸運值版面 有幾個 ： ",bonus_panel.size())
+			var panel_r = randi() % bonus_panel.size()			
+			var final_panel = bonus_panel[panel_r]
+			var view_panel = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
+			for aa in 5:
+				for bb in 3:					
+					view_panel[bb][aa]=final_panel[aa][bb]
+					
+			print("幸運值版面 圖案 ： ",view_panel[0])
+			print("幸運值版面 圖案 ： ",view_panel[1])
+			print("幸運值版面 圖案 ： ",view_panel[2])
+			var rand_fruit = randi() % SYMBOLS.size()		
+			for i in final_panel.size():
+				for j in final_panel[i].size():
+					if final_panel[i][j] == 1:
+						grid[i][j].symbol = rand_fruit			
 	
 	
 	
