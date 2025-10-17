@@ -56,7 +56,7 @@ func start_spin():
 		await slot_view.reward_anim_finished
 	
 	# 計算獎勵
-	_on_spin_finish()
+	get_reward()
 	if Slot.rewards.size() > 0:
 		await slot_view.reward_tip_finished
 	
@@ -65,6 +65,8 @@ func start_spin():
 	game_scene.show_triggered_items()
 	await game_scene.triggered_anim_finish
 	game_scene.refresh_view()
+	
+	_on_spin_finish()
 
 
 func can_spin() -> bool:
@@ -85,8 +87,7 @@ func reset():
 	slot_view.reset()
 	refresh_view()
 
-
-func _on_spin_finish():
+func get_reward():
 	if Slot.rewards.size() > 0:
 		var r = Slot.calculating_rewards()
 		slot_view.show_reward_tip(str(r))
@@ -107,9 +108,9 @@ func _on_spin_finish():
 			Steamworks.set_achievement(Steamworks.ACHIEVEMENT_6)
 		await slot_view.reward_tip_finished
 	
-	
 	game_scene.refresh_view()
-	
+
+func _on_spin_finish():
 	#spin_img.texture = spin_n
 	#item_btn_img.texture = item_btn_n
 	
