@@ -8,8 +8,8 @@ keys,zhc,zh,en
 持有道具,持有道具,持有道具,Owned Items
 開始拉霸,開始拉霸,开始拉霸,Start Slot
 刷新商品,刷新商品,刷新商品,Refresh Items
-拉7次，兌換券+1,拉7次，兌換券+1,拉7次，兑换券+1,"Spin 7 Times, +1 Voucher"
-拉3次，兌換券+2,拉3次，兌換券+2,拉3次，兑换券+2,"Spin 3 Times, +2 Vouchers"
+拉7%s次，兌換券+1,拉7%s次，兌換券+1,拉7%s次，兑换券+1,"Spin 7%s Times, +1 Voucher"
+拉3%s次，兌換券+2,拉3%s次，兌換券+2,拉3%s次，兑换券+2,"Spin 3%s Times, +2 Vouchers"
 符號倍率:,符號倍率:,符号倍率:,Symbol Multiplier:
 圖形倍率:,圖形倍率:,图形倍率:,Pattern Multiplier:
 剩餘次數：,剩餘次數：,剩余次数：,Remaining Times:

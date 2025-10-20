@@ -249,6 +249,10 @@ func show_triggered_items():
 
 
 func refresh_view():
+	var bonus_spin_txt = "(+2)" if Slot.get_buff(Item.道具9) else ""
+	spin_3_btn.text = tr("拉3%s次，兌換券+2") % bonus_spin_txt
+	spin_7_btn.text = tr("拉7%s次，兌換券+1") % bonus_spin_txt
+	
 	odds_views.refresh_view()
 	items_views.refresh_view()
 	infos_views.refresh_view()
