@@ -303,7 +303,8 @@ enum Item {
 	道具37, # 出現黃金標記機率+20%，符號價值永久+5
 	道具38, # 出現黃金標記機率+20%，符號價值永久+5
 	道具39, # 出現黃金標記機率+20%，符號價值永久+7
-	道具40 # 符號出現黃金標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券
+	道具40, # 符號出現黃金標記提升2%，每購買一次道具提升1%(最高25%)，標記觸發獎金+1兌換券
+	幸運遞增 = 666
 }
 
 enum Effect {
@@ -424,33 +425,35 @@ func start_spin():
 	spin_times -= 1
 	
 	rewards.clear()
-	var temp_grid = []
-	var temp_rewards = []
-	var temp_r = 0
-	# 幸運 = 轉多次取最大
-	for i in range(luck):
-		spin()
-		check_rewards()
-		var new_r = calculating_rewards()
-		if new_r > temp_r:
-			temp_grid = grid.duplicate(true)
-			temp_rewards = rewards.duplicate(true)
-			temp_r = new_r
-	if temp_r != 0:
-		grid = temp_grid.duplicate(true) 
-		rewards = temp_rewards.duplicate(true)
+	#var temp_grid = []
+	#var temp_rewards = []
+	#var temp_r = 0
+	## 幸運 = 轉多次取最大
+	#for i in range(luck):
+		#spin()
+		#check_rewards()
+		#var new_r = calculating_rewards()
+		#if new_r > temp_r:
+			#temp_grid = grid.duplicate(true)
+			#temp_rewards = rewards.duplicate(true)
+			#temp_r = new_r
+	#if temp_r != 0:
+		#grid = temp_grid.duplicate(true) 
+		#rewards = temp_rewards.duplicate(true)
+	
+	spin()
 	
 	var luck_real = luck - 1
-	var luck_p = (luck_real+0.0)/(luck_real+10.0) * 100
-	var bonus_p = randi() % 100 + 1
-	var bonus_panel=[];	
-	print("幸運值版面  luck_p : ",luck_p)
-	print("幸運值版面  bonus_p : ",bonus_p)
-	if luck_real > 0 :		
-		if luck_p >= bonus_p :			
+	if luck_real > 0 :
+		var luck_p = (luck_real+0.0)/(luck_real+10.0) * 100
+		var bonus_p = randi() % 100 + 1
+		var bonus_panel=[];
+		print("幸運值版面  luck_p : ",luck_p)
+		print("幸運值版面  bonus_p : ",bonus_p)
+		if luck_p >= bonus_p :
 			for r in BONUS_PATTERN.keys():
 				var tmp_panel=[]
-				if luck_real > r :				
+				if luck_real > r :
 					tmp_panel.append(BONUS_PATTERN[r])
 				for op in (r-1) :
 					bonus_panel.append_array(tmp_panel)
@@ -458,7 +461,7 @@ func start_spin():
 			var view_panel = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
 			var final_panel = bonus_panel[ppp]
 			for aa in 5:
-				for bb in 3:					
+				for bb in 3:
 					view_panel[bb][aa]=final_panel[aa][bb]
 					
 			print(view_panel[0])
@@ -468,26 +471,23 @@ func start_spin():
 			
 		if bonus_panel.size() > 0:
 			print("幸運值版面 有幾個 ： ",bonus_panel.size())
-			var panel_r = randi() % bonus_panel.size()			
+			var panel_r = randi() % bonus_panel.size()
 			var final_panel = bonus_panel[panel_r]
 			var view_panel = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
 			for aa in 5:
-				for bb in 3:					
+				for bb in 3:
 					view_panel[bb][aa]=final_panel[aa][bb]
 					
 			print("幸運值版面 圖案 ： ",view_panel[0])
 			print("幸運值版面 圖案 ： ",view_panel[1])
 			print("幸運值版面 圖案 ： ",view_panel[2])
-			var rand_fruit = randi() % SYMBOLS.size()		
+			var rand_info = get_grid_info()
 			for i in final_panel.size():
 				for j in final_panel[i].size():
 					if final_panel[i][j] == 1:
-						grid[i][j].symbol = rand_fruit			
+						grid[i][j] = rand_info
 	
-	
-	
-	check_rewards()	
-	set_item_info()
+	check_rewards()
 	rewards_waves.append(calculating_rewards())
 
 func spin():
@@ -497,25 +497,22 @@ func spin():
 
 func get_grid_info() -> GridInfo:
 	var grid_info = GridInfo.new()
+	
 	var temp = []
 	for i in SYMBOLS.size():
 		for j in probability[i]*100:
 			temp.append(i)
+	
 	grid_info.symbol = temp.pick_random()
 	
+	if (Item.道具33 + grid_info.symbol) in items:
+		var p = 0.2
+		if Item.道具40 in items:
+			p += get_buff(Item.道具40).value
+		if randf() <= p:
+			grid_info.is_golden_modifiers = true
+	
 	return grid_info
-	
-func set_item_info():
-	for i in grid.size():
-		for j in grid[i].size():
-			if (Item.道具33 + grid[i][j].symbol) in items:
-				var p = 0.2
-				if Item.道具40 in items:
-					p += get_buff(Item.道具40).value
-				if randf() <= p:
-					grid[i][j].is_golden_modifiers = true
-	
-	
 
 
 func check_rewards():
@@ -842,10 +839,26 @@ func effect_after_spin():
 					if get_buff(Item.道具40):
 						Slot.voucher += 1
 	
+	if rewards.size() > 0:
+		remove_buff(Item.幸運遞增)
+	else:
+		add_buff(Item.幸運遞增)
+	
 	refresh_state()
 
 
 func add_buff(from: Item):
+	if from == Item.幸運遞增:
+		if get_buff(from):
+			get_buff(from).value += 1
+		else:
+			var buff = Slot.Buff.new()
+			buff.from = from
+			buff.type = Effect.luck
+			buff.value = 1
+			buffs.append(buff)
+		return
+	
 	# 次數判定
 	var data: ItemData = Main.item_datas[from]
 	if data.usable_count > 0:
