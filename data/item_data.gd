@@ -49,7 +49,7 @@ func get_buff() -> Slot.Buff:
 			buff.type = Effect.interest
 			buff.value = 0.15
 		Item.道具8:
-			buff.type = Effect.symbols_multiplier
+			buff.type = Effect.pattern_multiplier
 			buff.value = 1
 		Item.道具9:
 			buff.type = Effect.spin_times

@@ -271,7 +271,7 @@ enum Item {
 	道具5, # 使用後當次拉霸幸運+4
 	道具6, # 拉霸後有被動道具觸發，符號倍率+1，沒道具觸發重置
 	道具7, # 利息增加15%，每輪遞減3%，0%丟棄
-	道具8, # 符號倍率+1，當次拉霸觸發5次獎金，符號倍率再+1
+	道具8, # 圖案倍率+1，當次拉霸觸發5次獎金，圖案倍率再+1
 	道具9, # 每輪次數+2
 	道具10, # 每5張幸運券，符號倍率+1
 	道具11, # 主動觸發道具，額外觸發1次，道具欄位-1
@@ -284,7 +284,7 @@ enum Item {
 	道具18, # 非黃色符號觸發次數+1，櫻桃幸運草鑽石
 	道具19, # 獲得當前債務30%
 	道具20, # 每次清算，每擁有3張兌換券，額外獲得1張，最多10張
-	道具21, # 當次拉霸觸發3次獎金，該輪符號價值x2
+	道具21, # 當次拉霸觸發3次獎金，該輪符號價值+1倍
 	道具22, # 當次拉霸觸發3次獎金，該輪圖案價值+1倍
 	道具23, # 拉霸後觸發，20%機率，當次幸運+5
 	道具24, # 拉霸後觸發，15%機率，當次幸運+7
@@ -311,6 +311,7 @@ enum Effect {
 	luck,
 	symbols_multiplier,
 	symbols_odds,
+	pattern_multiplier,
 	pattern_odds,
 	spin_times,
 	item_size,
@@ -464,10 +465,10 @@ func start_spin():
 				for bb in 3:
 					view_panel[bb][aa]=final_panel[aa][bb]
 					
-			print(view_panel[0])
-			print(view_panel[1])
-			print(view_panel[2])
-			print("")
+			#print(view_panel[0])
+			#print(view_panel[1])
+			#print(view_panel[2])
+			#print("")
 			
 		if bonus_panel.size() > 0:
 			print("幸運值版面 有幾個 ： ",bonus_panel.size())
@@ -875,6 +876,9 @@ func add_buff(from: Item):
 	if from == Item.道具8 and get_buff(from):
 		get_buff(from).value += 1
 		return
+	if from == Item.道具21 and get_buff(from):
+		get_buff(from).value += 1
+		return
 	if from == Item.道具22 and get_buff(from):
 		get_buff(from).value += 1
 		return
@@ -925,16 +929,18 @@ func refresh_state():
 			match buff.type:
 				Effect.luck:
 					luck += buff.value
-				Effect.symbols_multiplier:
-					symbols_multiplier += buff.value
 				Effect.item_size:
 					max_item_size += buff.value
+				Effect.symbols_multiplier:
+					symbols_multiplier += buff.value
 				Effect.symbols_odds:
 					if buff.from == Item.道具21:
 						for i in symbols_odds.size():
 							symbols_odds[i] *= buff.value
 					else:
 						symbols_odds[buff.value[0]] *= buff.value[1]
+				Effect.pattern_multiplier:
+					pattern_multiplier += buff.value
 				Effect.pattern_odds:
 					for i in pattern_odds.size():
 						pattern_odds[i] *= buff.value

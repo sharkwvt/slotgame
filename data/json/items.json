@@ -60,7 +60,7 @@
 	{
 	  "title": "五芒星",
 	  "cost": 3,
-	  "description": "符號倍率+1，單次轉動觸發5次以上獎金，符號倍率再+1",
+	  "description": "圖案倍率+1，單次轉動觸發5次以上獎金，圖案倍率再+1",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 7
@@ -172,7 +172,7 @@
 	{
 	  "title": "幻菇",
 	  "cost": 2,
-	  "description": "當次轉動觸發3次獎金，轉動次數用完前符號價值x2",
+	  "description": "當次轉動觸發3次獎金，轉動次數用完前符號價值+1倍",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 20
@@ -180,7 +180,7 @@
 	{
 	  "title": "筆記版",
 	  "cost": 1,
-	  "description": "當次拉霸觸發3次獎金，轉動次數用完前圖案價值+1倍",
+	  "description": "當次轉動觸發3次獎金，轉動次數用完前圖案價值+1倍",
 	  "active_item": 0,
 	  "usable_count": 0,
 	  "id": 21

@@ -15,7 +15,7 @@ keys,zhc,zh,en
 錢包,錢包,钱包,Wallet
 利息增加15%，每輪遞減3%，0%丟棄,利息增加15%，每輪遞減3%，0%丟棄,利息增加15%，每轮递减3%，0%丢弃,"Interest starts at +15%, decreases by 3% each round, discarded at 0%."
 五芒星,五芒星,五芒星,Pentagram
-符號倍率+1，單次轉動觸發5次以上獎金，符號倍率再+1,符號倍率+1，單次轉動觸發5次以上獎金，符號倍率再+1,符号倍率+1，单次转动触发5次以上奖金，符号倍率再+1,"Symbol multiplier +1. If 5+ prizes are triggered in one spin, gain an extra +1 multiplier."
+圖案倍率+1，單次轉動觸發5次以上獎金，圖案倍率再+1,圖案倍率+1，單次轉動觸發5次以上獎金，圖案倍率再+1,图案倍率+1，单次转动触发5次以上奖金，图案倍率再+1,"Pattern multiplier +1. If 5+ prizes are triggered in one spin, gain an extra +1 multiplier."
 貓糧,貓糧,猫粮,Cat Food
 轉動次數+2,轉動次數+2,转动次数+2,+2 spins.
 千紙鶴,千紙鶴,千纸鹤,Paper Crane
@@ -38,9 +38,9 @@ keys,zhc,zh,en
 盆栽,盆栽,盆栽,Potted Plant
 每次清算，每擁有3張兌換券，額外獲得1張，最多10張,每次清算，每擁有3張兌換券，額外獲得1張，最多10張,每次清算，每拥有3张兑换券，额外获得1张，最多10张,"At each settlement, gain 1 extra Voucher per 3 owned, up to 10."
 幻菇,幻菇,幻菇,Phantom Mushroom
-當次轉動觸發3次獎金，轉動次數用完前符號價值x2,當次轉動觸發3次獎金，轉動次數用完前符號價值x2,当次转动触发3次奖金，转动次数用完前符号价值x2,"If 3 prizes are triggered in one spin, symbol values are doubled until spins are used up."
+當次轉動觸發3次獎金，轉動次數用完前符號價值+1倍,當次轉動觸發3次獎金，轉動次數用完前符號價值+1倍,当次转动触发3次奖金，转动次数用完前符号价值+1倍,"If 3 prizes are triggered in one spin, symbol values is increased by 1x until spins are used up."
 筆記版,筆記版,笔记版,Notebook
-當次拉霸觸發3次獎金，轉動次數用完前圖案價值+1倍,當次拉霸觸發3次獎金，轉動次數用完前圖案價值+1倍,当次拉霸触发3次奖金，转动次数用完前图案价值+1倍,"If 3 prizes are triggered, symbol value is increased by 1x until spins are used up."
+當次轉動觸發3次獎金，轉動次數用完前圖案價值+1倍,當次轉動觸發3次獎金，轉動次數用完前圖案價值+1倍,当次转动触发3次奖金，转动次数用完前图案价值+1倍,"If 3 prizes are triggered in one spin, pattern values is increased by 1x until spins are used up."
 紅辣椒,紅辣椒,红辣椒,Red Pepper
 轉動時觸發，20%機率當次幸運+5,轉動時觸發，20%機率當次幸運+5,转动时触发，20%机率当次幸运+5,20% chance to gain Luck +5 during a spin.
 次數用完後銷毀,次數用完後銷毀,次数用完后销毁,Destroyed after all uses are consumed.
