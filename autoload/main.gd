@@ -11,7 +11,7 @@ var characters_json_path = "res://data/json/characters.json"
 var items_json_path = "res://data/json/items.json"
 var events_json_path = "res://data/json/events.json"
 var talk_json_path = "res://data/json/talk.json"
-var game_save_path = "user://slotgame.sav"
+var game_save_path = "user://game_save.sav"
 var csv_path = "res://categorys/%s/csv"
 
 # 視窗

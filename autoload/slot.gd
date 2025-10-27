@@ -482,11 +482,14 @@ func start_spin():
 			print("幸運值版面 圖案 ： ",view_panel[0])
 			print("幸運值版面 圖案 ： ",view_panel[1])
 			print("幸運值版面 圖案 ： ",view_panel[2])
-			var rand_info = get_grid_info()
+			var rand_symbol = get_symbol()
 			for i in final_panel.size():
 				for j in final_panel[i].size():
 					if final_panel[i][j] == 1:
-						grid[i][j] = rand_info
+						var grid_info = GridInfo.new()
+						grid_info.symbol = rand_symbol
+						set_info_state(grid_info)
+						grid[i][j] = grid_info
 	
 	check_rewards()
 	rewards_waves.append(calculating_rewards())
@@ -498,14 +501,18 @@ func spin():
 
 func get_grid_info() -> GridInfo:
 	var grid_info = GridInfo.new()
-	
+	grid_info.symbol = get_symbol()
+	set_info_state(grid_info)
+	return grid_info
+
+func get_symbol() -> int:
 	var temp = []
 	for i in SYMBOLS.size():
 		for j in probability[i]*100:
 			temp.append(i)
-	
-	grid_info.symbol = temp.pick_random()
-	
+	return temp.pick_random()
+
+func set_info_state(grid_info: GridInfo):
 	if (Item.道具33 + grid_info.symbol) in items:
 		var p = 0.2
 		if Item.道具40 in items:
@@ -513,8 +520,6 @@ func get_grid_info() -> GridInfo:
 		if randf() <= p:
 			grid_info.is_golden_modifiers = true
 	
-	return grid_info
-
 
 func check_rewards():
 	rewards.clear()
